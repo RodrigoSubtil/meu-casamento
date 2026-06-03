@@ -24,7 +24,7 @@
 
    text-align: center;
 
-   gap: 4rem;
+   gap: 1rem;
 
    padding: 0 1rem;
 
@@ -36,17 +36,12 @@
 ========================= */
 
 .our-story-title {
-   font-family: var(--font-display);
+   margin: 0;
 
    font-size: var(--text-2xl);
    font-weight: 400;
 
-   margin: 0;
-
    color: var(--text-primary);
-   text-align: center;
-
-   letter-spacing: 0.08em;
 }
 
 /* =========================
