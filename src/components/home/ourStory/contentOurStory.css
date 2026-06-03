@@ -4,7 +4,7 @@
    display: flex;
    justify-content: center;
 
-   padding: 7rem 0;
+   padding: var(--section-padding);
 
    margin: 0;
 }
@@ -15,7 +15,8 @@
 
 .our-story-container {
    width: 100%;
-   max-width: var(--container-md);
+   max-width: var(--container-xl);
+   margin: 0 auto;
 
    display: flex;
    flex-direction: column;
@@ -23,11 +24,11 @@
 
    text-align: center;
 
-   gap: var(--space-8);
+   gap: 4rem;
 
-   padding: 0 20px;
+   padding: 0 1rem;
 
-   margin: 0;
+   box-sizing: border-box;
 }
 
 /* =========================
@@ -35,7 +36,7 @@
 ========================= */
 
 .our-story-title {
-   font-family: var(--font-primary);
+   font-family: var(--font-display);
 
    font-size: var(--text-2xl);
    font-weight: 400;
@@ -44,6 +45,8 @@
 
    color: var(--text-primary);
    text-align: center;
+
+   letter-spacing: 0.08em;
 }
 
 /* =========================
@@ -66,9 +69,9 @@
    max-width: 860px;
 
    font-size: var(--text-md);
-   line-height: 2.2;
+   line-height: 1.9;
 
-   letter-spacing: var(--letter-spacing);
+   letter-spacing: 0.02em;
 
    text-align: center;
 
@@ -79,17 +82,22 @@
    RESPONSIVO
 ========================= */
 
-@media (max-width: 768px) {
-
-   .our-story {
-      padding: 5rem 0;
-   }
-
+@media (max-width: 900px) {
    .our-story-title {
-      font-size: 1.8rem;
+      font-size: 2.2rem;
    }
 
    .story-editorial p {
-      line-height: 2;
+      font-size: 0.95rem;
+   }
+}
+
+@media (max-width: 600px) {
+   .our-story-title {
+      font-size: 1.9rem;
+   }
+
+   .story-editorial p {
+      line-height: 1.8;
    }
 }

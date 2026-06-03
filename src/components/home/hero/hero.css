@@ -9,39 +9,42 @@
    padding: 0;
    margin: 0;
 
-   border-bottom: var(--border-thin);
+   border-bottom: var(--border-soft);
 
    background-image: url("/img/fundo.png");
    background-size: cover;
    background-position: center;
    background-repeat: no-repeat;
 
+   /* mesmo estilo de suavização da gallery */
    mask-image: linear-gradient(
       to bottom,
       rgba(0,0,0,1) 0%,
-      rgba(0,0,0,1) 60%,
+      rgba(0,0,0,1) 65%,
       rgba(0,0,0,0) 100%
    );
 }
 
-/* overlay luxo */
+/* overlay no mesmo padrão “luxo soft” da gallery */
 .hero::before {
    content: "";
    position: absolute;
    inset: 0;
 
-   background: rgba(250, 246, 241, 0.78);
+   background: rgba(250, 246, 241, 0.75);
 
    z-index: 1;
 }
 
 /* =========================
-   CONTAINER
+   CONTAINER (PADRÃO IGUAL GALLERY)
 ========================= */
 
 .hero-container {
    width: 100%;
-   max-width: var(--container-md);
+   max-width: var(--container-xl);
+
+   margin: 0 auto;
 
    display: flex;
    flex-direction: column;
@@ -50,14 +53,16 @@
 
    text-align: center;
 
-   gap: var(--space-8);
+   gap: 3rem;
+
+   padding: 0 1.5rem;
 
    position: relative;
    z-index: 2;
 }
 
 /* =========================
-   TITLE
+   TITLE (CONSISTENTE COM O SITE)
 ========================= */
 
 .hero-title {
@@ -70,15 +75,15 @@
 
    margin: 0;
 
-   letter-spacing: var(--letter-spacing);
+   letter-spacing: 0.08em;
 }
 
 /* =========================
-   SUBTITLE
+   SUBTITLE (IGUAL LINGUAGEM DA GALLERY)
 ========================= */
 
 .hero-subtitle {
-   max-width: 620px;
+   max-width: 680px;
 
    font-size: var(--text-md);
    line-height: 1.8;
@@ -95,6 +100,10 @@
 @media (max-width: 768px) {
    .hero {
       min-height: 85vh;
+   }
+
+   .hero-container {
+      gap: 2rem;
    }
 
    .hero-title {
