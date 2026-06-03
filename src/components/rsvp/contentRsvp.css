@@ -119,10 +119,6 @@
 ========================= */
 
 @media (max-width: 900px) {
-   .rsvp {
-      padding: 5rem 0;
-   }
-
    .rsvp-grid {
       grid-template-columns: 1fr;
       gap: var(--space-5);

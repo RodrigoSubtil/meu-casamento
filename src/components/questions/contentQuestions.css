@@ -218,11 +218,6 @@
 ========================= */
 
 @media (max-width: 900px) {
-
-   .questions {
-      padding: 5rem 0;
-   }
-
    .questions-container {
       gap: 2.5rem;
    }
