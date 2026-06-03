@@ -18,18 +18,14 @@
 ========================= */
 
 .gallery-upload-card {
-   background: linear-gradient(
-      135deg,
-      rgba(255,255,255,0.95),
-      rgba(250,246,241,0.95)
-   );
+   background: var(--color-white);
 
-   border: var(--border-soft);
+   border: var(--border-thin);
    border-radius: var(--radius-xl);
 
    padding: 2rem;
 
-   box-shadow: var(--shadow-md);
+   box-shadow: var(--shadow-sm);
 }
 
 .gallery-upload-content {

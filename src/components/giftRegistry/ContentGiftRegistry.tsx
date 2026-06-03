@@ -1,7 +1,7 @@
 import "./contentGiftRegistry.css";
 
 import { useEffect, useMemo, useState } from "react";
-import { getGifts, reserveGift } from "../../services/giftService";
+import GiftModal from "./GiftModal";
 
 type GiftCategory = "all" | "kitchen" | "travel" | "home";
 
@@ -21,27 +21,73 @@ export default function ContentGiftRegistry() {
    const [filter, setFilter] = useState<GiftCategory>("all");
    const [loading, setLoading] = useState(false);
 
+   const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
+
    const userName = "Convidado";
 
    useEffect(() => {
-      load();
+
+      const titles = [
+         "Jantar romântico",
+         "Malas de viagem premium",
+         "Conjunto de panelas",
+         "Noite em hotel de luxo",
+         "Decoração elegante",
+         "Experiência spa relaxante",
+         "Café da manhã especial",
+         "Jantar gourmet",
+         "Viagem surpresa",
+         "Tábua de cozinha artesanal",
+         "Set de copos cristal",
+         "Passeio romântico",
+         "Colcha premium",
+         "Acessórios de cozinha",
+         "Férias relaxantes",
+         "Smart speaker",
+         "Kit vinho premium",
+         "Experiência aventura",
+         "Mesa de jantar",
+         "Luzes decorativas"
+      ];
+
+      const categories: GiftCategory[] = ["kitchen", "travel", "home"];
+
+      const mock: Gift[] = Array.from({ length: 20 }).map((_, i) => {
+         const category = categories[i % categories.length];
+
+         return {
+            id: i + 1,
+            title: titles[i],
+            price: Math.floor(Math.random() * 250) + 25,
+            image: `https://picsum.photos/seed/gift-${i}/600/400`,
+            category,
+            is_reserved: false
+         };
+      });
+
+      setGifts(mock);
+
    }, []);
 
-   async function load() {
-      const data = await getGifts();
-      setGifts(data);
+   async function handleReserve(gift: Gift) {
+      setSelectedGift(gift);
    }
 
-   async function handleReserve(id: number) {
+   function confirmReservation() {
+      if (!selectedGift) return;
+
       setLoading(true);
 
-      const success = await reserveGift(id, userName);
-
-      if (success) {
-         await load();
-      }
+      setGifts(prev =>
+         prev.map(g =>
+            g.id === selectedGift.id
+               ? { ...g, is_reserved: true, reserved_by: userName }
+               : g
+         )
+      );
 
       setLoading(false);
+      setSelectedGift(null);
    }
 
    const filteredGifts = useMemo(() => {
@@ -54,9 +100,7 @@ export default function ContentGiftRegistry() {
 
          <div className="gift-container">
 
-            {/* HEADER GLOBAL PADRÃO */}
             <div className="section-header">
-
                <div className="luxury-title">
                   <span>Lista de Presentes</span>
                </div>
@@ -66,17 +110,12 @@ export default function ContentGiftRegistry() {
                </h2>
 
                <p className="section-subtitle">
-                  Ter vocês connosco neste momento já é, sem dúvida, o nosso maior presente!
-                  Para quem quiser oferecer algo especial, deixámos aqui algumas opções.
-                  Como vivemos em Portugal, não conseguiremos levar presentes físicos na viagem de regresso.
-                  Por isso, organizámos uma lista onde todos os presentes serão convertidos em ajuda monetária para o início da nossa vida a dois.
+                  Ter vocês connosco já é o nosso maior presente.
                </p>
-
             </div>
 
             {/* FILTERS */}
             <div className="gift-filters">
-
                {["all", "kitchen", "travel", "home"].map((cat) => (
                   <button
                      key={cat}
@@ -92,7 +131,6 @@ export default function ContentGiftRegistry() {
                         : "Casa"}
                   </button>
                ))}
-
             </div>
 
             {/* GRID */}
@@ -116,7 +154,7 @@ export default function ContentGiftRegistry() {
                         <button
                            className="form-button"
                            disabled={gift.is_reserved || loading}
-                           onClick={() => handleReserve(gift.id)}
+                           onClick={() => handleReserve(gift)}
                         >
                            {gift.is_reserved
                               ? `Reservado por ${gift.reserved_by}`
@@ -137,6 +175,15 @@ export default function ContentGiftRegistry() {
             )}
 
          </div>
+
+         {/* MODAL */}
+         {selectedGift && (
+            <GiftModal
+               gift={selectedGift}
+               onClose={() => setSelectedGift(null)}
+               onConfirm={confirmReservation}
+            />
+         )}
 
       </section>
    );
