@@ -11,6 +11,10 @@
    padding: var(--section-padding);
 }
 
+/* =========================
+   CONTAINER
+========================= */
+
 .rsvp-container {
    width: 100%;
    max-width: var(--container-md);
@@ -25,31 +29,67 @@
 }
 
 /* =========================
-   TITLES
+   TITLES (PADRÃO GLOBAL)
 ========================= */
 
 .rsvp-title {
-   font-family: var(--font-primary);
+   margin: 0;
+
    font-size: var(--text-2xl);
    font-weight: 400;
 
-   margin: 0;
-
    color: var(--text-primary);
+
    text-align: center;
 }
 
 .rsvp-subtitle {
    max-width: 620px;
 
+   margin: 0;
+
    font-size: var(--text-md);
-   line-height: 1.9;
+   line-height: 1.8;
 
    color: var(--text-muted);
 
    text-align: center;
+}
 
-   margin: 0;
+/* =========================
+   SUCCESS MESSAGE
+========================= */
+
+.form-success {
+   width: 100%;
+   max-width: 720px;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   min-height: 52px;
+
+   padding: 0 20px;
+
+   border-radius: var(--radius-lg);
+
+   background: rgba(91, 163, 121, 0.08);
+   border: 1px solid rgba(91, 163, 121, 0.18);
+
+   color: #5b8f73;
+
+   font-size: 0.9rem;
+
+   opacity: 0;
+   transform: translateY(6px);
+
+   transition: var(--transition-base);
+}
+
+.form-success.show {
+   opacity: 1;
+   transform: translateY(0);
 }
 
 /* =========================
@@ -70,12 +110,35 @@
 .rsvp-grid {
    display: grid;
    grid-template-columns: 1fr 1fr;
+
    gap: var(--space-6);
 }
 
-/* RESPONSIVO */
-@media (max-width: 768px) {
+/* =========================
+   RESPONSIVE (PADRÃO SITE)
+========================= */
+
+@media (max-width: 900px) {
+   .rsvp {
+      padding: 5rem 0;
+   }
+
    .rsvp-grid {
       grid-template-columns: 1fr;
+      gap: var(--space-5);
+   }
+
+   .rsvp-title {
+      font-size: 2.2rem;
+   }
+}
+
+@media (max-width: 600px) {
+   .rsvp-title {
+      font-size: 1.9rem;
+   }
+
+   .rsvp-subtitle {
+      font-size: 0.95rem;
    }
 }

@@ -150,17 +150,17 @@ export default function ContentGallery() {
             <div className="gallery-container">
 
                 {/* HEADER */}
-                <div className="gallery-header">
+                <div className="section-header">
 
                     <div className="luxury-title">
                         <span>Galeria</span>
                     </div>
 
-                    <h2 className="gallery-title">
+                    <h2 className="section-title">
                         Momentos do nosso casamento
                     </h2>
 
-                    <p className="gallery-subtitle">
+                    <p className="section-subtitle">
                         Queremos viver esta festa com muita intensidade, mas sabemos que será impossível acompanhar tudo ao mesmo tempo.
                         Por isso criámos este espaço para construirmos o nosso álbum juntos.
                         Partilhem aqui as fotos e vídeos do casamento — sorrisos, abraços e momentos especiais.

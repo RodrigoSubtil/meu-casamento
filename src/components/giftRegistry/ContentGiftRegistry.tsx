@@ -21,7 +21,7 @@ export default function ContentGiftRegistry() {
    const [filter, setFilter] = useState<GiftCategory>("all");
    const [loading, setLoading] = useState(false);
 
-   const userName = "Convidado"; // depois podes ligar ao RSVP
+   const userName = "Convidado";
 
    useEffect(() => {
       load();
@@ -54,20 +54,25 @@ export default function ContentGiftRegistry() {
 
          <div className="gift-container">
 
-            <div className="luxury-title">
-               <span>Lista de Presentes</span>
+            {/* HEADER GLOBAL PADRÃO */}
+            <div className="section-header">
+
+               <div className="luxury-title">
+                  <span>Lista de Presentes</span>
+               </div>
+
+               <h2 className="section-title">
+                  Escolhe uma memória para oferecer
+               </h2>
+
+               <p className="section-subtitle">
+                  Ter vocês connosco neste momento já é, sem dúvida, o nosso maior presente!
+                  Para quem quiser oferecer algo especial, deixámos aqui algumas opções.
+                  Como vivemos em Portugal, não conseguiremos levar presentes físicos na viagem de regresso.
+                  Por isso, organizámos uma lista onde todos os presentes serão convertidos em ajuda monetária para o início da nossa vida a dois.
+               </p>
+
             </div>
-
-            <h2 className="gift-title">
-               Escolhe uma memória para oferecer
-            </h2>
-
-            <p className="gift-subtitle">
-               Ter vocês connosco neste momento já é, sem dúvida, o nosso maior presente!
-               Para quem quiser oferecer algo especial, deixámos aqui algumas opções.
-               Como vivemos em Portugal, não conseguiremos levar presentes físicos na viagem de regresso.
-               Por isso, organizámos uma lista onde todos os presentes serão convertidos em ajuda monetária para o início da nossa vida a dois.
-            </p>
 
             {/* FILTERS */}
             <div className="gift-filters">

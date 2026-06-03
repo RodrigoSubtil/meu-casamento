@@ -119,18 +119,24 @@ export default function ContentQuestions() {
 
          <div className="questions-container">
 
-            <div className="luxury-title">
-               <span>Questões</span>
+            {/* HEADER GLOBAL PADRONIZADO */}
+            <div className="section-header">
+
+               <div className="luxury-title">
+                  <span>Questões</span>
+               </div>
+
+               <h2 className="section-title">
+                  Previsões dos convidados
+               </h2>
+
+               <p className="section-subtitle">
+                  Vote primeiro, depois revele os resultados.
+               </p>
+
             </div>
 
-            <h2 className="questions-title">
-               Previsões dos convidados
-            </h2>
-
-            <p className="questions-subtitle">
-               Vote primeiro, depois revele os resultados.
-            </p>
-
+            {/* LISTA */}
             <div className="questions-list">
 
                {questions.map((q) => {

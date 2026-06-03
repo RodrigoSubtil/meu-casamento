@@ -21,15 +21,24 @@ export default function ContentLocations() {
 
             <div className="locations-container">
 
-               <div className="luxury-title">
-                  <span>Localizações</span>
+               {/* HEADER GLOBAL */}
+               <div className="section-header">
 
-                  <p className="locations-subtitle">
+                  <div className="luxury-title">
+                     <span>Localizações</span>
+                  </div>
+
+                  <h2 className="section-title">
+                     Onde será o nosso grande dia
+                  </h2>
+
+                  <p className="section-subtitle">
                      Para que vocês cheguem com tranquilidade e não percam nenhum momento da nossa celebração,
                      reunimos aqui os endereços do nosso grande dia. Logo abaixo, vocês encontrarão os mapas
                      com a localização exata da igreja e do local da festa. Basta clicar para abrir o GPS no
                      celular e traçar a melhor rota. Esperamos vocês lá!
                   </p>
+
                </div>
 
                {/* CERIMÓNIA */}
@@ -95,20 +104,29 @@ export default function ContentLocations() {
          </section>
 
          {/* =========================
-            PREVISÃO DO TEMPO
+            WEATHER
          ========================= */}
 
          <section className="weather">
 
             <div className="weather-container">
 
-               <div className="luxury-title">
-                  <span>Previsão do Tempo</span>
-               </div>
+               {/* HEADER GLOBAL (FALTAVA AQUI) */}
+               <div className="section-header">
 
-               <h2 className="weather-title">
-                  Previsão da semana do casamento
-               </h2>
+                  <div className="luxury-title">
+                     <span>Previsão do Tempo</span>
+                  </div>
+
+                  <h2 className="section-title">
+                     Previsão da semana do casamento
+                  </h2>
+
+                  <p className="section-subtitle">
+                     Acompanhe a previsão para os dias do nosso casamento.
+                  </p>
+
+               </div>
 
                <div className="weather-table-wrapper">
 

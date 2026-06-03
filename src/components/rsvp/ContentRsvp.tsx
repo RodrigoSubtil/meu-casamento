@@ -45,11 +45,9 @@ export default function ContentRsvp() {
       setErrors({});
       setLoading(true);
 
-      // 🔥 NORMALIZAÇÃO
       const cleanName = normalizeName(name);
       const nameKey = makeNameKey(name);
 
-      // 🔥 VERIFICAR DUPLICADO
       const { data: existing } = await supabase
          .from("rsvp")
          .select("id")
@@ -65,7 +63,6 @@ export default function ContentRsvp() {
          return;
       }
 
-      // 🔥 INSERT
       const { error } = await supabase
          .from("rsvp")
          .insert([
@@ -98,19 +95,24 @@ export default function ContentRsvp() {
 
          <div className="rsvp-container">
 
-            <div className="luxury-title">
-               <span>RSVP</span>
+            {/* HEADER GLOBAL PADRONIZADO */}
+            <div className="section-header">
+
+               <div className="luxury-title">
+                  <span>RSVP</span>
+               </div>
+
+               <h2 className="section-title">
+                  Confirme a sua presença
+               </h2>
+
+               <p className="section-subtitle">
+                  Cada detalhe da nossa festa está a ser preparado com muito carinho para tornar este dia ainda mais especial.
+                  Para nos ajudar na organização e garantir que tudo aconteça da melhor forma possível, contamos com a
+                  confirmação da sua presença até ao dia 15 de julho. Mal podemos esperar para celebrar este dia convosco!
+               </p>
+
             </div>
-
-            <h2 className="rsvp-title">
-               Confirme a sua presença
-            </h2>
-
-            <p className="rsvp-subtitle">
-               Cada detalhe da nossa festa está a ser preparado com muito carinho para tornar este dia ainda mais especial.
-               Para nos ajudar na organização e garantir que tudo aconteça da melhor forma possível, contamos com a
-               confirmação da sua presença até ao dia 15 de julho. Mal podemos esperar para celebrar este dia convosco!
-            </p>
 
             {/* SUCCESS */}
             <div className={`form-success ${success ? "show" : ""}`}>
@@ -126,16 +128,12 @@ export default function ContentRsvp() {
                      <label className="form-label">Nome completo</label>
 
                      <input
-                        className={`form-input ${
-                           errors.name ? "form-error-input" : ""
-                        }`}
+                        className={`form-input ${errors.name ? "form-error-input" : ""}`}
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                      />
 
-                     <span className={`form-error ${
-                        errors.name ? "show" : ""
-                     }`}>
+                     <span className={`form-error ${errors.name ? "show" : ""}`}>
                         {errors.name || ""}
                      </span>
                   </div>
@@ -147,9 +145,7 @@ export default function ContentRsvp() {
                      </label>
 
                      <select
-                        className={`form-select ${
-                           errors.attending ? "form-error-input" : ""
-                        }`}
+                        className={`form-select ${errors.attending ? "form-error-input" : ""}`}
                         value={attending}
                         onChange={(e) => setAttending(e.target.value)}
                      >
@@ -157,9 +153,7 @@ export default function ContentRsvp() {
                         <option>Desculpe, não vou poder ir</option>
                      </select>
 
-                     <span className={`form-error ${
-                        errors.attending ? "show" : ""
-                     }`}>
+                     <span className={`form-error ${errors.attending ? "show" : ""}`}>
                         {errors.attending || ""}
                      </span>
                   </div>
@@ -171,9 +165,7 @@ export default function ContentRsvp() {
                      </label>
 
                      <select
-                        className={`form-select ${
-                           errors.category ? "form-error-input" : ""
-                        }`}
+                        className={`form-select ${errors.category ? "form-error-input" : ""}`}
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
                      >
@@ -182,9 +174,7 @@ export default function ContentRsvp() {
                         <option value="friend">Amigo(a)</option>
                      </select>
 
-                     <span className={`form-error ${
-                        errors.category ? "show" : ""
-                     }`}>
+                     <span className={`form-error ${errors.category ? "show" : ""}`}>
                         {errors.category || ""}
                      </span>
                   </div>
@@ -195,16 +185,12 @@ export default function ContentRsvp() {
 
                      <input
                         type="number"
-                        className={`form-input ${
-                           errors.age ? "form-error-input" : ""
-                        }`}
+                        className={`form-input ${errors.age ? "form-error-input" : ""}`}
                         value={age}
                         onChange={(e) => setAge(e.target.value)}
                      />
 
-                     <span className={`form-error ${
-                        errors.age ? "show" : ""
-                     }`}>
+                     <span className={`form-error ${errors.age ? "show" : ""}`}>
                         {errors.age || ""}
                      </span>
                   </div>

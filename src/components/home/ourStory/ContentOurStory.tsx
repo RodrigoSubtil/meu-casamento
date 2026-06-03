@@ -6,19 +6,18 @@ export default function ContentOurStory() {
 
          <div className="our-story-container">
 
-            {/* TITLE */}
-            <div className="luxury-title">
-               <span>Nossa História</span>
-            </div>
+            {/* HEADER GLOBAL */}
+            <div className="section-header">
 
-            <h2 className="our-story-title">
-               Duas vidas, uma jornada para sempre
-            </h2>
+               <div className="luxury-title">
+                  <span>Nossa História</span>
+               </div>
 
-            {/* EDITORIAL STORY */}
-            <div className="story-editorial">
+               <h2 className="section-title">
+                  Duas vidas, uma jornada para sempre
+               </h2>
 
-               <p>
+               <p className="section-subtitle">
                   Tudo começou de forma simples — num momento que nenhum de nós imaginava
                   que se tornaria inesquecível. Entre longas conversas, sonhos partilhados
                   e dias comuns que aos poucos se transformaram em algo extraordinário,

@@ -16,30 +16,9 @@
 
    display: flex;
    flex-direction: column;
-
    align-items: center;
+
    gap: var(--space-8);
-}
-
-/* =========================
-   TEXTOS
-========================= */
-
-.gift-title {
-   font-size: var(--text-2xl);
-   font-weight: 400;
-   color: var(--text-primary);
-   text-align: center;
-   margin: 0;
-}
-
-.gift-subtitle {
-   max-width: 650px;
-   text-align: center;
-   color: var(--text-muted);
-   font-size: var(--text-md);
-   line-height: 1.8;
-   margin: 0;
 }
 
 /* =========================
@@ -48,17 +27,19 @@
 
 .gift-filters {
    display: flex;
-   gap: 12px;
    flex-wrap: wrap;
    justify-content: center;
+
+   gap: 12px;
 }
 
 .gift-filters button {
-   border: var(--border-thin);
-   background: transparent;
-
    padding: 10px 18px;
+
    border-radius: 999px;
+   border: var(--border-thin);
+
+   background: transparent;
 
    font-size: var(--text-sm);
    color: var(--text-muted);
@@ -80,7 +61,7 @@
 }
 
 /* =========================
-   GRID (4 POR LINHA)
+   GRID
 ========================= */
 
 .gift-grid {
@@ -97,11 +78,13 @@
 ========================= */
 
 .gift-card {
-   background: white;
    border-radius: var(--radius-lg);
+   border: var(--border-thin);
+
+   background: white;
+
    overflow: hidden;
 
-   border: var(--border-thin);
    box-shadow: var(--shadow-sm);
 
    transition: var(--transition-base);
@@ -116,13 +99,16 @@
 .gift-image {
    width: 100%;
    height: 200px;
+
    overflow: hidden;
 }
 
 .gift-image img {
    width: 100%;
    height: 100%;
+
    object-fit: cover;
+
    transition: transform 0.5s ease;
 }
 
@@ -136,25 +122,29 @@
 
    display: flex;
    flex-direction: column;
+
    gap: 10px;
 }
 
 .gift-content h3 {
    margin: 0;
+
    font-size: var(--text-md);
-   color: var(--text-primary);
    font-weight: 400;
+
+   color: var(--text-primary);
 }
 
 .gift-price {
-   color: var(--text-muted);
    font-size: var(--text-sm);
+   color: var(--text-muted);
 }
 
-/* BUTTON reutiliza teu sistema */
+/* BUTTON */
 .gift-content .form-button {
    width: 100%;
    height: 44px;
+
    margin-top: 8px;
 }
 
@@ -164,17 +154,20 @@
 
 .gift-empty {
    text-align: center;
+
    padding: 3rem 1rem;
 }
 
 .gift-empty h3 {
    margin: 0;
+
    font-size: var(--text-lg);
    color: var(--text-primary);
 }
 
 .gift-empty p {
-   margin: 8px 0 0;
+   margin-top: 8px;
+
    color: var(--text-muted);
 }
 
