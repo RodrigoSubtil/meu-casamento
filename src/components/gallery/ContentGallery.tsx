@@ -37,7 +37,7 @@ export default function ContentGallery() {
         useRef<AlbumType>("ceremony");
 
     // =========================
-    // LOAD PHOTOS
+    // CARREGAR FOTOS
     // =========================
     useEffect(() => {
         loadPhotos();
@@ -53,13 +53,13 @@ export default function ContentGallery() {
     }
 
     // =========================
-    // FILTER
+    // FILTRO
     // =========================
     const currentPhotos =
         photos.filter(p => p.album === selectedAlbum);
 
     // =========================
-    // OPEN MODAL
+    // ABRIR MODAL
     // =========================
     function openUploadModal() {
         setShowModal(true);
@@ -72,7 +72,7 @@ export default function ContentGallery() {
     }
 
     // =========================
-    // MULTI UPLOAD
+    // UPLOAD MÚLTIPLO
     // =========================
     async function handleFileChange(
         e: React.ChangeEvent<HTMLInputElement>
@@ -95,11 +95,11 @@ export default function ContentGallery() {
 
             await loadPhotos();
 
-            alert(`${files.length} photos uploaded successfully!`);
+            alert(`${files.length} fotos enviadas com sucesso!`);
 
         } catch (err) {
             console.error(err);
-            alert("Upload failed.");
+            alert("Falha no upload.");
         } finally {
             setLoading(false);
 
@@ -120,7 +120,7 @@ export default function ContentGallery() {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to fetch image");
+                throw new Error("Falha ao obter imagem");
             }
 
             const blob = await response.blob();
@@ -129,7 +129,7 @@ export default function ContentGallery() {
 
             const link = document.createElement("a");
             link.href = blobUrl;
-            link.download = filename || "wedding-memory.jpg";
+            link.download = filename || "memoria-casamento.jpg";
 
             document.body.appendChild(link);
             link.click();
@@ -139,7 +139,7 @@ export default function ContentGallery() {
             window.URL.revokeObjectURL(blobUrl);
 
         } catch (err) {
-            console.error("Download error:", err);
+            console.error("Erro no download:", err);
             alert("Não foi possível baixar a imagem.");
         }
     }
@@ -153,16 +153,18 @@ export default function ContentGallery() {
                 <div className="gallery-header">
 
                     <div className="luxury-title">
-                        <span>Gallery</span>
+                        <span>Galeria</span>
                     </div>
 
                     <h2 className="gallery-title">
-                        Shared Wedding Moments
+                        Momentos do nosso casamento
                     </h2>
 
                     <p className="gallery-subtitle">
-                        Queremos viver essa festa com muita intensidade, mas sabemos que será impossível acompanhar tudo o que vai acontecer ao mesmo tempo. Pensando nisso, preparamos este espaço para construirmos o nosso álbum juntos.
-                        Compartilhem aqui as fotos e os vídeos que tirarem durante o casamento. Um sorriso espontâneo, um abraço... Vamos amar reviver o nosso grande dia através dos olhos de vocês.
+                        Queremos viver esta festa com muita intensidade, mas sabemos que será impossível acompanhar tudo ao mesmo tempo.
+                        Por isso criámos este espaço para construirmos o nosso álbum juntos.
+                        Partilhem aqui as fotos e vídeos do casamento — sorrisos, abraços e momentos especiais.
+                        Vamos adorar reviver este dia através dos vossos olhos.
                     </p>
 
                 </div>
@@ -173,8 +175,8 @@ export default function ContentGallery() {
                     <div className="gallery-upload-content">
 
                         <div>
-                            <h3>Share Your Photos</h3>
-                            <p>Upload multiple photos at once.</p>
+                            <h3>Partilhar fotos</h3>
+                            <p>Envie várias fotos de uma vez.</p>
                         </div>
 
                         <button
@@ -182,7 +184,7 @@ export default function ContentGallery() {
                             onClick={openUploadModal}
                             disabled={loading}
                         >
-                            {loading ? "Uploading..." : "Upload Photos"}
+                            {loading ? "A enviar..." : "Enviar fotos"}
                         </button>
 
                     </div>
@@ -193,16 +195,16 @@ export default function ContentGallery() {
                     <div className="gallery-modal-overlay">
                         <div className="gallery-modal">
 
-                            <h3>Choose album</h3>
+                            <h3>Escolher álbum</h3>
 
                             <div className="gallery-modal-actions">
 
                                 <button onClick={() => chooseAlbum("ceremony")}>
-                                    Ceremony
+                                    Cerimónia
                                 </button>
 
                                 <button onClick={() => chooseAlbum("party")}>
-                                    Party
+                                    Festa
                                 </button>
 
                             </div>
@@ -211,7 +213,7 @@ export default function ContentGallery() {
                                 className="gallery-close"
                                 onClick={() => setShowModal(false)}
                             >
-                                Close
+                                Fechar
                             </button>
 
                         </div>
@@ -235,14 +237,14 @@ export default function ContentGallery() {
                         className={selectedAlbum === "ceremony" ? "active" : ""}
                         onClick={() => setSelectedAlbum("ceremony")}
                     >
-                        Ceremony
+                        Cerimónia
                     </button>
 
                     <button
                         className={selectedAlbum === "party" ? "active" : ""}
                         onClick={() => setSelectedAlbum("party")}
                     >
-                        Party
+                        Festa
                     </button>
 
                 </div>
@@ -254,7 +256,7 @@ export default function ContentGallery() {
 
                         <div className="gallery-item" key={photo.id}>
 
-                            <img src={photo.image_url} alt="memory" />
+                            <img src={photo.image_url} alt="memória do casamento" />
 
                             <div className="gallery-overlay">
 
@@ -263,11 +265,11 @@ export default function ContentGallery() {
                                     onClick={() =>
                                         handleDownload(
                                             photo.image_url,
-                                            `photo-${photo.id}.jpg`
+                                            `foto-${photo.id}.jpg`
                                         )
                                     }
                                 >
-                                    Download
+                                    Descarregar
                                 </button>
 
                             </div>
@@ -282,8 +284,8 @@ export default function ContentGallery() {
                 {currentPhotos.length === 0 && (
                     <div className="gallery-empty">
                         <div className="gallery-empty-inner">
-                            <h3>No photos yet</h3>
-                            <p>Be the first to share memories.</p>
+                            <h3>Sem fotos ainda</h3>
+                            <p>Seja o primeiro a partilhar memórias.</p>
                         </div>
                     </div>
                 )}

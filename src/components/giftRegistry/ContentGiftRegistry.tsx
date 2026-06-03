@@ -21,7 +21,7 @@ export default function ContentGiftRegistry() {
    const [filter, setFilter] = useState<GiftCategory>("all");
    const [loading, setLoading] = useState(false);
 
-   const userName = "Guest"; // depois podes ligar ao RSVP
+   const userName = "Convidado"; // depois podes ligar ao RSVP
 
    useEffect(() => {
       load();
@@ -55,16 +55,18 @@ export default function ContentGiftRegistry() {
          <div className="gift-container">
 
             <div className="luxury-title">
-               <span>Gift Registry</span>
+               <span>Lista de Presentes</span>
             </div>
 
             <h2 className="gift-title">
-               Choose a Memory to Give
+               Escolhe uma memória para oferecer
             </h2>
 
             <p className="gift-subtitle">
-               Ter vocês dividindo esse momento com a gente já é, sem dúvida, o nosso maior e melhor presente!
-               Aos que carinhosamente desejam nos presentear, deixamos aqui algumas opções virtuais. Como moramos em Portugal, infelizmente não teremos como levar itens físicos na viagem de regresso. Por isso, organizamos uma lista onde todos os presentes serão revertidos em dinheiro, nos ajudando no início da nossa vida a dois.
+               Ter vocês connosco neste momento já é, sem dúvida, o nosso maior presente!
+               Para quem quiser oferecer algo especial, deixámos aqui algumas opções.
+               Como vivemos em Portugal, não conseguiremos levar presentes físicos na viagem de regresso.
+               Por isso, organizámos uma lista onde todos os presentes serão convertidos em ajuda monetária para o início da nossa vida a dois.
             </p>
 
             {/* FILTERS */}
@@ -76,7 +78,13 @@ export default function ContentGiftRegistry() {
                      className={filter === cat ? "active" : ""}
                      onClick={() => setFilter(cat as GiftCategory)}
                   >
-                     {cat.toUpperCase()}
+                     {cat === "all"
+                        ? "Todos"
+                        : cat === "kitchen"
+                        ? "Cozinha"
+                        : cat === "travel"
+                        ? "Viagem"
+                        : "Casa"}
                   </button>
                ))}
 
@@ -106,8 +114,8 @@ export default function ContentGiftRegistry() {
                            onClick={() => handleReserve(gift.id)}
                         >
                            {gift.is_reserved
-                              ? `Reserved by ${gift.reserved_by}`
-                              : "Choose Gift"}
+                              ? `Reservado por ${gift.reserved_by}`
+                              : "Escolher presente"}
                         </button>
 
                      </div>
@@ -119,7 +127,7 @@ export default function ContentGiftRegistry() {
 
             {filteredGifts.length === 0 && (
                <div className="gift-empty">
-                  <h3>No gifts found</h3>
+                  <h3>Nenhum presente encontrado</h3>
                </div>
             )}
 

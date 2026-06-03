@@ -15,7 +15,7 @@ export default function ContentRsvp() {
 
    const [name, setName] = useState<string>("");
    const [attending, setAttending] =
-      useState<string>("Yes, I will be there");
+      useState<string>("Sim, vou estar presente");
    const [category, setCategory] = useState<string>("");
    const [age, setAge] = useState<string>("");
 
@@ -58,7 +58,7 @@ export default function ContentRsvp() {
 
       if (existing) {
          setErrors({
-            name: "This RSVP has already been registered."
+            name: "Este RSVP já foi registado."
          });
 
          setLoading(false);
@@ -88,7 +88,7 @@ export default function ContentRsvp() {
       setSuccess(true);
 
       setName("");
-      setAttending("Yes, I will be there");
+      setAttending("Sim, vou estar presente");
       setCategory("");
       setAge("");
    }
@@ -103,11 +103,13 @@ export default function ContentRsvp() {
             </div>
 
             <h2 className="rsvp-title">
-               Confirm Your Presence
+               Confirme a sua presença
             </h2>
 
             <p className="rsvp-subtitle">
-               Cada detalhe da nossa festa está sendo preparado com muito carinho para tornar este dia ainda mais especial. Para nos ajudar na organização e garantir que tudo aconteça da melhor forma possível, contamos com a confirmação da sua presença até o dia 15 de julho. Mal podemos esperar para celebrar esse dia ao lado de vocês!
+               Cada detalhe da nossa festa está a ser preparado com muito carinho para tornar este dia ainda mais especial.
+               Para nos ajudar na organização e garantir que tudo aconteça da melhor forma possível, contamos com a
+               confirmação da sua presença até ao dia 15 de julho. Mal podemos esperar para celebrar este dia convosco!
             </p>
 
             {/* SUCCESS */}
@@ -121,7 +123,7 @@ export default function ContentRsvp() {
 
                   {/* NAME */}
                   <div className="form-group">
-                     <label className="form-label">Full Name</label>
+                     <label className="form-label">Nome completo</label>
 
                      <input
                         className={`form-input ${
@@ -141,7 +143,7 @@ export default function ContentRsvp() {
                   {/* ATTENDING */}
                   <div className="form-group">
                      <label className="form-label">
-                        Will you attend?
+                        Vai comparecer?
                      </label>
 
                      <select
@@ -151,8 +153,8 @@ export default function ContentRsvp() {
                         value={attending}
                         onChange={(e) => setAttending(e.target.value)}
                      >
-                        <option>Yes, I will be there</option>
-                        <option>Sorry, I can't</option>
+                        <option>Sim, vou estar presente</option>
+                        <option>Desculpe, não vou poder ir</option>
                      </select>
 
                      <span className={`form-error ${
@@ -165,7 +167,7 @@ export default function ContentRsvp() {
                   {/* CATEGORY */}
                   <div className="form-group">
                      <label className="form-label">
-                        Category
+                        Categoria
                      </label>
 
                      <select
@@ -175,9 +177,9 @@ export default function ContentRsvp() {
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
                      >
-                        <option value="">Select one</option>
-                        <option value="family">Family</option>
-                        <option value="friend">Friend</option>
+                        <option value="">Selecione uma opção</option>
+                        <option value="family">Família</option>
+                        <option value="friend">Amigo(a)</option>
                      </select>
 
                      <span className={`form-error ${
@@ -189,7 +191,7 @@ export default function ContentRsvp() {
 
                   {/* AGE */}
                   <div className="form-group">
-                     <label className="form-label">Age</label>
+                     <label className="form-label">Idade</label>
 
                      <input
                         type="number"
@@ -210,7 +212,7 @@ export default function ContentRsvp() {
                </div>
 
                <button className="form-button" disabled={loading}>
-                  {loading ? "Sending..." : "Send RSVP"}
+                  {loading ? "A enviar..." : "Enviar RSVP"}
                </button>
 
             </form>

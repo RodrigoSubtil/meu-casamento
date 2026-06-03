@@ -3,18 +3,18 @@ import "./contentLocations.css";
 export default function ContentLocations() {
 
    const weather = [
-      { date: "2026-09-10", temp: "24°", label: "Light Clouds" },
-      { date: "2026-09-11", temp: "25°", label: "Sunny" },
-      { date: "2026-09-12", temp: "26°", label: "Wedding Day · Clear Sky", highlight: true },
-      { date: "2026-09-13", temp: "24°", label: "Soft Breeze" },
-      { date: "2026-09-14", temp: "23°", label: "Partly Cloudy" }
+      { date: "2026-09-10", temp: "24°", label: "Nuvens leves" },
+      { date: "2026-09-11", temp: "25°", label: "Ensolarado" },
+      { date: "2026-09-12", temp: "26°", label: "Dia do casamento · Céu limpo", highlight: true },
+      { date: "2026-09-13", temp: "24°", label: "Brisa suave" },
+      { date: "2026-09-14", temp: "23°", label: "Parcialmente nublado" }
    ];
 
    return (
       <>
 
          {/* =========================
-            LOCATIONS
+            LOCALIZAÇÕES
          ========================= */}
 
          <section className="locations">
@@ -22,20 +22,23 @@ export default function ContentLocations() {
             <div className="locations-container">
 
                <div className="luxury-title">
-                  <span>Locations</span>
+                  <span>Localizações</span>
 
                   <p className="locations-subtitle">
-                     Para que vocês cheguem com tranquilidade e não percam nenhum momento da nossa celebração, reunimos aqui os endereços do nosso grande dia. Logo abaixo, vocês encontrarão os mapas com a localização exata da Igreja e do local da festa. Basta clicar para abrir o GPS no celular e traçar a melhor rota. Esperamos vocês lá!
+                     Para que vocês cheguem com tranquilidade e não percam nenhum momento da nossa celebração,
+                     reunimos aqui os endereços do nosso grande dia. Logo abaixo, vocês encontrarão os mapas
+                     com a localização exata da igreja e do local da festa. Basta clicar para abrir o GPS no
+                     celular e traçar a melhor rota. Esperamos vocês lá!
                   </p>
                </div>
 
-               {/* CEREMONY */}
+               {/* CERIMÓNIA */}
                <div className="location-block">
 
                   <div className="location-info">
 
                      <h2 className="location-title">
-                        Ceremony
+                        Cerimónia
                      </h2>
 
                      <p className="location-text">
@@ -44,7 +47,7 @@ export default function ContentLocations() {
                      </p>
 
                      <p className="location-desc">
-                        A sacred moment surrounded by family and faith.
+                        Um momento sagrado rodeado de família e fé.
                      </p>
 
                   </div>
@@ -58,13 +61,13 @@ export default function ContentLocations() {
 
                </div>
 
-               {/* PARTY */}
+               {/* FESTA */}
                <div className="location-block reverse">
 
                   <div className="location-info">
 
                      <h2 className="location-title">
-                        Party
+                        Festa
                      </h2>
 
                      <p className="location-text">
@@ -73,7 +76,7 @@ export default function ContentLocations() {
                      </p>
 
                      <p className="location-desc">
-                        A night of celebration, music and joy.
+                        Uma noite de celebração, música e alegria.
                      </p>
 
                   </div>
@@ -92,7 +95,7 @@ export default function ContentLocations() {
          </section>
 
          {/* =========================
-            WEATHER
+            PREVISÃO DO TEMPO
          ========================= */}
 
          <section className="weather">
@@ -100,11 +103,11 @@ export default function ContentLocations() {
             <div className="weather-container">
 
                <div className="luxury-title">
-                  <span>Weather</span>
+                  <span>Previsão do Tempo</span>
                </div>
 
                <h2 className="weather-title">
-                  Wedding Week Forecast
+                  Previsão da semana do casamento
                </h2>
 
                <div className="weather-table-wrapper">
@@ -126,13 +129,13 @@ export default function ContentLocations() {
                            </span>
 
                            <span className="icon">
-                              {day.label.includes("Sunny") && "☀"}
-                              {day.label.includes("Cloud") && "☁"}
-                              {day.label.includes("Breeze") && "〰"}
+                              {day.label.includes("Ensolarado") && "☀"}
+                              {day.label.includes("nublado") && "☁"}
+                              {day.label.includes("Brisa") && "〰"}
 
-                              {!day.label.includes("Sunny") &&
-                                 !day.label.includes("Cloud") &&
-                                 !day.label.includes("Breeze") &&
+                              {!day.label.includes("Ensolarado") &&
+                                 !day.label.includes("nublado") &&
+                                 !day.label.includes("Brisa") &&
                                  "◌"}
                            </span>
 

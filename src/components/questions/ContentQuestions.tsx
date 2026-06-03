@@ -15,28 +15,28 @@ export default function ContentQuestions() {
    const questions = [
       {
          id: 1,
-         question: "Who will arrive first at the wedding?",
-         options: ["Bride", "Groom", "Both on time"]
+         question: "Quem vai chegar primeiro ao casamento?",
+         options: ["Noiva", "Noivo", "Ambos no horário"]
       },
       {
          id: 2,
-         question: "Who will cry first?",
-         options: ["Bride", "Groom", "Both"]
+         question: "Quem vai chorar primeiro?",
+         options: ["Noiva", "Noivo", "Ambos"]
       },
       {
          id: 3,
-         question: "Who is more likely to forget something important?",
-         options: ["Bride", "Groom", "Neither"]
+         question: "Quem tem mais probabilidade de esquecer algo importante?",
+         options: ["Noiva", "Noivo", "Ninguém"]
       },
       {
          id: 4,
-         question: "What will be the best moment?",
-         options: ["Ceremony", "Dinner", "Party"]
+         question: "Qual será o melhor momento?",
+         options: ["Cerimónia", "Jantar", "Festa"]
       },
       {
          id: 5,
-         question: "Who will dance more?",
-         options: ["Bride", "Groom", "Both equally"]
+         question: "Quem vai dançar mais?",
+         options: ["Noiva", "Noivo", "Ambos igualmente"]
       }
    ];
 
@@ -74,7 +74,7 @@ export default function ContentQuestions() {
 
       await supabase.from("votes").insert({
          question_id: questionId,
-         option_id: optionIndex + 1 // importante: options começam em 1 no banco
+         option_id: optionIndex + 1
       });
 
       await loadVotes();
@@ -120,15 +120,15 @@ export default function ContentQuestions() {
          <div className="questions-container">
 
             <div className="luxury-title">
-               <span>Questions</span>
+               <span>Questões</span>
             </div>
 
             <h2 className="questions-title">
-               Guests Predictions
+               Previsões dos convidados
             </h2>
 
             <p className="questions-subtitle">
-               Vote first, then reveal results.
+               Vote primeiro, depois revele os resultados.
             </p>
 
             <div className="questions-list">
@@ -166,7 +166,6 @@ export default function ContentQuestions() {
                                     disabled={qState.voted}
                                  >
 
-                                    {/* BAR */}
                                     {show && (
                                        <div
                                           className="option-fill"
@@ -193,13 +192,12 @@ export default function ContentQuestions() {
 
                         </div>
 
-                        {/* botão só depois do voto */}
                         {qState.voted && !show && (
                            <button
                               className="show-results-btn"
                               onClick={() => showResults(q.id)}
                            >
-                              Show results
+                              Ver resultados
                            </button>
                         )}
 
