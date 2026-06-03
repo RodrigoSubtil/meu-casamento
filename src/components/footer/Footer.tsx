@@ -20,7 +20,7 @@ export default function Footer() {
 
             {/* RIGHT */}
             <div className="footer-right">
-               <span>Created with love</span>
+               <span>Criado com amor</span>
             </div>
 
          </div>

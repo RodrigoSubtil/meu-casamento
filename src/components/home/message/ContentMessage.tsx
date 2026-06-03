@@ -52,15 +52,15 @@ export default function ContentMessage() {
 
             <div className="message-header">
                <div className="luxury-title">
-                  <span>Messages</span>
+                  <span>Mensagens</span>
                </div>
 
                <h2 className="message-title">
-                  Leave a Message for the Couple
+                  Deixe uma mensagem para nós
                </h2>
 
                <p className="message-subtitle">
-                  Your words will become part of one of the most meaningful days of our lives.
+                  Suas palavras farão parte de um dos dias mais especiais das nossas vidas.
                </p>
             </div>
 
@@ -69,19 +69,19 @@ export default function ContentMessage() {
                {/* SUCCESS GLOBAL */}
                {success && (
                   <div className="form-success show">
-                     Your message was sent successfully
+                     Sua mensagem foi enviada com sucesso
                   </div>
                )}
 
                {/* NAME */}
                <div className="form-group">
-                  <label className="form-label">Your Name</label>
+                  <label className="form-label">Seu nome</label>
 
                   <input
                      type="text"
                      value={name}
                      onChange={(e) => setName(e.target.value)}
-                     placeholder="Enter your name"
+                     placeholder="Digite seu nome"
                      className={`form-input ${errors.name ? "form-error-input" : ""}`}
                   />
 
@@ -92,12 +92,12 @@ export default function ContentMessage() {
 
                {/* MESSAGE */}
                <div className="form-group">
-                  <label className="form-label">Your Message</label>
+                  <label className="form-label">Sua mensagem</label>
 
                   <textarea
                      value={message}
                      onChange={(e) => setMessage(e.target.value)}
-                     placeholder="Write your message here..."
+                     placeholder="Escreva sua mensagem aqui..."
                      className={`form-textarea ${errors.message ? "form-error-input" : ""}`}
                   />
 
@@ -107,7 +107,7 @@ export default function ContentMessage() {
                </div>
 
                <button className="form-button" disabled={loading}>
-                  {loading ? "Sending..." : "Send Message"}
+                  {loading ? "Enviando..." : "Enviar Mensagem"}
                </button>
 
             </form>

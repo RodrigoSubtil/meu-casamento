@@ -10,18 +10,18 @@ export default function Header() {
 
                <div className="nav-dropdown">
                   <button className="nav-button">
-                     Pages
+                     Páginas
                   </button>
 
                   <div className="dropdown-menu">
-                     <a href="locations">Locations</a>
+                     <a href="locations">Locais</a>
                      <a href="rsvp">RSVP</a>
-                     <a href="questions">Questions</a>
-                     <a href="gallery">Gallery</a>
+                     <a href="questions">Perguntas</a>
+                     <a href="gallery">Galeria</a>
                   </div>
                </div>
 
-               <a href="gift-registry">Gift Registry</a>
+               <a href="gift-registry">Presentes</a>
 
             </nav>
 
