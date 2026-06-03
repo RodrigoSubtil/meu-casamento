@@ -1,0 +1,385 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Parisienne&display=swap');
+
+:root {
+
+   /* =========================
+      🌟 TIPOGRAFIA
+   ========================= */
+
+   --font-primary: "Libre Baskerville", serif;
+   --font-display: "Parisienne", cursive;
+   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+   /* tamanhos reais usados no site */
+   --text-xs: 0.75rem;
+   --text-sm: 0.85rem;
+   --text-md: 1rem;
+   --text-lg: 1.125rem;
+   --text-xl: 1.5rem;
+   --text-2xl: 2rem;
+   --text-3xl: 2.75rem;
+
+   /* hero (pouco usado mas padrão do sistema) */
+   --text-hero: 4rem;
+
+   --letter-spacing: 0.02em;
+   --letter-spacing-wide: 0.08em;
+
+   /* =========================
+      🎨 CORES (PALETA REAL DO SITE)
+   ========================= */
+
+   --color-gold: #ECBF85;
+   --color-sand: #CDD7D5;
+   --color-muted-gold: #CBC99E;
+
+   --color-rose: #e3856d0d;
+   --color-silver: #ADAEB3;
+
+   --color-cream: #FAF6F1;
+   --color-navy: #304162;
+
+   --color-white: #ffffff;
+   --color-black: #0b0b0b;
+
+   /* overlays usados no site */
+   --overlay-dark: rgba(48, 65, 98, 0.65);
+   --overlay-light: rgba(250, 246, 241, 0.75);
+
+   /* =========================
+      📦 CONTAINERS / LAYOUT
+   ========================= */
+
+   --container-sm: 640px;
+   --container-md: 860px;
+   --container-lg: 1100px;
+   --container-xl: 1280px;
+
+   /* padrão real das sections do teu site */
+   --section-padding: 120px 20px;
+   --section-spacing: 7rem;
+
+   /* =========================
+      📐 BORDAS (LUXO CLEAN)
+   ========================= */
+
+   --radius-sm: 6px;
+   --radius-md: 10px;
+   --radius-lg: 16px;
+   --radius-xl: 24px;
+
+   --border-thin: 1px solid rgba(48, 65, 98, 0.08);
+   --border-soft: 1px solid rgba(236, 191, 133, 0.35);
+
+   /* =========================
+      🌫️ SOMBRAS (USADAS NO SITE)
+   ========================= */
+
+   --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.06);
+   --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.08);
+   --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.06);
+
+   /* =========================
+      🧭 ESPAÇAMENTOS (REAIS DO PROJETO)
+   ========================= */
+
+   --space-1: 0.25rem;
+   --space-2: 0.5rem;
+   --space-3: 0.75rem;
+   --space-4: 1rem;
+   --space-6: 1.5rem;
+   --space-8: 2rem;
+   --space-12: 3rem;
+   --space-16: 4rem;
+   --space-24: 6rem;
+
+   /* spacing padrão do layout vertical do site */
+   --gap-section: 100px;
+   --gap-block: 70px;
+
+   /* =========================
+      🎯 SISTEMA DE CORES (USO REAL)
+   ========================= */
+
+   --bg-primary: var(--color-cream);
+   --bg-secondary: var(--color-white);
+
+   --text-primary: var(--color-navy);
+   --text-muted: rgba(48, 65, 98, 0.65);
+   --text-accent: var(--color-gold);
+
+   /* =========================
+      ✨ UI / COMPONENTES
+   ========================= */
+
+   --button-height: 44px;
+
+   --transition-base: 250ms ease;
+
+   --focus-ring: 0 0 0 3px rgba(236, 191, 133, 0.35);
+
+   /* =========================
+      🔥 TIPOGRAFIA DO SITE (IMPORTANTE)
+   ========================= */
+
+   /* títulos principais (locations, gift, rsvp etc) */
+   --title-font: var(--font-primary);
+   --title-size: var(--text-2xl);
+   --title-weight: 400;
+
+   /* subtítulos suaves */
+   --subtitle-size: var(--text-md);
+   --subtitle-color: var(--text-muted);
+
+   /* labels / pequenos textos */
+   --label-size: var(--text-sm);
+   --label-color: rgba(48, 65, 98, 0.75);
+
+   /* gold accent text padrão */
+   --accent-text: var(--color-gold);
+
+   /* =========================
+   🧾 FORM SPACING
+========================= */
+
+   --form-gap: 1.75rem;
+   --form-field-gap: 0.75rem;
+
+   --input-padding-y: 18px;
+   --input-padding-x: 20px;
+}
+
+/* =========================
+   BASE
+========================= */
+
+body {
+   margin: 0;
+   padding: 0;
+   background: var(--color-white);
+   font-family: var(--font-primary);
+}
+
+html,
+body {
+   overflow-x: hidden;
+}
+
+
+/* =========================
+    TITULO LUXO PADRÃO (GOLD + LINHA)
+========================= */
+
+.luxury-title {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+
+   text-align: center;
+}
+
+/* texto pequeno dourado */
+.luxury-title span {
+   font-size: 0.78rem;
+
+   letter-spacing: 0.32em;
+   text-transform: uppercase;
+
+   color: var(--color-gold);
+
+   font-family: var(--font-primary);
+
+   margin-bottom: 14px;
+   position: relative;
+}
+
+/* linha abaixo do texto */
+.luxury-title span::after {
+   content: "";
+
+   display: block;
+
+   width: 72px;
+   height: 1px;
+
+   margin: 14px auto 0;
+
+   background: linear-gradient(to right,
+         transparent,
+         rgba(236, 191, 133, 0.8),
+         transparent);
+}
+
+/* =========================
+    SECTION DIVIDER (GLOBAL)
+========================= */
+
+.luxury-divider {
+   width: 100%;
+   height: 1px;
+
+   background: linear-gradient(to right,
+         transparent,
+         rgba(48, 65, 98, 0.18),
+         transparent);
+}
+
+/* =========================
+   ✨ GLOBAL FORM SYSTEM
+========================= */
+
+.form-group {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   width: 100%;
+}
+
+/* LABEL */
+.form-label {
+   font-size: var(--text-sm);
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+   color: var(--label-color);
+   font-family: var(--font-primary);
+}
+
+/* INPUT / TEXTAREA / SELECT */
+.form-input,
+.form-textarea,
+.form-select {
+   width: 100%;
+   border: var(--border-thin);
+   border-radius: var(--radius-lg);
+   background: white;
+
+   padding: var(--input-padding-y) var(--input-padding-x);
+
+   font-family: var(--font-primary);
+   font-size: var(--text-md);
+   color: var(--text-primary);
+
+   outline: none;
+   transition: var(--transition-base);
+   box-sizing: border-box;
+}
+
+/* TEXTAREA */
+.form-textarea {
+   min-height: 140px;
+   resize: vertical;
+}
+
+/* FOCUS */
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+   border-color: rgba(236,191,133,0.55);
+   box-shadow: 0 0 0 4px rgba(236,191,133,0.12);
+}
+
+/* PLACEHOLDER */
+.form-input::placeholder,
+.form-textarea::placeholder {
+   color: rgba(48,65,98,0.38);
+}
+
+/* =========================
+   ❌ ERROR STATE
+========================= */
+
+.form-error-input {
+   border-color: rgba(214, 92, 92, 0.45) !important;
+   background: rgba(214, 92, 92, 0.03);
+}
+
+/* ERROR TEXT */
+.form-error {
+   display: flex;
+   align-items: center;
+
+   min-height: 18px;
+   padding-left: 4px;
+
+   font-size: 0.78rem;
+   letter-spacing: 0.03em;
+   color: #c55b5b;
+
+   opacity: 0;
+   transform: translateY(-2px);
+   transition: all 0.2s ease;
+}
+
+/* SHOW ERROR */
+.form-error.show {
+   opacity: 1;
+   transform: translateY(0);
+}
+
+/* =========================
+   ✅ SUCCESS MESSAGE (GLOBAL)
+========================= */
+
+.form-success {
+   width: 100%;
+
+   padding: 14px 18px;
+
+   border-radius: var(--radius-lg);
+
+   background: rgba(91, 163, 121, 0.08);
+   border: 1px solid rgba(91, 163, 121, 0.25);
+
+   color: rgb(60, 140, 95);
+
+   font-size: 0.85rem;
+   letter-spacing: 0.02em;
+
+   text-align: center;
+
+   opacity: 0;
+   transform: translateY(-4px);
+
+   transition: all 0.25s ease;
+}
+
+.form-success.show {
+   opacity: 1;
+   transform: translateY(0);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.form-button {
+   height: 54px;
+   border: none;
+   border-radius: 999px;
+
+   padding: 0 34px;
+
+   background: var(--color-gold);
+   color: white;
+
+   font-family: var(--font-primary);
+   font-size: 0.78rem;
+   letter-spacing: 0.14em;
+   text-transform: uppercase;
+
+   cursor: pointer;
+   transition: var(--transition-base);
+}
+
+.form-button:hover {
+   transform: translateY(-2px);
+   background: #ddb06f;
+   box-shadow: var(--shadow-md);
+}
+
+.form-button:disabled {
+   opacity: 0.6;
+   cursor: not-allowed;
+   transform: none;
+}

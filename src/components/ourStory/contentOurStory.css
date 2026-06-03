@@ -1,0 +1,95 @@
+.our-story {
+   background: var(--color-white);
+
+   display: flex;
+   justify-content: center;
+
+   padding: 7rem 0;
+
+   margin: 0;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.our-story-container {
+   width: 100%;
+   max-width: var(--container-md);
+
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+
+   text-align: center;
+
+   gap: var(--space-8);
+
+   padding: 0 20px;
+
+   margin: 0;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.our-story-title {
+   font-family: var(--font-primary);
+
+   font-size: var(--text-2xl);
+   font-weight: 400;
+
+   margin: 0;
+
+   color: var(--text-primary);
+   text-align: center;
+}
+
+/* =========================
+   STORY TEXT
+========================= */
+
+.story-editorial {
+   width: 100%;
+   max-width: 920px;
+
+   display: flex;
+   justify-content: center;
+
+   margin: 0;
+}
+
+.story-editorial p {
+   margin: 0;
+
+   max-width: 860px;
+
+   font-size: var(--text-md);
+   line-height: 2.2;
+
+   letter-spacing: var(--letter-spacing);
+
+   text-align: center;
+
+   color: var(--text-muted);
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 768px) {
+
+   .our-story {
+      padding: 5rem 0;
+   }
+
+   .our-story-title {
+      font-size: 1.8rem;
+   }
+
+   .story-editorial p {
+      line-height: 2;
+   }
+}

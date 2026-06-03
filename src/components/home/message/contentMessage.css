@@ -1,0 +1,154 @@
+.message-section {
+   background: var(--color-rose);
+
+   padding: 7rem 0;
+
+   display: flex;
+   justify-content: center;
+
+   position: relative;
+}
+
+.message-container {
+   width: 100%;
+   max-width: var(--container-md);
+
+   padding: 0 20px;
+   box-sizing: border-box;
+
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+
+   gap: 3rem;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.message-header {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+
+   text-align: center;
+
+   gap: 1rem;
+}
+
+.message-title {
+   margin: 0;
+
+   font-size: var(--text-2xl);
+   font-weight: 400;
+
+   color: var(--text-primary);
+}
+
+.message-subtitle {
+   max-width: 680px;
+
+   margin: 0;
+
+   font-size: var(--text-md);
+   line-height: 1.9;
+
+   color: var(--text-muted);
+}
+
+/* =========================
+   FORM
+========================= */
+
+.message-form {
+   width: 100%;
+   max-width: 720px;
+
+   display: flex;
+   flex-direction: column;
+
+   gap: 1.8rem;
+}
+
+/* =========================
+   SUCCESS
+========================= */
+
+.message-success {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   min-height: 56px;
+
+   border-radius: var(--radius-lg);
+
+   background:
+      rgba(91, 163, 121, 0.08);
+
+   border:
+      1px solid rgba(91, 163, 121, 0.18);
+
+   color: #5b8f73;
+
+   font-size: 0.88rem;
+
+   letter-spacing: 0.04em;
+
+   padding: 0 20px;
+
+   text-align: center;
+
+   animation: fadeUp 0.3s ease;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.message-button {
+   width: 100%;
+   margin-top: 0.5rem;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes fadeUp {
+
+   from {
+      opacity: 0;
+      transform: translateY(6px);
+   }
+
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 800px) {
+
+   .message-section {
+      padding: 5rem 0;
+   }
+
+   .message-title {
+      font-size: 1.8rem;
+   }
+
+   .message-subtitle {
+      font-size: 0.95rem;
+      line-height: 1.8;
+   }
+
+   .message-form {
+      gap: 1.5rem;
+   }
+}

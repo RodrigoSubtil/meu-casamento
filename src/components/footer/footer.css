@@ -1,0 +1,90 @@
+.footer {
+   width: 100%;
+   padding: 60px 0;
+
+   background: var(--color-white);
+   border-top: 1px solid rgba(48, 65, 98, 0.101); /* leve separação */
+
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.footer-container {
+   width: 100%;
+   max-width: var(--container-xl);
+
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+
+   text-align: center;
+}
+
+/* =========================
+   LEFT / RIGHT
+========================= */
+
+.footer-left,
+.footer-right {
+   width: 30%;
+
+   font-size: 0.75rem;
+   letter-spacing: 0.2em;
+   text-transform: uppercase;
+
+   color: rgba(48,65,98,0.6);
+}
+
+/* LEFT alinhado esquerda */
+.footer-left {
+   text-align: left;
+}
+
+/* RIGHT alinhado direita */
+.footer-right {
+   text-align: right;
+}
+
+/* =========================
+   CENTER (NOME MAIOR)
+========================= */
+
+.footer-center {
+   width: 40%;
+   text-align: center;
+}
+
+.footer-names {
+   font-family: var(--font-display);
+
+   font-size: 1.4rem; /* 🔥 maior como pediu */
+   letter-spacing: 0.02em;
+
+   color: var(--text-primary);
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 768px) {
+   .footer-container {
+      flex-direction: column;
+      gap: 14px;
+   }
+
+   .footer-left,
+   .footer-right {
+      width: 100%;
+      text-align: center;
+   }
+
+   .footer-center {
+      width: 100%;
+   }
+}
