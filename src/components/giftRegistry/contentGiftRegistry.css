@@ -12,7 +12,6 @@
 
 .gift-container {
    width: 100%;
-   max-width: var(--container-xl);
 
    display: flex;
    flex-direction: column;

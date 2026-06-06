@@ -1,11 +1,18 @@
+/* =========================
+   GALLERY SECTION
+========================= */
+
 .gallery-section {
    padding: var(--section-padding);
    background: var(--color-white);
 }
 
+/* =========================
+   CONTAINER
+========================= */
+
 .gallery-container {
    width: 100%;
-   max-width: var(--container-xl);
    margin: 0 auto;
 
    display: flex;
@@ -19,7 +26,6 @@
 
 .gallery-upload-card {
    background: var(--color-white);
-
    border: var(--border-thin);
    border-radius: var(--radius-xl);
 
@@ -51,31 +57,12 @@
    line-height: 1.7;
 }
 
-.gallery-upload-actions {
-   display: flex;
-   align-items: center;
-   gap: 1rem;
-}
+/* =========================
+   MAIN UPLOAD BUTTON
+========================= */
 
-.gallery-upload-actions select {
+.upload-main-button {
    height: 48px;
-
-   padding: 0 18px;
-
-   border-radius: 999px;
-   border: var(--border-thin);
-
-   background: white;
-
-   font-family: var(--font-primary);
-   color: var(--text-primary);
-
-   outline: none;
-}
-
-.gallery-upload-actions button {
-   height: 48px;
-
    padding: 0 24px;
 
    border: none;
@@ -93,14 +80,55 @@
    cursor: pointer;
 
    transition: var(--transition-base);
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
 }
 
-.gallery-upload-actions button:hover {
+.upload-main-button:hover {
    transform: translateY(-2px);
-
    box-shadow: var(--shadow-md);
-
    background: #ddb06f;
+}
+
+.upload-main-button:disabled {
+   opacity: 0.7;
+   cursor: not-allowed;
+}
+
+/* =========================
+   SUCCESS MESSAGE
+========================= */
+
+.gallery-success-message {
+   margin-top: 1rem;
+
+   padding: 12px 18px;
+
+   border-radius: var(--radius-lg);
+
+   background: rgba(91, 163, 121, 0.10);
+   border: 1px solid rgba(91, 163, 121, 0.25);
+
+   color: #3c8c5f;
+
+   font-size: 0.85rem;
+   text-align: center;
+
+   animation: fadeUp 0.3s ease;
+}
+
+@keyframes fadeUp {
+   from {
+      opacity: 0;
+      transform: translateY(6px);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
 }
 
 /* =========================
@@ -115,7 +143,6 @@
 
 .gallery-tabs button {
    height: 46px;
-
    padding: 0 24px;
 
    border-radius: 999px;
@@ -134,20 +161,17 @@
 
 .gallery-tabs button:hover {
    border-color: rgba(236,191,133,0.35);
-
    color: var(--text-primary);
 }
 
 .gallery-tabs button.active {
    background: rgba(236,191,133,0.12);
-
    border-color: rgba(236,191,133,0.35);
-
    color: var(--text-primary);
 }
 
 /* =========================
-   GRID
+   GRID (MASONRY)
 ========================= */
 
 .gallery-grid {
@@ -161,7 +185,6 @@
    margin-bottom: 1.4rem;
 
    overflow: hidden;
-
    border-radius: var(--radius-xl);
 
    break-inside: avoid;
@@ -177,11 +200,13 @@
    width: 100%;
    display: block;
 
-   transition: transform 0.5s ease;
+   object-fit: cover;
+
+   transition: transform 0.4s ease;
 }
 
 .gallery-item:hover img {
-   transform: scale(1.04);
+   transform: scale(1.05);
 }
 
 /* =========================
@@ -192,67 +217,43 @@
    position: absolute;
    inset: 0;
 
-   background: linear-gradient(
-      to top,
-      rgba(48,65,98,0.65),
-      transparent
-   );
+   background: rgba(0,0,0,0.35);
 
    display: flex;
-   align-items: flex-end;
-
-   padding: 1.2rem;
+   justify-content: center;
+   align-items: center;
 
    opacity: 0;
 
-   transition: var(--transition-base);
+   transition: 0.3s ease;
 }
 
 .gallery-item:hover .gallery-overlay {
    opacity: 1;
 }
 
-.gallery-overlay span {
-   color: white;
-
-   font-size: 0.75rem;
-
-   letter-spacing: 0.14em;
-   text-transform: uppercase;
-}
-
 /* =========================
-   MAIN BUTTON
+   DOWNLOAD BUTTON
 ========================= */
 
-.upload-main-button {
-   height: 48px;
+.download-btn {
+   padding: 0.6rem 1.2rem;
 
-   padding: 0 24px;
-
-   border: none;
    border-radius: 999px;
+   border: none;
+
+   cursor: pointer;
+
+   font-size: 0.8rem;
 
    background: var(--color-gold);
    color: white;
 
-   font-family: var(--font-primary);
-   font-size: 0.78rem;
-
-   letter-spacing: 0.14em;
-   text-transform: uppercase;
-
-   cursor: pointer;
-
-   transition: var(--transition-base);
+   transition: 0.2s ease;
 }
 
-.upload-main-button:hover {
-   transform: translateY(-2px);
-
-   box-shadow: var(--shadow-md);
-
-   background: #ddb06f;
+.download-btn:hover {
+   transform: scale(1.05);
 }
 
 /* =========================
@@ -304,14 +305,6 @@
    color: var(--text-primary);
 }
 
-.gallery-modal p {
-   margin: 0;
-
-   color: var(--text-muted);
-
-   line-height: 1.7;
-}
-
 .gallery-modal-actions {
    display: grid;
    grid-template-columns: 1fr 1fr;
@@ -338,10 +331,10 @@
 
 .gallery-modal-actions button:hover {
    background: rgba(236,191,133,0.16);
-
    transform: translateY(-2px);
 }
 
+/* CLOSE BUTTON (CORRIGIDO) */
 .gallery-close {
    border: none;
    background: transparent;
@@ -351,107 +344,16 @@
    cursor: pointer;
 
    font-family: var(--font-primary);
+
+   transition: var(--transition-base);
 }
 
 .gallery-close:hover {
    color: var(--text-primary);
 }
 
-.upload-main-button {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   gap: 10px;
-}
-
-/* loading visual */
-.upload-main-button:disabled {
-   opacity: 0.7;
-   cursor: not-allowed;
-}
-
-.gallery-item {
-   position: relative;
-   overflow: hidden;
-   border-radius: 16px;
-   cursor: pointer;
-}
-
-.gallery-item img {
-   width: 100%;
-   height: 100%;
-   object-fit: cover;
-   transition: transform 0.4s ease;
-}
-
-/* zoom leve */
-.gallery-item:hover img {
-   transform: scale(1.05);
-}
-
-/* overlay */
-.gallery-overlay {
-   position: absolute;
-   inset: 0;
-   background: rgba(0,0,0,0.35);
-
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-
-   opacity: 0;
-   transition: 0.3s ease;
-   gap: 0.8rem;
-}
-
-/* aparece no hover */
-.gallery-item:hover .gallery-overlay {
-   opacity: 1;
-}
-
-/* texto */
-.gallery-overlay span {
-   color: white;
-   font-size: 0.9rem;
-   letter-spacing: 0.1em;
-}
-
-/* botão download */
-.download-btn {
-   padding: 0.6rem 1.2rem;
-   border-radius: 999px;
-
-   border: none;
-   cursor: pointer;
-
-   font-size: 0.8rem;
-
-   background: var(--color-gold);
-   color: white;
-
-   transition: 0.2s ease;
-}
-
-.download-btn:hover {
-   transform: scale(1.05);
-}
-
 /* =========================
    EMPTY STATE
-========================= */
-
-.gallery-empty {
-   margin-top: 2rem;
-   padding: 3rem;
-
-   text-align: center;
-
-   color: var(--text-muted);
-}
-
-/* =========================
-   EMPTY STATE (CONSISTENTE COM O SITE)
 ========================= */
 
 .gallery-empty {
@@ -463,6 +365,7 @@
    padding: 3rem 1rem;
 
    text-align: center;
+   animation: fadeUp 0.25s ease;
 }
 
 .gallery-empty h3 {
@@ -483,40 +386,6 @@
    color: var(--text-muted);
 }
 
-/* leve animação (igual padrão do site) */
-.gallery-empty {
-   animation: fadeUp 0.25s ease;
-}
-
-@keyframes fadeUp {
-   from {
-      opacity: 0;
-      transform: translateY(6px);
-   }
-
-   to {
-      opacity: 1;
-      transform: translateY(0);
-   }
-}
-
-/* =========================
-   ANIMATION
-========================= */
-
-@keyframes modalFade {
-
-   from {
-      opacity: 0;
-      transform: translateY(10px);
-   }
-
-   to {
-      opacity: 1;
-      transform: translateY(0);
-   }
-}
-
 /* =========================
    RESPONSIVE
 ========================= */
@@ -528,21 +397,6 @@
       align-items: flex-start;
    }
 
-   .gallery-upload-actions {
-      width: 100%;
-      flex-direction: column;
-      align-items: stretch;
-   }
-
-   .gallery-upload-actions button,
-   .gallery-upload-actions select {
-      width: 100%;
-   }
-
-   .gallery-title {
-      font-size: 2.2rem;
-   }
-
    .gallery-grid {
       columns: 2 180px;
    }
@@ -552,9 +406,5 @@
 
    .gallery-grid {
       columns: 1;
-   }
-
-   .gallery-title {
-      font-size: 1.9rem;
    }
 }

@@ -9,8 +9,6 @@
    padding: 0;
    margin: 0;
 
-   border-bottom: var(--border-soft);
-
    background-image: url("/img/fundo.png");
    background-size: cover;
    background-position: center;
@@ -42,7 +40,6 @@
 
 .hero-container {
    width: 100%;
-   max-width: var(--container-xl);
 
    margin: 0 auto;
 
@@ -83,7 +80,7 @@
 ========================= */
 
 .hero-subtitle {
-   max-width: 680px;
+   max-width: 55%;
 
    font-size: var(--text-md);
    line-height: 1.8;

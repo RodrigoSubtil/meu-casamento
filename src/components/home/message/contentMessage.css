@@ -1,11 +1,11 @@
 .message-section {
    padding: var(--section-padding);
-   background: var(--color-rose);
+   background: var(--color-navy-low);
 }
 
 .message-container {
-   width: 100%;
-   max-width: var(--container-xl);
+   width: 72%;
+   max-width: none;
    margin: 0 auto;
 
    display: flex;
@@ -13,7 +13,6 @@
    align-items: center;
 
    gap: 4rem;
-   padding: 0 1rem;
    box-sizing: border-box;
 }
 
@@ -41,7 +40,7 @@
 }
 
 .message-subtitle {
-   max-width: 720px;
+   max-width: 1000px;
 
    margin: 0;
 

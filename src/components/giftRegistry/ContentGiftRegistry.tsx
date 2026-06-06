@@ -20,7 +20,6 @@ export default function ContentGiftRegistry() {
    const [gifts, setGifts] = useState<Gift[]>([]);
    const [filter, setFilter] = useState<GiftCategory>("all");
    const [loading, setLoading] = useState(false);
-
    const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
 
    const userName = "Convidado";
@@ -98,85 +97,84 @@ export default function ContentGiftRegistry() {
    return (
       <section className="gift-section">
 
-         <div className="gift-container">
+         <div className="container">
 
-            <div className="section-header">
-               <div className="luxury-title">
-                  <span>Lista de Presentes</span>
-               </div>
+            <div className="gift-container">
 
-               <h2 className="section-title">
-                  Escolhe uma memória para oferecer
-               </h2>
-
-               <p className="section-subtitle">
-                  Ter vocês connosco já é o nosso maior presente.
-               </p>
-            </div>
-
-            {/* FILTERS */}
-            <div className="gift-filters">
-               {["all", "kitchen", "travel", "home"].map((cat) => (
-                  <button
-                     key={cat}
-                     className={filter === cat ? "active" : ""}
-                     onClick={() => setFilter(cat as GiftCategory)}
-                  >
-                     {cat === "all"
-                        ? "Todos"
-                        : cat === "kitchen"
-                        ? "Cozinha"
-                        : cat === "travel"
-                        ? "Viagem"
-                        : "Casa"}
-                  </button>
-               ))}
-            </div>
-
-            {/* GRID */}
-            <div className="gift-grid">
-
-               {filteredGifts.map((gift) => (
-                  <div className="gift-card" key={gift.id}>
-
-                     <div className="gift-image">
-                        <img src={gift.image} alt={gift.title} />
-                     </div>
-
-                     <div className="gift-content">
-
-                        <h3>{gift.title}</h3>
-
-                        <span className="gift-price">
-                           €{gift.price}
-                        </span>
-
-                        <button
-                           className="form-button"
-                           disabled={gift.is_reserved || loading}
-                           onClick={() => handleReserve(gift)}
-                        >
-                           {gift.is_reserved
-                              ? `Reservado por ${gift.reserved_by}`
-                              : "Escolher presente"}
-                        </button>
-
-                     </div>
-
+               <div className="section-header">
+                  <div className="luxury-title-main">
+                     <span>Lista de Presentes</span>
                   </div>
-               ))}
+
+                  <p className="section-subtitle">
+                     Queremos viver este dia com muito carinho e partilha…
+                  </p>
+               </div>
+
+               {/* FILTERS */}
+               <div className="gift-filters">
+                  {["all", "kitchen", "travel", "home"].map((cat) => (
+                     <button
+                        key={cat}
+                        className={filter === cat ? "active" : ""}
+                        onClick={() => setFilter(cat as GiftCategory)}
+                     >
+                        {cat === "all"
+                           ? "Todos"
+                           : cat === "kitchen"
+                              ? "Cozinha"
+                              : cat === "travel"
+                                 ? "Viagem"
+                                 : "Casa"}
+                     </button>
+                  ))}
+               </div>
+
+               {/* GRID */}
+               <div className="gift-grid">
+
+                  {filteredGifts.map((gift) => (
+                     <div className="gift-card" key={gift.id}>
+
+                        <div className="gift-image">
+                           <img src={gift.image} alt={gift.title} />
+                        </div>
+
+                        <div className="gift-content">
+
+                           <h3>{gift.title}</h3>
+
+                           <span className="gift-price">
+                              €{gift.price}
+                           </span>
+
+                           <button
+                              className="form-button"
+                              disabled={gift.is_reserved || loading}
+                              onClick={() => handleReserve(gift)}
+                           >
+                              {gift.is_reserved
+                                 ? `Reservado por ${gift.reserved_by}`
+                                 : "Escolher presente"}
+                           </button>
+
+                        </div>
+
+                     </div>
+                  ))}
+
+               </div>
+
+               {filteredGifts.length === 0 && (
+                  <div className="gift-empty">
+                     <h3>Nenhum presente encontrado</h3>
+                  </div>
+               )}
 
             </div>
-
-            {filteredGifts.length === 0 && (
-               <div className="gift-empty">
-                  <h3>Nenhum presente encontrado</h3>
-               </div>
-            )}
 
          </div>
 
-         {/* MODAL */}
          {selectedGift && (
             <GiftModal
                gift={selectedGift}

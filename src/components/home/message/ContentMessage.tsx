@@ -56,14 +56,6 @@ export default function ContentMessage() {
                   <span>Mensagens</span>
                </div>
 
-               <h2 className="section-title">
-                  Deixe uma mensagem para nós
-               </h2>
-
-               <p className="section-subtitle">
-                  Suas palavras farão parte de um dos dias mais especiais das nossas vidas.
-               </p>
-
             </div>
 
             <form className="message-form" onSubmit={handleSubmit}>

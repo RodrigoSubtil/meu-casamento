@@ -43,7 +43,6 @@ export default function ContentQuestions() {
    const [state, setState] = useState<Record<number, QuestionUIState>>({});
    const [votes, setVotes] = useState<VotesMap>({});
 
-   // 🔥 carregar votos
    useEffect(() => {
       loadVotes();
    }, []);
@@ -53,10 +52,7 @@ export default function ContentQuestions() {
          .from("votes")
          .select("question_id, option_id");
 
-      if (error) {
-         console.error(error);
-         return;
-      }
+      if (error) return;
 
       const map: VotesMap = {};
 
@@ -69,7 +65,6 @@ export default function ContentQuestions() {
       setVotes(map);
    }
 
-   // 🔥 votar
    async function handleVote(questionId: number, optionIndex: number) {
 
       await supabase.from("votes").insert({
@@ -89,7 +84,6 @@ export default function ContentQuestions() {
       }));
    }
 
-   // 🔥 mostrar resultados
    function showResults(questionId: number) {
       setState(prev => ({
          ...prev,
@@ -100,7 +94,6 @@ export default function ContentQuestions() {
       }));
    }
 
-   // 🔥 calcular %
    function getPercent(questionId: number, optionId: number) {
 
       const qVotes = votes[questionId];
@@ -117,99 +110,95 @@ export default function ContentQuestions() {
    return (
       <section className="questions">
 
-         <div className="questions-container">
+         <div className="container">
 
-            {/* HEADER GLOBAL PADRONIZADO */}
-            <div className="section-header">
+            <div className="questions-container">
 
-               <div className="luxury-title">
-                  <span>Questões</span>
+               <div className="section-header">
+                  <div className="luxury-title-main">
+                     <span>Interagir</span>
+                  </div>
+
+                  <p className="section-subtitle">
+                     Queremos viver esta festa com muita intensidade...
+                  </p>
                </div>
 
-               <h2 className="section-title">
-                  Previsões dos convidados
-               </h2>
+               <div className="questions-list">
 
-               <p className="section-subtitle">
-                  Vote primeiro, depois revele os resultados.
-               </p>
+                  {questions.map((q) => {
 
-            </div>
+                     const qState = state[q.id] || {};
+                     const show = qState.showResults;
 
-            {/* LISTA */}
-            <div className="questions-list">
+                     return (
+                        <div className="question-block" key={q.id}>
 
-               {questions.map((q) => {
+                           <div className="question-header">
+                              <span className="question-number">
+                                 0{q.id}
+                              </span>
 
-                  const qState = state[q.id] || {};
-                  const show = qState.showResults;
+                              <h3 className="question-title">
+                                 {q.question}
+                              </h3>
+                           </div>
 
-                  return (
-                     <div className="question-block" key={q.id}>
+                           <div className="question-options">
 
-                        <div className="question-header">
-                           <span className="question-number">
-                              0{q.id}
-                           </span>
+                              {q.options.map((opt, index) => {
 
-                           <h3 className="question-title">
-                              {q.question}
-                           </h3>
+                                 const percent = getPercent(q.id, index + 1);
+                                 const selected = qState.selectedOption === index;
+
+                                 return (
+                                    <button
+                                       key={index}
+                                       className={`option-line ${selected ? "selected" : ""}`}
+                                       onClick={() => handleVote(q.id, index)}
+                                       disabled={qState.voted}
+                                    >
+
+                                       {show && (
+                                          <div
+                                             className="option-fill"
+                                             style={{ width: `${percent}%` }}
+                                          />
+                                       )}
+
+                                       <div className="option-left">
+                                          <span className="radio-circle" />
+                                          <span className="option-text">
+                                             {opt}
+                                          </span>
+                                       </div>
+
+                                       {show && (
+                                          <span className="option-percent">
+                                             {percent.toFixed(0)}%
+                                          </span>
+                                       )}
+
+                                    </button>
+                                 );
+                              })}
+
+                           </div>
+
+                           {qState.voted && !show && (
+                              <button
+                                 className="show-results-btn"
+                                 onClick={() => showResults(q.id)}
+                              >
+                                 Ver resultados
+                              </button>
+                           )}
+
                         </div>
+                     );
+                  })}
 
-                        <div className="question-options">
-
-                           {q.options.map((opt, index) => {
-
-                              const percent = getPercent(q.id, index + 1);
-                              const selected = qState.selectedOption === index;
-
-                              return (
-                                 <button
-                                    key={index}
-                                    className={`option-line ${selected ? "selected" : ""}`}
-                                    onClick={() => handleVote(q.id, index)}
-                                    disabled={qState.voted}
-                                 >
-
-                                    {show && (
-                                       <div
-                                          className="option-fill"
-                                          style={{ width: `${percent}%` }}
-                                       />
-                                    )}
-
-                                    <div className="option-left">
-                                       <span className="radio-circle" />
-                                       <span className="option-text">
-                                          {opt}
-                                       </span>
-                                    </div>
-
-                                    {show && (
-                                       <span className="option-percent">
-                                          {percent.toFixed(0)}%
-                                       </span>
-                                    )}
-
-                                 </button>
-                              );
-                           })}
-
-                        </div>
-
-                        {qState.voted && !show && (
-                           <button
-                              className="show-results-btn"
-                              onClick={() => showResults(q.id)}
-                           >
-                              Ver resultados
-                           </button>
-                        )}
-
-                     </div>
-                  );
-               })}
+               </div>
 
             </div>
 

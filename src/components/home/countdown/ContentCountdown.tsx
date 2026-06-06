@@ -37,16 +37,12 @@ export default function ContentCountdown() {
 
          <div className="countdown-container">
 
-            <div className="section-header">
-               <h2 className="section-title">
-                  Contagem regressiva
-               </h2>
-
-               <p className="section-subtitle">
-                  Falta pouco para o nosso grande dia. Cada segundo conta.
-               </p>
+            {/* HEADER LUXO (PADRÃO DO SITE) */}
+            <div className="luxury-title countdown-title">
+               <span>Contagem regressiva</span>
             </div>
 
+            {/* CONTADOR (NÃO ALTERADO) */}
             <div className="countdown-grid">
 
                <div className="countdown-box">

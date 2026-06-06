@@ -1,7 +1,6 @@
 import "./contentGallery.css";
 
 import { useEffect, useRef, useState } from "react";
-
 import {
     uploadGalleryPhoto,
     getGalleryPhotos
@@ -18,27 +17,17 @@ type GalleryPhoto = {
 
 export default function ContentGallery() {
 
-    const [selectedAlbum, setSelectedAlbum] =
-        useState<AlbumType>("ceremony");
+    const [selectedAlbum, setSelectedAlbum] = useState<AlbumType>("ceremony");
+    const [showModal, setShowModal] = useState(false);
+    const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
+    const [loading, setLoading] = useState(false);
 
-    const [showModal, setShowModal] =
-        useState(false);
+    // 👇 NOVO
+    const [uploadMessage, setUploadMessage] = useState<string>("");
 
-    const [photos, setPhotos] =
-        useState<GalleryPhoto[]>([]);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const selectedUploadAlbum = useRef<AlbumType>("ceremony");
 
-    const [loading, setLoading] =
-        useState(false);
-
-    const fileInputRef =
-        useRef<HTMLInputElement | null>(null);
-
-    const selectedUploadAlbum =
-        useRef<AlbumType>("ceremony");
-
-    // =========================
-    // CARREGAR FOTOS
-    // =========================
     useEffect(() => {
         loadPhotos();
     }, []);
@@ -52,15 +41,8 @@ export default function ContentGallery() {
         }
     }
 
-    // =========================
-    // FILTRO
-    // =========================
-    const currentPhotos =
-        photos.filter(p => p.album === selectedAlbum);
+    const currentPhotos = photos.filter(p => p.album === selectedAlbum);
 
-    // =========================
-    // ABRIR MODAL
-    // =========================
     function openUploadModal() {
         setShowModal(true);
     }
@@ -71,35 +53,35 @@ export default function ContentGallery() {
         fileInputRef.current?.click();
     }
 
-    // =========================
-    // UPLOAD MÚLTIPLO
-    // =========================
-    async function handleFileChange(
-        e: React.ChangeEvent<HTMLInputElement>
-    ) {
+    async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         const files = e.target.files;
-
-        if (!files || files.length === 0) return;
+        if (!files?.length) return;
 
         try {
             setLoading(true);
+            setUploadMessage("");
 
-            const uploads = Array.from(files).map(file =>
-                uploadGalleryPhoto(
-                    file,
-                    selectedUploadAlbum.current
+            await Promise.all(
+                Array.from(files).map(file =>
+                    uploadGalleryPhoto(file, selectedUploadAlbum.current)
                 )
             );
 
-            await Promise.all(uploads);
-
             await loadPhotos();
 
-            alert(`${files.length} fotos enviadas com sucesso!`);
+            // 👇 SUCESSO
+            setUploadMessage(
+                files.length === 1
+                    ? "Foto enviada com sucesso!"
+                    : "Fotos enviadas com sucesso!"
+            );
+
+            setTimeout(() => {
+                setUploadMessage("");
+            }, 3000);
 
         } catch (err) {
             console.error(err);
-            alert("Falha no upload.");
         } finally {
             setLoading(false);
 
@@ -109,186 +91,159 @@ export default function ContentGallery() {
         }
     }
 
-    // =========================
-    // DOWNLOAD (CORRETO E ROBUSTO)
-    // =========================
     async function handleDownload(url: string, filename: string) {
         try {
-            const response = await fetch(url, {
-                mode: "cors",
-                cache: "no-cache"
-            });
-
-            if (!response.ok) {
-                throw new Error("Falha ao obter imagem");
-            }
-
+            const response = await fetch(url);
             const blob = await response.blob();
 
-            const blobUrl = window.URL.createObjectURL(blob);
+            const blobUrl = URL.createObjectURL(blob);
 
             const link = document.createElement("a");
             link.href = blobUrl;
-            link.download = filename || "memoria-casamento.jpg";
+            link.download = filename;
 
             document.body.appendChild(link);
             link.click();
-
             document.body.removeChild(link);
 
-            window.URL.revokeObjectURL(blobUrl);
+            URL.revokeObjectURL(blobUrl);
 
         } catch (err) {
-            console.error("Erro no download:", err);
-            alert("Não foi possível baixar a imagem.");
+            console.error(err);
         }
     }
 
     return (
         <section className="gallery-section">
 
-            <div className="gallery-container">
+            <div className="container">
 
-                {/* HEADER */}
-                <div className="section-header">
+                <div className="gallery-container">
 
-                    <div className="luxury-title">
-                        <span>Galeria</span>
-                    </div>
-
-                    <h2 className="section-title">
-                        Momentos do nosso casamento
-                    </h2>
-
-                    <p className="section-subtitle">
-                        Queremos viver esta festa com muita intensidade, mas sabemos que será impossível acompanhar tudo ao mesmo tempo.
-                        Por isso criámos este espaço para construirmos o nosso álbum juntos.
-                        Partilhem aqui as fotos e vídeos do casamento — sorrisos, abraços e momentos especiais.
-                        Vamos adorar reviver este dia através dos vossos olhos.
-                    </p>
-
-                </div>
-
-                {/* UPLOAD CARD */}
-                <div className="gallery-upload-card">
-
-                    <div className="gallery-upload-content">
-
-                        <div>
-                            <h3>Partilhar fotos</h3>
-                            <p>Envie várias fotos de uma vez.</p>
+                    <div className="section-header">
+                        <div className="luxury-title-main">
+                            <span>Galeria</span>
                         </div>
 
-                        <button
-                            className="upload-main-button"
-                            onClick={openUploadModal}
-                            disabled={loading}
-                        >
-                            {loading ? "A enviar..." : "Enviar fotos"}
-                        </button>
-
+                        <p className="section-subtitle">
+                            Queremos viver essa festa com muita intensidade, mas sabemos que será impossível acompanhar tudo o que vai acontecer ao mesmo tempo. Pensando nisso, preparamos este espaço para construirmos o nosso álbum juntos.
+                            Compartilhem aqui as fotos e os vídeos que tirarem durante o casamento. Um sorriso espontâneo, um abraço... Vamos amar reviver o nosso grande dia através dos olhos de vocês.
+                        </p>
                     </div>
-                </div>
 
-                {/* MODAL */}
-                {showModal && (
-                    <div className="gallery-modal-overlay">
-                        <div className="gallery-modal">
+                    {/* UPLOAD */}
+                    <div className="gallery-upload-card">
+                        <div className="gallery-upload-content">
 
-                            <h3>Escolher álbum</h3>
-
-                            <div className="gallery-modal-actions">
-
-                                <button onClick={() => chooseAlbum("ceremony")}>
-                                    Cerimónia
-                                </button>
-
-                                <button onClick={() => chooseAlbum("party")}>
-                                    Festa
-                                </button>
-
+                            <div>
+                                <h3>Partilhar fotos</h3>
+                                <p>Envie várias fotos de uma vez.</p>
                             </div>
 
                             <button
-                                className="gallery-close"
-                                onClick={() => setShowModal(false)}
+                                className="upload-main-button"
+                                onClick={openUploadModal}
+                                disabled={loading}
                             >
-                                Fechar
+                                {loading ? "A enviar..." : "Anexar fotos"}
                             </button>
 
                         </div>
                     </div>
-                )}
 
-                {/* FILE INPUT */}
-                <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    hidden
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                />
+                    {/* 👇 MENSAGEM DE SUCESSO */}
+                    {uploadMessage && (
+                        <div className="gallery-success-message">
+                            {uploadMessage}
+                        </div>
+                    )}
 
-                {/* TABS */}
-                <div className="gallery-tabs">
+                    {/* MODAL */}
+                    {showModal && (
+                        <div className="gallery-modal-overlay">
+                            <div className="gallery-modal">
 
-                    <button
-                        className={selectedAlbum === "ceremony" ? "active" : ""}
-                        onClick={() => setSelectedAlbum("ceremony")}
-                    >
-                        Cerimónia
-                    </button>
+                                <h3>Escolher álbum</h3>
 
-                    <button
-                        className={selectedAlbum === "party" ? "active" : ""}
-                        onClick={() => setSelectedAlbum("party")}
-                    >
-                        Festa
-                    </button>
+                                <div className="gallery-modal-actions">
+                                    <button onClick={() => chooseAlbum("ceremony")}>
+                                        Cerimónia
+                                    </button>
 
-                </div>
-
-                {/* GRID */}
-                <div className="gallery-grid">
-
-                    {currentPhotos.map(photo => (
-
-                        <div className="gallery-item" key={photo.id}>
-
-                            <img src={photo.image_url} alt="memória do casamento" />
-
-                            <div className="gallery-overlay">
+                                    <button onClick={() => chooseAlbum("party")}>
+                                        Festa
+                                    </button>
+                                </div>
 
                                 <button
-                                    className="download-btn"
-                                    onClick={() =>
-                                        handleDownload(
-                                            photo.image_url,
-                                            `foto-${photo.id}.jpg`
-                                        )
-                                    }
+                                    className="gallery-close"
+                                    onClick={() => setShowModal(false)}
                                 >
-                                    Descarregar
+                                    Fechar
                                 </button>
 
                             </div>
-
                         </div>
+                    )}
 
-                    ))}
+                    {/* INPUT (SÓ IMAGENS) */}
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        hidden
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                    />
 
-                </div>
+                    {/* TABS */}
+                    <div className="gallery-tabs">
+                        <button
+                            className={selectedAlbum === "ceremony" ? "active" : ""}
+                            onClick={() => setSelectedAlbum("ceremony")}
+                        >
+                            Cerimónia
+                        </button>
 
-                {/* EMPTY */}
-                {currentPhotos.length === 0 && (
-                    <div className="gallery-empty">
-                        <div className="gallery-empty-inner">
+                        <button
+                            className={selectedAlbum === "party" ? "active" : ""}
+                            onClick={() => setSelectedAlbum("party")}
+                        >
+                            Festa
+                        </button>
+                    </div>
+
+                    {/* GRID */}
+                    <div className="gallery-grid">
+                        {currentPhotos.map(photo => (
+                            <div key={photo.id} className="gallery-item">
+
+                                <img src={photo.image_url} alt="" />
+
+                                <div className="gallery-overlay">
+                                    <button
+                                        className="download-btn"
+                                        onClick={() =>
+                                            handleDownload(photo.image_url, `foto-${photo.id}.jpg`)
+                                        }
+                                    >
+                                        Descarregar
+                                    </button>
+                                </div>
+
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* EMPTY */}
+                    {currentPhotos.length === 0 && (
+                        <div className="gallery-empty">
                             <h3>Sem fotos ainda</h3>
                             <p>Seja o primeiro a partilhar memórias.</p>
                         </div>
-                    </div>
-                )}
+                    )}
+
+                </div>
 
             </div>
 

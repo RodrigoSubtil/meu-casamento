@@ -13,10 +13,6 @@ export default function ContentOurStory() {
                   <span>Nossa História</span>
                </div>
 
-               <h2 className="section-title">
-                  Duas vidas, uma jornada para sempre
-               </h2>
-
                <p className="section-subtitle">
                   Tudo começou de forma simples — num momento que nenhum de nós imaginava
                   que se tornaria inesquecível. Entre longas conversas, sonhos partilhados

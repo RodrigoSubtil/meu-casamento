@@ -29,7 +29,7 @@
       🎨 CORES (PALETA REAL DO SITE)
    ========================= */
 
-   --color-gold: #ECBF85;
+   --color-gold: #cfa266;
    --color-sand: #CDD7D5;
    --color-muted-gold: #CBC99E;
 
@@ -38,6 +38,7 @@
 
    --color-cream: #FAF6F1;
    --color-navy: #304162;
+   --color-navy-low: #30416213;
 
    --color-white: #ffffff;
    --color-black: #0b0b0b;
@@ -105,7 +106,7 @@
    --bg-secondary: var(--color-white);
 
    --text-primary: var(--color-navy);
-   --text-muted: rgba(48, 65, 98, 0.65);
+   --text-muted: rgb(48, 65, 98);
    --text-accent: var(--color-gold);
 
    /* =========================
@@ -165,12 +166,24 @@ body {
    overflow-x: hidden;
 }
 
+/* =========================
+   GLOBAL CONTAINER
+========================= */
+
+.container {
+   width: 100%;
+   max-width: 1200px;
+   margin: 0 auto;
+   box-sizing: border-box;
+}
+
 
 /* =========================
     TITULO LUXO PADRÃO (GOLD + LINHA)
 ========================= */
 
-.luxury-title {
+.luxury-title,
+.luxury-title-main {
    display: flex;
    flex-direction: column;
    align-items: center;
@@ -181,7 +194,21 @@ body {
 
 /* texto pequeno dourado */
 .luxury-title span {
-   font-size: 0.78rem;
+   font-size: 0.75rem;
+
+   letter-spacing: 0.32em;
+   text-transform: uppercase;
+
+   color: var(--color-gold);
+
+   font-family: var(--font-primary);
+
+   margin-bottom: 14px;
+   position: relative;
+}
+
+.luxury-title-main span {
+   font-size: 1.2rem;
 
    letter-spacing: 0.32em;
    text-transform: uppercase;
@@ -196,6 +223,23 @@ body {
 
 /* linha abaixo do texto */
 .luxury-title span::after {
+   content: "";
+
+   display: block;
+
+   width: 72px;
+   height: 1px;
+
+   margin: 14px auto 0;
+
+   background: linear-gradient(to right,
+         transparent,
+         rgba(236, 191, 133, 0.8),
+         transparent);
+}
+
+/* linha abaixo do texto */
+.luxury-title-main span::after {
    content: "";
 
    display: block;
@@ -340,6 +384,7 @@ body {
 
    opacity: 0;
    transform: translateY(-4px);
+   box-sizing: border-box;
 
    transition: all 0.25s ease;
 }
@@ -393,13 +438,8 @@ body {
    display: flex;
    flex-direction: column;
    align-items: center;
-
    text-align: center;
-
    gap: 1rem;
-
-   margin-bottom: 3rem;
-   padding: 0 20px;
 }
 
 /* TITLE PRINCIPAL */
@@ -415,7 +455,7 @@ body {
 
 /* SUBTITLE / DESCRIÇÃO */
 .section-subtitle {
-   max-width: 720px;
+   max-width: 80%;
 
    margin: 0;
 

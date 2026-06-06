@@ -3,37 +3,47 @@
 ========================= */
 
 .countdown {
-   background: var(---color-white);
-
-   padding: 0 20px 120px 20px;
-
+   background: var(--color-white);
+   padding: 120px 20px;
    display: flex;
    justify-content: center;
 }
 
 .countdown-container {
    width: 100%;
-   max-width: var(--container-md);
-
    display: flex;
    flex-direction: column;
    align-items: center;
 }
 
-/* GRID */
+/* =========================
+   HEADER LUXURY
+========================= */
+
+.countdown-title {
+   margin-bottom: 3rem;
+}
+
+/* =========================
+   GRID (INALTERADO)
+========================= */
+
 .countdown-grid {
    display: grid;
    grid-template-columns: repeat(4, 1fr);
    gap: var(--space-6);
-
-   width: 70%;
+   width: 40%;
 }
 
-/* BOX */
-.countdown-box {
-   background: rgba(255, 255, 255, 0.85);
+/* =========================
+   BOX (ALTERADO VISUAL)
+========================= */
 
-   border: 1px solid rgba(236, 191, 133, 0.25);
+.countdown-box {
+   background: var(--color-navy); /* 🔥 fundo navy */
+
+   border: 1px solid rgba(255, 255, 255, 0.15);
+
    border-radius: var(--radius-lg);
 
    padding: 1.2rem 0.8rem;
@@ -44,25 +54,22 @@
 
    gap: 0.3rem;
 
-   box-shadow: 0 8px 18px rgba(236, 191, 133, 0.08);
-
-   backdrop-filter: blur(6px);
+   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 
    transition: 0.25s ease;
 }
 
-/* hover mais “vivo” */
+/* hover mais suave no navy */
 .countdown-box:hover {
    transform: translateY(-3px);
-   box-shadow: 0 12px 26px rgba(236, 191, 133, 0.18);
+   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
 }
 
 /* NUMBER */
 .countdown-box span {
    font-size: var(--text-xl);
-
    font-weight: 400;
-   color: var(--text-primary);
+   color: var(--color-white); /* 🔥 branco */
 }
 
 /* LABEL */
@@ -71,13 +78,16 @@
 
    font-size: 0.72rem;
 
-   color: rgba(236, 191, 133, 0.75);
+   color: rgba(255, 255, 255, 0.75); /* 🔥 branco suave */
 
    letter-spacing: 0.1em;
    text-transform: uppercase;
 }
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+========================= */
+
 @media (max-width: 768px) {
    .countdown-grid {
       grid-template-columns: repeat(2, 1fr);
