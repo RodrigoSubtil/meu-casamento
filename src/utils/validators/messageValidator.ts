@@ -4,13 +4,13 @@ export function validateMessage(data: MessageData): MessageErrors {
    const errors: MessageErrors = {};
 
    if (!data.name.trim()) {
-      errors.name = "Name is required";
+      errors.name = "O nome é obrigatório";
    }
 
    if (!data.message.trim()) {
-      errors.message = "Message is required";
+      errors.message = "A mensagem é obrigatória";
    } else if (data.message.trim().length < 5) {
-      errors.message = "Message is too short";
+      errors.message = "A mensagem é muito curta";
    }
 
    return errors;
