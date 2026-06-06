@@ -3,6 +3,7 @@
 ========================= */
 
 .countdown {
+   padding-bottom: 3rem;
    background: var(--color-white);
    display: flex;
    justify-content: center;
@@ -93,11 +94,6 @@
 ========================= */
 
 @media (max-width: 768px) {
-
-   .countdown {
-      padding: 90px 20px;
-   }
-
    .countdown-grid {
       grid-template-columns: repeat(2, 1fr);
 
