@@ -14,7 +14,6 @@
    background-position: center;
    background-repeat: no-repeat;
 
-   /* mesmo estilo de suavização da gallery */
    mask-image: linear-gradient(
       to bottom,
       rgba(0,0,0,1) 0%,
@@ -23,7 +22,6 @@
    );
 }
 
-/* overlay no mesmo padrão “luxo soft” da gallery */
 .hero::before {
    content: "";
    position: absolute;
@@ -35,11 +33,12 @@
 }
 
 /* =========================
-   CONTAINER (PADRÃO IGUAL GALLERY)
+   CONTAINER
 ========================= */
 
 .hero-container {
    width: 100%;
+   max-width: 1200px;
 
    margin: 0 auto;
 
@@ -59,7 +58,7 @@
 }
 
 /* =========================
-   TITLE (CONSISTENTE COM O SITE)
+   TITLE
 ========================= */
 
 .hero-title {
@@ -76,7 +75,7 @@
 }
 
 /* =========================
-   SUBTITLE (IGUAL LINGUAGEM DA GALLERY)
+   SUBTITLE
 ========================= */
 
 .hero-subtitle {
@@ -91,19 +90,49 @@
 }
 
 /* =========================
-   RESPONSIVO
+   📱 MOBILE PADRÃO (NOVO MELHORADO)
 ========================= */
 
 @media (max-width: 768px) {
+
+   .hero {
+      min-height: 90vh;
+      padding: 2rem 0;
+      background-position: center top;
+   }
+
+   .hero-container {
+      gap: 1.5rem;
+      padding: 0 1.2rem;
+   }
+
+   .hero-title {
+      font-size: 2.2rem;
+      letter-spacing: 0.05em;
+   }
+
+   .hero-subtitle {
+      max-width: 100%;
+      font-size: 0.95rem;
+      line-height: 1.6;
+   }
+}
+
+/* =========================
+   📱 MOBILE PEQUENO (EXTRA)
+========================= */
+
+@media (max-width: 480px) {
+
    .hero {
       min-height: 85vh;
    }
 
-   .hero-container {
-      gap: 2rem;
+   .hero-title {
+      font-size: 2rem;
    }
 
-   .hero-title {
-      font-size: 2.4rem;
+   .hero-subtitle {
+      font-size: 0.9rem;
    }
 }

@@ -1,3 +1,7 @@
+/* =========================
+   OUR STORY
+========================= */
+
 .our-story {
    background: var(--color-white);
    width: 100%;
@@ -5,9 +9,9 @@
    display: flex;
    justify-content: center;
 
-   padding: var(--section-padding);
+   padding: 120px 0;
 
-   margin: 0;
+   overflow-x: hidden; /* 🔥 evita overflow invisível */
 }
 
 /* =========================
@@ -15,7 +19,9 @@
 ========================= */
 
 .our-story-container {
-   width: 72%;
+   width: 100%;
+   max-width: 900px;
+
    margin: 0 auto;
 
    display: flex;
@@ -24,7 +30,47 @@
 
    text-align: center;
 
-   gap: 1rem;
+   gap: 1.5rem;
+
+   padding: 0 20px;
 
    box-sizing: border-box;
+}
+
+/* =========================
+   HEADER FIX
+========================= */
+
+.section-header {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+
+   gap: 1rem;
+}
+
+/* =========================
+   TITLE FIX
+========================= */
+
+.luxury-title {
+   width: 100%;
+   text-align: center;
+}
+
+/* =========================
+   SUBTITLE FIX (AQUI É O PROBLEMA REAL)
+========================= */
+
+.section-subtitle {
+   width: 100%;
+   max-width: 700px;  /* 🔥 impede estourar layout */
+
+   margin: 0;
+
+   line-height: 1.8;
+   text-align: center;
+
+   word-break: break-word; /* 🔥 evita overflow por texto longo */
 }

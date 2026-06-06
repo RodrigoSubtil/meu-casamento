@@ -1,18 +1,31 @@
+/* =========================
+   MESSAGE SECTION
+========================= */
+
 .message-section {
    padding: var(--section-padding);
    background: var(--color-navy-low);
 }
 
+/* =========================
+   CONTAINER
+========================= */
+
 .message-container {
-   width: 72%;
-   max-width: none;
+   width: 100%;
+   max-width: 900px;
+
    margin: 0 auto;
 
    display: flex;
    flex-direction: column;
    align-items: center;
 
-   gap: 4rem;
+   /* 🔥 reduzido para melhorar hierarquia */
+   gap: 2.2rem;
+
+   padding: 0 20px;
+
    box-sizing: border-box;
 }
 
@@ -27,8 +40,13 @@
 
    text-align: center;
 
-   gap: 1rem;
+   /* 🔥 aproxima título do texto */
+   gap: 0.8rem;
 }
+
+/* =========================
+   TITLE
+========================= */
 
 .message-title {
    margin: 0;
@@ -39,8 +57,13 @@
    color: var(--text-primary);
 }
 
+/* =========================
+   SUBTITLE
+========================= */
+
 .message-subtitle {
-   max-width: 1000px;
+   width: 100%;
+   max-width: 720px;
 
    margin: 0;
 
@@ -48,6 +71,8 @@
    line-height: 1.8;
 
    color: var(--text-muted);
+
+   word-break: break-word;
 }
 
 /* =========================
@@ -123,6 +148,7 @@
 ========================= */
 
 @media (max-width: 900px) {
+
    .message-title {
       font-size: 2.2rem;
    }
@@ -133,7 +159,16 @@
 }
 
 @media (max-width: 600px) {
+
+   .message-container {
+      gap: 1.8rem; /* 🔥 ainda mais compacto no mobile */
+   }
+
    .message-title {
       font-size: 1.9rem;
+   }
+
+   .message-subtitle {
+      font-size: 0.92rem;
    }
 }

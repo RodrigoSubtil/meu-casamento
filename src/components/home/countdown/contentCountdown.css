@@ -9,6 +9,10 @@
    justify-content: center;
 }
 
+/* =========================
+   CONTAINER
+========================= */
+
 .countdown-container {
    width: 100%;
    display: flex;
@@ -22,80 +26,108 @@
 
 .countdown-title {
    margin-bottom: 3rem;
+   text-align: center;
 }
 
 /* =========================
-   GRID (INALTERADO)
+   GRID (AJUSTADO PARA CENTRAR MELHOR)
 ========================= */
 
 .countdown-grid {
    display: grid;
+
    grid-template-columns: repeat(4, 1fr);
+
    gap: var(--space-6);
-   width: 40%;
+
+   /* 🔥 importante: evita ficar colado / esticado */
+   width: 100%;
+   max-width: 520px;
 }
 
 /* =========================
-   BOX (ALTERADO VISUAL)
+   BOX
 ========================= */
 
 .countdown-box {
-   background: var(--color-navy); /* 🔥 fundo navy */
+   background: var(--color-navy);
 
    border: 1px solid rgba(255, 255, 255, 0.15);
 
    border-radius: var(--radius-lg);
 
-   padding: 1.2rem 0.8rem;
+   padding: 1.4rem 1rem;
 
    display: flex;
    flex-direction: column;
    align-items: center;
 
-   gap: 0.3rem;
+   gap: 0.4rem;
 
    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 
    transition: 0.25s ease;
+
+   /* 🔥 ajuda a manter consistência */
+   min-width: 0;
 }
 
-/* hover mais suave no navy */
 .countdown-box:hover {
    transform: translateY(-3px);
    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
 }
 
-/* NUMBER */
+/* =========================
+   TEXT
+========================= */
+
 .countdown-box span {
-   font-size: var(--text-xl);
+   font-size: clamp(1.4rem, 2vw, var(--text-xl));
    font-weight: 400;
-   color: var(--color-white); /* 🔥 branco */
+   color: var(--color-white);
 }
 
-/* LABEL */
 .countdown-box p {
    margin: 0;
 
    font-size: 0.72rem;
-
-   color: rgba(255, 255, 255, 0.75); /* 🔥 branco suave */
+   color: rgba(255, 255, 255, 0.75);
 
    letter-spacing: 0.1em;
    text-transform: uppercase;
 }
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE (MELHORADO)
 ========================= */
 
 @media (max-width: 768px) {
+
+   .countdown {
+      padding: 90px 20px;
+   }
+
    .countdown-grid {
       grid-template-columns: repeat(2, 1fr);
+
+      gap: 1rem;
+
+      max-width: 320px; /* 🔥 centraliza bonito no mobile */
+   }
+
+   .countdown-box {
+      padding: 1.2rem 0.8rem;
    }
 }
 
 @media (max-width: 480px) {
+
    .countdown-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 280px;
+   }
+
+   .countdown-box span {
+      font-size: 1.2rem;
    }
 }
