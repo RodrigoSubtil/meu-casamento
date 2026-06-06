@@ -5,43 +5,59 @@
 .weather {
    background: var(--color-navy-low);
    padding: var(--section-padding);
+   display: flex;
+   justify-content: center;
 }
 
 /* =========================
-   CONTAINER
+   CONTAINER (PADRÃO HOME ABERTO)
 ========================= */
 
 .weather-container {
    width: 100%;
+   max-width: 1200px; /* 🔥 igual ao novo padrão global */
+
+   margin: 0 auto;
+
    display: flex;
    flex-direction: column;
    align-items: center;
+
    gap: var(--space-8);
+
+   padding: 0 32px; /* 🔥 alinhado com o sistema novo */
+   box-sizing: border-box;
 }
 
 /* =========================
-   TIMELINE (CENTRALIZADO)
+   GRID
 ========================= */
 
 .weather-timeline {
    width: 100%;
+
    display: grid;
 
-   grid-template-columns: repeat(auto-fit, minmax(150px, 160px));
+   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 
    justify-content: center;
    align-items: start;
 
-   /* 🔥 AQUI ESTÁ O AJUSTE DO GAP */
-   gap: 3rem 2.5rem;
-}
+   gap: 2.5rem 2rem;
 
+   /* 🔥 IMPORTANTE: centralização real */
+   justify-items: center;
+}
 /* =========================
    CARD
 ========================= */
 
 .weather-card {
    position: relative;
+
+   width: 100%;
+   max-width: 170px;
+    margin: 0 auto; /* 🔥 garante centro real */
 
    display: flex;
    flex-direction: column;
@@ -59,9 +75,6 @@
    backdrop-filter: blur(10px);
 
    transition: var(--transition-base);
-
-   width: 100%;
-   max-width: 160px;
 }
 
 /* hover seguro */
@@ -85,6 +98,7 @@
 /* badge */
 .weather-card.highlight::before {
    content: "CASAMENTO";
+
    position: absolute;
    top: -12px;
 
@@ -126,4 +140,18 @@
 .weather-condition {
    font-size: 0.85rem;
    color: var(--text-accent);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+   .weather-container {
+      padding: 0 20px;
+   }
+
+   .weather-timeline {
+      gap: 2rem 1.5rem;
+   }
 }

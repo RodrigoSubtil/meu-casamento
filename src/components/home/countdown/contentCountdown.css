@@ -4,7 +4,6 @@
 
 .countdown {
    background: var(--color-white);
-   padding: 120px 20px;
    display: flex;
    justify-content: center;
 }
@@ -21,15 +20,6 @@
 }
 
 /* =========================
-   HEADER LUXURY
-========================= */
-
-.countdown-title {
-   margin-bottom: 3rem;
-   text-align: center;
-}
-
-/* =========================
    GRID (AJUSTADO PARA CENTRAR MELHOR)
 ========================= */
 
@@ -43,6 +33,7 @@
    /* 🔥 importante: evita ficar colado / esticado */
    width: 100%;
    max-width: 520px;
+   margin-top: 1rem;
 }
 
 /* =========================
