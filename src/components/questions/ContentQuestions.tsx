@@ -120,7 +120,7 @@ export default function ContentQuestions() {
                   </div>
 
                   <p className="section-subtitle">
-                     Queremos viver esta festa com muita intensidade...
+                     Para que vocês cheguem com tranquilidade e não percam nenhum momento da nossa celebração, reunimos aqui os endereços do nosso grande dia. Logo abaixo, vocês encontrarão os mapas com a localização exata da Igreja e do local da festa. Basta clicar para abrir o GPS no celular e traçar a melhor rota. Esperamos vocês lá!
                   </p>
                </div>
 

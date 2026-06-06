@@ -5,19 +5,25 @@
 .gallery-section {
    padding: var(--section-padding);
    background: var(--color-white);
+
+   overflow-x: hidden;
 }
 
 /* =========================
-   CONTAINER
+   CONTAINER (PADRÃO IGUAL LOCATIONS)
 ========================= */
 
 .gallery-container {
    width: 100%;
+   max-width: 1200px;
+
    margin: 0 auto;
 
    display: flex;
    flex-direction: column;
    gap: 4rem;
+
+   box-sizing: border-box;
 }
 
 /* =========================
@@ -334,7 +340,10 @@
    transform: translateY(-2px);
 }
 
-/* CLOSE BUTTON (CORRIGIDO) */
+/* =========================
+   CLOSE BUTTON
+========================= */
+
 .gallery-close {
    border: none;
    background: transparent;
@@ -353,23 +362,38 @@
 }
 
 /* =========================
-   EMPTY STATE
+   EMPTY STATE (CORRIGIDO PREMIUM)
 ========================= */
 
 .gallery-empty {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-
    width: 100%;
-   padding: 3rem 1rem;
+
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
 
    text-align: center;
+
+   padding: 4rem 1rem;
+
    animation: fadeUp 0.25s ease;
 }
 
+/* separador visual leve */
+.gallery-empty::before {
+   content: "";
+
+   width: 60px;
+   height: 1px;
+
+   background: rgba(48,65,98,0.15);
+
+   margin-bottom: 1.5rem;
+}
+
 .gallery-empty h3 {
-   margin: 0 0 10px;
+   margin: 0;
 
    font-size: var(--text-lg);
    font-weight: 400;
@@ -379,9 +403,12 @@
 
 .gallery-empty p {
    margin: 0;
+   margin-top: 0.8rem;
+
+   max-width: 420px;
 
    font-size: var(--text-md);
-   line-height: 1.8;
+   line-height: 1.7;
 
    color: var(--text-muted);
 }
