@@ -1,151 +1,325 @@
 import "./giftModal.css";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 type Gift = {
-    id: number;
-    title: string;
-    price: number;
-    image: string;
+   id: number;
+   title: string;
+   price: number;
+   image: string;
 };
 
 type Props = {
-    gift: Gift;
-    onClose: () => void;
-    onConfirm: (method: "pix" | "mbway") => void;
+   gift: Gift;
+   onClose: () => void;
+   onConfirm: (method: "pix" | "mbway") => Promise<void>;
 };
 
 type Step = "choose" | "pay" | "success";
 
-export default function GiftModal({ gift, onClose, onConfirm }: Props) {
+const BRL_TO_EUR = 6.3;
 
-    const [step, setStep] = useState<Step>("choose");
-    const [method, setMethod] = useState<"pix" | "mbway" | null>(null);
+export default function GiftModal({
+   gift,
+   onClose,
+   onConfirm
+}: Props) {
 
-    const pix = "13715865980";
-    const mbway = "935668596";
+   const [step, setStep] = useState<Step>("choose");
+   const [method, setMethod] = useState<"pix" | "mbway" | null>(null);
+   const [copied, setCopied] = useState(false);
+   const [loading, setLoading] = useState(false);
 
-    function handleContinue() {
-        if (!method) return;
-        setStep("pay");
-    }
+   const lock = useRef(false);
 
-    function handleConfirm() {
-        if (!method) return;
+   const pix = "13715865980";
+   const mbway = "935668596";
 
-        onConfirm(method);
+   const brl = gift.price;
+   const eur = gift.price / BRL_TO_EUR;
 
-        setStep("success");
+   useEffect(() => {
+      setStep("choose");
+      setMethod(null);
+      setCopied(false);
+      setLoading(false);
+      lock.current = false;
+   }, [gift.id]);
 
-        setTimeout(() => {
+   function handleCopy() {
+
+      const value = method === "pix"
+         ? pix
+         : mbway;
+
+      navigator.clipboard.writeText(value);
+
+      setCopied(true);
+
+      setTimeout(() => {
+         setCopied(false);
+      }, 1200);
+   }
+
+   function handleContinue() {
+      if (!method) return;
+      setStep("pay");
+   }
+
+   async function handleConfirm() {
+
+      if (!method) return;
+
+      if (lock.current) return;
+
+      lock.current = true;
+      setLoading(true);
+
+      try {
+
+         await onConfirm(method);
+
+         setStep("success");
+
+         setTimeout(() => {
             onClose();
-        }, 2500);
-    }
-    return (
-        <div className="modal-overlay" onClick={onClose}>
+         }, 3000);
 
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
+      } catch (err) {
 
-                {/* =========================
-               STEP 1 - CHOOSE
-            ========================= */}
-                {step === "choose" && (
-                    <>
-                        <div className="modal-header">
-                            <h2>Confirmar presente</h2>
-                            <p>Escolhe o método de pagamento</p>
-                        </div>
+         console.error(err);
 
-                        <div className="modal-body">
-                            <img src={gift.image} alt={gift.title} />
+         alert(
+            "Erro ao reservar presente."
+         );
 
-                            <div className="modal-info">
-                                <h3>{gift.title}</h3>
-                                <span>€{gift.price}</span>
-                            </div>
-                        </div>
+         lock.current = false;
 
-                        <div className="payment-options">
+      } finally {
 
-                            <button
-                                className={`payment-card ${method === "pix" ? "active" : ""}`}
-                                onClick={() => setMethod("pix")}
-                            >
-                                <span className="tag">PIX</span>
-                                <p>Brasil</p>
-                            </button>
+         setLoading(false);
 
-                            <button
-                                className={`payment-card ${method === "mbway" ? "active" : ""}`}
-                                onClick={() => setMethod("mbway")}
-                            >
-                                <span className="tag">MB WAY</span>
-                                <p>Portugal</p>
-                            </button>
+      }
+   }
 
-                        </div>
+   return (
+      <div
+         className="modal-overlay"
+         onClick={onClose}
+      >
+
+         <div
+            className="modal"
+            onClick={(e) =>
+               e.stopPropagation()
+            }
+         >
+
+            {step === "choose" && (
+               <>
+
+                  <div className="modal-header">
+                     <h2>
+                        Confirmar presente
+                     </h2>
+
+                     <p>
+                        Escolhe o método de pagamento
+                     </p>
+                  </div>
+
+                  <div className="modal-body">
+
+                     <img
+                        src={gift.image}
+                        alt={gift.title}
+                     />
+
+                     <div className="modal-info">
+
+                        <h3>
+                           {gift.title}
+                        </h3>
+
+                        <span>
+                           R$ {brl
+                              .toFixed(2)
+                              .replace(".", ",")}
+                           {" • "}
+                           € {eur
+                              .toFixed(2)
+                              .replace(".", ",")}
+                        </span>
+
+                     </div>
+
+                  </div>
+
+                  <div className="payment-options">
+
+                     <button
+                        className={`payment-card ${
+                           method === "pix"
+                              ? "active"
+                              : ""
+                        }`}
+                        onClick={() =>
+                           setMethod("pix")
+                        }
+                     >
+                        <span className="tag">
+                           PIX
+                        </span>
+
+                        <p>Brasil</p>
+                     </button>
+
+                     <button
+                        className={`payment-card ${
+                           method === "mbway"
+                              ? "active"
+                              : ""
+                        }`}
+                        onClick={() =>
+                           setMethod("mbway")
+                        }
+                     >
+                        <span className="tag">
+                           MB WAY
+                        </span>
+
+                        <p>Portugal</p>
+                     </button>
+
+                  </div>
+
+                  <button
+                     className="confirm-btn"
+                     disabled={!method}
+                     onClick={handleContinue}
+                  >
+                     Continuar
+                  </button>
+
+               </>
+            )}
+
+            {step === "pay" && (
+               <>
+
+                  <div className="modal-header">
+                     <h2>Pagamento</h2>
+
+                     <p>
+                        Finaliza via{" "}
+                        {method?.toUpperCase()}
+                     </p>
+                  </div>
+
+                  <div className="payment-box big">
+
+                     <div
+                        style={{
+                           marginBottom: "10px"
+                        }}
+                     >
+                        {gift.title}
+                     </div>
+
+                     <div
+                        style={{
+                           marginBottom: "14px",
+                           color:
+                              "var(--color-gold)"
+                        }}
+                     >
+                        R$ {brl
+                           .toFixed(2)
+                           .replace(".", ",")}
+                        {" • "}
+                        € {eur
+                           .toFixed(2)
+                           .replace(".", ",")}
+                     </div>
+
+                     <p className="payment-title">
+
+                        {method === "pix"
+                           ? "PIX (Brasil)"
+                           : "MB WAY (Portugal)"}
+
+                     </p>
+
+                     <div className="code-input">
+
+                        <span className="code-value">
+
+                           {method === "pix"
+                              ? pix
+                              : mbway}
+
+                        </span>
 
                         <button
-                            className="confirm-btn"
-                            disabled={!method}
-                            onClick={handleContinue}
+                           className={`copy-text-btn ${
+                              copied
+                                 ? "copied"
+                                 : ""
+                           }`}
+                           onClick={handleCopy}
                         >
-                            Continuar
-                        </button>
-                    </>
-                )}
-
-                {/* =========================
-               STEP 2 - PAYMENT INFO
-            ========================= */}
-                {step === "pay" && (
-                    <>
-                        <div className="modal-header">
-                            <h2>Pagamento</h2>
-                            <p>Finaliza via {method?.toUpperCase()}</p>
-                        </div>
-
-                        <div className="payment-box big">
-
-                            {method === "pix" && (
-                                <>
-                                    <p className="payment-title">PIX (Brasil)</p>
-                                    <div className="code-box">{pix}</div>
-                                </>
-                            )}
-
-                            {method === "mbway" && (
-                                <>
-                                    <p className="payment-title">MB WAY (Portugal)</p>
-                                    <div className="code-box">{mbway}</div>
-                                </>
-                            )}
-
-                        </div>
-
-                        <button className="confirm-btn" onClick={handleConfirm}>
-                            Confirmar pagamento
+                           {copied
+                              ? "Copiado"
+                              : "Copiar"}
                         </button>
 
-                        <button className="close-btn" onClick={() => setStep("choose")}>
-                            Voltar
-                        </button>
-                    </>
-                )}
+                     </div>
 
-                {/* =========================
-               STEP 3 - SUCCESS
-            ========================= */}
-                {step === "success" && (
-                    <div className="success-box">
-                        <div className="check">✔</div>
+                  </div>
 
-                        <h2>Pagamento confirmado</h2>
-                        <p>Obrigado por fazer parte deste momento 💛</p>
-                    </div>
-                )}
+                  <button
+                     className="confirm-btn"
+                     onClick={handleConfirm}
+                     disabled={loading}
+                  >
+                     {loading
+                        ? "A processar..."
+                        : "Confirmar pagamento"}
+                  </button>
 
-            </div>
+                  <button
+                     className="close-btn"
+                     onClick={() =>
+                        setStep("choose")
+                     }
+                  >
+                     Voltar
+                  </button>
 
-        </div>
-    );
+               </>
+            )}
+
+            {step === "success" && (
+
+               <div className="success-box">
+
+                  <div className="check">
+                     ✔
+                  </div>
+
+                  <h2>
+                     Pagamento confirmado
+                  </h2>
+
+                  <p>
+                     Reserva feita com sucesso
+                  </p>
+
+               </div>
+
+            )}
+
+         </div>
+
+      </div>
+   );
 }

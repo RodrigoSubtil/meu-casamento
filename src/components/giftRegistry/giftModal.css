@@ -1,17 +1,19 @@
 /* =========================
-   MODAL OVERLAY (GLASS)
+   MODAL OVERLAY
 ========================= */
 
 .modal-overlay {
    position: fixed;
    inset: 0;
 
-   background: rgba(11, 11, 11, 0.55);
-   backdrop-filter: blur(6px);
+   background: rgba(11, 11, 11, 0.60);
+   backdrop-filter: blur(8px);
 
    display: flex;
    justify-content: center;
    align-items: center;
+
+   padding: 20px;
 
    z-index: 9999;
 
@@ -19,28 +21,38 @@
 }
 
 /* =========================
-   MODAL BOX
+   MODAL
 ========================= */
 
 .modal {
    width: 100%;
-   max-width: 460px;
+   max-width: 500px;
 
    background: var(--color-white);
-   border-radius: var(--radius-xl);
+
+   border-radius: 28px;
 
    padding: 2rem;
 
    display: flex;
    flex-direction: column;
-   gap: 1.2rem;
+   gap: 1.5rem;
 
-   box-shadow: var(--shadow-lg);
+   box-shadow:
+      0 24px 60px rgba(0,0,0,0.15),
+      0 4px 12px rgba(0,0,0,0.08);
 
    animation: slideUp 0.25s ease;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
+
+.modal-header {
+   text-align: center;
+}
+
 .modal-header h2 {
    margin: 0;
 
@@ -51,9 +63,10 @@
 }
 
 .modal-header p {
-   margin: 6px 0 0;
+   margin-top: 8px;
 
    font-size: var(--text-sm);
+
    color: var(--text-muted);
 }
 
@@ -64,111 +77,271 @@
 .modal-body {
    display: flex;
    flex-direction: column;
-   gap: 0.8rem;
+   gap: 1rem;
 }
 
 .modal-body img {
    width: 100%;
-   height: 200px;
+   height: 220px;
 
    object-fit: cover;
-   border-radius: var(--radius-lg);
+
+   border-radius: var(--radius-xl);
 }
 
-/* INFO */
+/* =========================
+   INFO
+========================= */
+
 .modal-info {
    display: flex;
    justify-content: space-between;
    align-items: center;
+   gap: 1rem;
 }
 
 .modal-info h3 {
    margin: 0;
-   font-weight: 400;
+
    font-size: var(--text-md);
+   font-weight: 400;
+
    color: var(--text-primary);
 }
 
 .modal-info span {
-   font-size: var(--text-sm);
-   color: var(--text-muted);
+   font-size: 0.95rem;
+   font-weight: 500;
+
+   color: var(--color-gold);
 }
 
 /* =========================
-   PAYMENT
+   VALOR PRESENTE
 ========================= */
 
-.payment-box {
+.gift-amount {
    display: flex;
    flex-direction: column;
-   gap: 10px;
+   align-items: center;
+
+   gap: 6px;
+
+   padding: 1rem;
+
+   border-radius: var(--radius-lg);
+
+   background: rgba(236,191,133,0.08);
+
+   border: 1px solid rgba(236,191,133,0.18);
 }
 
-.payment-title {
-   font-size: var(--text-sm);
+.gift-amount-label {
+   font-size: 0.72rem;
+
+   letter-spacing: 0.14em;
+   text-transform: uppercase;
+
    color: var(--text-muted);
 }
 
-/* GRID OPTIONS */
+.gift-amount-value {
+   font-size: 1.15rem;
+   font-weight: 500;
+
+   color: var(--color-gold);
+}
+
+/* =========================
+   PAYMENT OPTIONS
+========================= */
+
 .payment-options {
    display: grid;
    grid-template-columns: 1fr 1fr;
+
    gap: 12px;
 }
 
-/* CARD */
 .payment-card {
-   padding: 14px;
+   min-height: 100px;
+
+   padding: 18px;
 
    border-radius: var(--radius-lg);
    border: var(--border-thin);
 
-   background: var(--color-white);
-
-   cursor: pointer;
+   background: white;
 
    display: flex;
    flex-direction: column;
-   gap: 4px;
+   align-items: center;
+   justify-content: center;
+
+   gap: 8px;
+
+   cursor: pointer;
 
    transition: var(--transition-base);
 }
 
 .payment-card:hover {
-   transform: translateY(-2px);
+   transform: translateY(-3px);
+
    border-color: var(--color-gold);
+
+   box-shadow: var(--shadow-sm);
 }
 
-/* ACTIVE */
 .payment-card.active {
-   border: 1px solid var(--color-gold);
-   background: rgba(236,191,133,0.08);
+   border-color: var(--color-gold);
+
+   background: rgba(236,191,133,0.10);
+
+   box-shadow: 0 8px 24px rgba(236,191,133,0.12);
 }
 
 .payment-card .tag {
-   font-size: var(--text-sm);
+   font-size: 0.9rem;
+   font-weight: 600;
+
    color: var(--color-gold);
-   letter-spacing: 0.1em;
+
+   letter-spacing: 0.12em;
 }
 
 .payment-card p {
    margin: 0;
-   font-size: var(--text-sm);
+
+   font-size: 0.82rem;
+
    color: var(--text-muted);
 }
 
 /* =========================
-   ACTIONS
+   PAYMENT BOX
 ========================= */
 
-.modal-actions {
+.payment-box {
    display: flex;
    flex-direction: column;
-   gap: 10px;
+   gap: 1rem;
 }
 
+.payment-box.big {
+   padding: 1.5rem;
+
+   border-radius: var(--radius-lg);
+
+   background: rgba(248,248,248,0.8);
+
+   border: var(--border-thin);
+
+   text-align: center;
+}
+
+.payment-title {
+   margin: 0;
+
+   font-size: 0.85rem;
+   letter-spacing: 0.12em;
+   text-transform: uppercase;
+
+   color: var(--text-muted);
+}
+
+/* =========================
+   CODE BOX
+========================= */
+
+.code-box {
+   padding: 18px;
+
+   border-radius: var(--radius-lg);
+
+   border: 1px dashed rgba(236,191,133,0.35);
+
+   background: rgba(236,191,133,0.08);
+
+   font-size: 1rem;
+   font-weight: 500;
+
+   color: var(--text-primary);
+
+   text-align: center;
+
+   letter-spacing: 0.08em;
+
+   word-break: break-word;
+}
+
+/* =========================
+   INPUT COPY BOX (PIX / MBWAY)
+========================= */
+
+.code-input {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+
+   padding: 14px 16px;
+
+   border-radius: var(--radius-lg);
+
+   border: 1px dashed rgba(236,191,133,0.35);
+
+   background: rgba(236,191,133,0.08);
+
+   font-size: 1rem;
+   font-weight: 500;
+
+   color: var(--text-primary);
+}
+
+/* número */
+.code-input span {
+   word-break: break-all;
+}
+
+/* botão pequeno copiar */
+.copy-text-btn {
+   font-size: 0.72rem;
+   font-weight: 600;
+
+   letter-spacing: 0.12em;
+   text-transform: uppercase;
+
+   color: var(--color-gold);
+
+   background: transparent;
+   border: none;
+
+   cursor: pointer;
+
+   padding: 4px 8px;
+
+   border-radius: 6px;
+
+   transition: 0.2s ease;
+}
+
+.copy-text-btn:hover {
+   background: rgba(236,191,133,0.15);
+}
+
+/* quando copia */
+.copy-text-btn.copied {
+   color: white;
+   background: var(--color-gold);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
 .confirm-btn {
-   height: 48px;
+   width: 100%;
+   height: 50px;
 
    border: none;
    border-radius: 999px;
@@ -176,27 +349,31 @@
    background: var(--color-gold);
    color: white;
 
-   cursor: pointer;
-
-   font-size: var(--text-sm);
+   font-size: 0.82rem;
    letter-spacing: 0.12em;
    text-transform: uppercase;
+
+   cursor: pointer;
 
    transition: var(--transition-base);
 }
 
 .confirm-btn:hover {
    transform: translateY(-2px);
+
    background: #ddb06f;
 }
 
 .confirm-btn:disabled {
    opacity: 0.5;
    cursor: not-allowed;
+
    transform: none;
 }
 
 .close-btn {
+   width: 100%;
+
    background: transparent;
    border: none;
 
@@ -204,39 +381,13 @@
 
    cursor: pointer;
 
-   font-size: var(--text-sm);
+   font-size: 0.9rem;
+
+   padding: 8px;
 }
 
 /* =========================
-   PAYMENT CODE BOX
-========================= */
-
-.code-box {
-   padding: 14px;
-
-   border-radius: var(--radius-lg);
-   border: var(--border-thin);
-
-   background: rgba(236,191,133,0.08);
-
-   font-size: var(--text-md);
-   color: var(--text-primary);
-
-   text-align: center;
-   letter-spacing: 0.06em;
-}
-
-/* =========================
-   BIG PAYMENT BOX
-========================= */
-
-.payment-box.big {
-   padding: 1rem;
-   text-align: center;
-}
-
-/* =========================
-   SUCCESS SCREEN
+   SUCCESS
 ========================= */
 
 .success-box {
@@ -248,35 +399,44 @@
    gap: 1rem;
 
    padding: 2rem 1rem;
+
    text-align: center;
 }
 
 .success-box .check {
-   width: 64px;
-   height: 64px;
+   width: 72px;
+   height: 72px;
 
    border-radius: 50%;
 
-   background: rgba(91,163,121,0.15);
+   background: rgba(91,163,121,0.12);
+   border: 1px solid rgba(91,163,121,0.20);
+
    color: rgb(60,140,95);
 
    display: flex;
    align-items: center;
    justify-content: center;
 
-   font-size: 1.5rem;
+   font-size: 1.8rem;
 }
 
 .success-box h2 {
    margin: 0;
+
    font-size: var(--text-xl);
    font-weight: 400;
+
+   color: var(--text-primary);
 }
 
 .success-box p {
    margin: 0;
+
    color: var(--text-muted);
+
    font-size: var(--text-sm);
+   line-height: 1.7;
 }
 
 /* =========================
@@ -293,8 +453,33 @@
       opacity: 0;
       transform: translateY(20px);
    }
+
    to {
       opacity: 1;
       transform: translateY(0);
+   }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+
+   .modal {
+      padding: 1.5rem;
+   }
+
+   .payment-options {
+      grid-template-columns: 1fr;
+   }
+
+   .modal-body img {
+      height: 180px;
+   }
+
+   .gift-amount-value {
+      font-size: 1rem;
+      text-align: center;
    }
 }

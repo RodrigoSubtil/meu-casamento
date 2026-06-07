@@ -2,6 +2,7 @@ import "./contentGiftRegistry.css";
 
 import { useEffect, useMemo, useState } from "react";
 import GiftModal from "./GiftModal";
+import { getGifts, reserveGift } from "../../services/giftService";
 
 type GiftCategory = "all" | "kitchen" | "travel" | "home";
 
@@ -19,79 +20,108 @@ export default function ContentGiftRegistry() {
 
    const [gifts, setGifts] = useState<Gift[]>([]);
    const [filter, setFilter] = useState<GiftCategory>("all");
-   const [loading, setLoading] = useState(false);
    const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
+   const [loading, setLoading] = useState(false);
 
    const userName = "Convidado";
+   const BRL_TO_EUR = 6.3;
 
+   // =========================
+   // LOAD GIFTS
+   // =========================
    useEffect(() => {
 
-      const titles = [
-         "Jantar romântico",
-         "Malas de viagem premium",
-         "Conjunto de panelas",
-         "Noite em hotel de luxo",
-         "Decoração elegante",
-         "Experiência spa relaxante",
-         "Café da manhã especial",
-         "Jantar gourmet",
-         "Viagem surpresa",
-         "Tábua de cozinha artesanal",
-         "Set de copos cristal",
-         "Passeio romântico",
-         "Colcha premium",
-         "Acessórios de cozinha",
-         "Férias relaxantes",
-         "Smart speaker",
-         "Kit vinho premium",
-         "Experiência aventura",
-         "Mesa de jantar",
-         "Luzes decorativas"
-      ];
+      async function load() {
 
-      const categories: GiftCategory[] = ["kitchen", "travel", "home"];
+         try {
 
-      const mock: Gift[] = Array.from({ length: 20 }).map((_, i) => {
-         const category = categories[i % categories.length];
+            const data = await getGifts();
+            setGifts(data || []);
 
-         return {
-            id: i + 1,
-            title: titles[i],
-            price: Math.floor(Math.random() * 250) + 25,
-            image: `https://picsum.photos/seed/gift-${i}/600/400`,
-            category,
-            is_reserved: false
-         };
-      });
+         } catch (err) {
 
-      setGifts(mock);
+            console.error("Erro ao buscar gifts:", err);
+
+         }
+
+      }
+
+      load();
 
    }, []);
 
-   async function handleReserve(gift: Gift) {
+   // =========================
+   // ABRIR MODAL
+   // =========================
+   function handleReserve(gift: Gift) {
+
+      if (gift.is_reserved) return;
+
       setSelectedGift(gift);
+
    }
 
-   function confirmReservation() {
+   // =========================
+   // CONFIRMAR RESERVA
+   // =========================
+   async function confirmReservation(
+      method: "pix" | "mbway"
+   ) {
+
       if (!selectedGift) return;
 
-      setLoading(true);
+      try {
 
-      setGifts(prev =>
-         prev.map(g =>
-            g.id === selectedGift.id
-               ? { ...g, is_reserved: true, reserved_by: userName }
-               : g
-         )
-      );
+         setLoading(true);
 
-      setLoading(false);
-      setSelectedGift(null);
+         await reserveGift({
+            giftId: selectedGift.id,
+            title: selectedGift.title,
+            priceBRL: selectedGift.price,
+            priceEUR: selectedGift.price / BRL_TO_EUR,
+            method,
+            userName
+         });
+
+         // Atualiza a UI imediatamente
+         setGifts(prev =>
+            prev.map(g =>
+               g.id === selectedGift.id
+                  ? {
+                     ...g,
+                     is_reserved: true,
+                     reserved_by: userName
+                  }
+                  : g
+            )
+         );
+
+      } catch (err) {
+
+         console.error(err);
+         alert("Erro ao reservar presente.");
+
+      } finally {
+
+         setLoading(false);
+
+      }
+
    }
 
+   // =========================
+   // FILTRO
+   // =========================
    const filteredGifts = useMemo(() => {
-      if (filter === "all") return gifts;
-      return gifts.filter(g => g.category === filter);
+
+      if (filter === "all") {
+         return gifts;
+      }
+
+      return gifts.filter(
+         gift => gift.category === filter
+      );
+
    }, [gifts, filter]);
 
    return (
@@ -102,22 +132,30 @@ export default function ContentGiftRegistry() {
             <div className="gift-container">
 
                <div className="section-header">
+
                   <div className="luxury-title-main">
                      <span>Lista de Presentes</span>
                   </div>
 
                   <p className="section-subtitle">
-                     Queremos viver este dia com muito carinho e partilha…
+                     Queremos viver este dia com muito carinho e partilha.
+                     Caso desejem oferecer um presente, preparamos algumas
+                     sugestões para tornar este momento ainda mais especial.
                   </p>
+
                </div>
 
                {/* FILTERS */}
                <div className="gift-filters">
+
                   {["all", "kitchen", "travel", "home"].map((cat) => (
+
                      <button
                         key={cat}
                         className={filter === cat ? "active" : ""}
-                        onClick={() => setFilter(cat as GiftCategory)}
+                        onClick={() =>
+                           setFilter(cat as GiftCategory)
+                        }
                      >
                         {cat === "all"
                            ? "Todos"
@@ -127,48 +165,88 @@ export default function ContentGiftRegistry() {
                                  ? "Viagem"
                                  : "Casa"}
                      </button>
+
                   ))}
+
                </div>
 
                {/* GRID */}
                <div className="gift-grid">
 
-                  {filteredGifts.map((gift) => (
-                     <div className="gift-card" key={gift.id}>
+                  {filteredGifts.map((gift) => {
 
-                        <div className="gift-image">
-                           <img src={gift.image} alt={gift.title} />
+                     const eur =
+                        gift.price / BRL_TO_EUR;
+
+                     return (
+
+                        <div
+                           className="gift-card"
+                           key={gift.id}
+                        >
+
+                           <div className="gift-image">
+
+                              <img
+                                 src={gift.image}
+                                 alt={gift.title}
+                              />
+
+                           </div>
+
+                           <div className="gift-content">
+
+                              <h3>{gift.title}</h3>
+
+                              <span className="gift-price">
+
+                                 R$ {gift.price
+                                    .toFixed(2)
+                                    .replace(".", ",")}
+
+                                 {" • "}
+
+                                 € {eur
+                                    .toFixed(2)
+                                    .replace(".", ",")}
+
+                              </span>
+
+                              <button
+                                 className="form-button"
+                                 disabled={
+                                    gift.is_reserved ||
+                                    loading
+                                 }
+                                 onClick={() =>
+                                    handleReserve(gift)
+                                 }
+                              >
+                                 {gift.is_reserved
+                                    ? "Reservado"
+                                    : "Presentear"}
+                              </button>
+
+                           </div>
+
                         </div>
 
-                        <div className="gift-content">
+                     );
 
-                           <h3>{gift.title}</h3>
-
-                           <span className="gift-price">
-                              €{gift.price}
-                           </span>
-
-                           <button
-                              className="form-button"
-                              disabled={gift.is_reserved || loading}
-                              onClick={() => handleReserve(gift)}
-                           >
-                              {gift.is_reserved
-                                 ? `Reservado por ${gift.reserved_by}`
-                                 : "Escolher presente"}
-                           </button>
-
-                        </div>
-
-                     </div>
-                  ))}
+                  })}
 
                </div>
 
                {filteredGifts.length === 0 && (
+
                   <div className="gift-empty">
-                     <h3>Nenhum presente encontrado</h3>
+
+                     <h3>
+                        Nenhum presente encontrado
+                     </h3>
+
                   </div>
+
                )}
 
             </div>
@@ -176,11 +254,15 @@ export default function ContentGiftRegistry() {
          </div>
 
          {selectedGift && (
+
             <GiftModal
                gift={selectedGift}
-               onClose={() => setSelectedGift(null)}
+               onClose={() =>
+                  setSelectedGift(null)
+               }
                onConfirm={confirmReservation}
             />
+
          )}
 
       </section>
