@@ -1,6 +1,8 @@
 import { supabase } from "../lib/supabase";
 
-// RSVP
+/* =========================
+   RSVP
+========================= */
 export async function getRsvp() {
    const { data, error } = await supabase
       .from("rsvp")
@@ -14,7 +16,9 @@ export async function getRsvp() {
    return data ?? [];
 }
 
-// MESSAGES
+/* =========================
+   MESSAGES
+========================= */
 export async function getMessages() {
    const { data, error } = await supabase
       .from("messages")
@@ -28,7 +32,9 @@ export async function getMessages() {
    return data ?? [];
 }
 
-// VOTES
+/* =========================
+   VOTES
+========================= */
 export async function getVotes() {
    const { data, error } = await supabase
       .from("votes")
@@ -48,7 +54,9 @@ export async function getVotes() {
    return data ?? [];
 }
 
-// GIFTS
+/* =========================
+   GIFTS (SEM CAMPOS FALSOS)
+========================= */
 export async function getGifts() {
    const { data, error } = await supabase
       .from("gifts")
@@ -60,4 +68,33 @@ export async function getGifts() {
    }
 
    return data ?? [];
+}
+
+/* =========================
+   CRIAR PRESENTE (NOVO)
+========================= */
+export async function createGift(gift: {
+   title: string;
+   price: number;
+   image: string;
+   category: string;
+}) {
+   const { data, error } = await supabase
+      .from("gifts")
+      .insert([
+         {
+            title: gift.title,
+            price: gift.price,
+            image: gift.image,
+            category: gift.category
+         }
+      ])
+      .select();
+
+   if (error) {
+      console.error("ERRO SUPABASE:", error);
+      throw error;
+   }
+
+   return data;
 }

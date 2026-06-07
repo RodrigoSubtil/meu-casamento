@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 
 /* =========================
-   TYPES
+TYPES
 ========================= */
 export type ReserveGiftParams = {
    giftId: number;
@@ -13,7 +13,7 @@ export type ReserveGiftParams = {
 };
 
 /* =========================
-   GET GIFTS
+GET GIFTS
 ========================= */
 export async function getGifts() {
    const { data, error } = await supabase
@@ -27,23 +27,12 @@ export async function getGifts() {
 }
 
 /* =========================
-   RESERVA SEGURA (ANTI DUPLICADO)
+COMPRA (SEM BLOQUEIO / SEM DUPLICADO)
 ========================= */
 export async function reserveGift(data: ReserveGiftParams) {
 
-   // 🔥 1. verifica se já existe reserva
-   const { data: existing } = await supabase
-      .from("purchases")
-      .select("id")
-      .eq("gift_id", data.giftId)
-      .maybeSingle();
-
-   if (existing) {
-      throw new Error("Gift já reservado");
-   }
-
-   // 🔥 2. cria purchase
-   const { error: insertError } = await supabase
+   // cria a compra SEM verificar se já existe
+   const { error } = await supabase
       .from("purchases")
       .insert([
          {
@@ -52,34 +41,28 @@ export async function reserveGift(data: ReserveGiftParams) {
             price_brl: data.priceBRL,
             price_eur: data.priceEUR,
             method: data.method,
-            status: "reserved",
+            status: "paid",
             created_at: new Date().toISOString()
          }
       ]);
 
-   if (insertError) throw insertError;
-
-   // 🔥 3. marca gift como reservado
-   const { error: updateError } = await supabase
-      .from("gifts")
-      .update({
-         is_reserved: true,
-         reserved_by: data.userName || "Convidado"
-      })
-      .eq("id", data.giftId);
-
-   if (updateError) throw updateError;
+   if (error) {
+      throw error;
+   }
 }
 
 /* =========================
-   RESERVAS
+RESERVAS (LISTAGEM OPCIONAL)
 ========================= */
 export async function getReservedGifts() {
+
    const { data, error } = await supabase
       .from("purchases")
       .select("gift_id, status");
 
-   if (error) return [];
+   if (error) {
+      return [];
+   }
 
    return data || [];
-}
+}   

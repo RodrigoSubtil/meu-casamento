@@ -1,20 +1,31 @@
 import "./dashboard.css";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
    getRsvp,
    getMessages,
    getVotes,
-   getGifts
+   getGifts,
+   createGift
 } from "../../services/dashboardService";
 
+type Section = "dashboard" | "gifts" | "guests" | "messages" | "votes";
+
 export default function Dashboard() {
+
+   const [section, setSection] = useState<Section>("dashboard");
 
    const [rsvp, setRsvp] = useState<any[]>([]);
    const [messages, setMessages] = useState<any[]>([]);
    const [votes, setVotes] = useState<any[]>([]);
    const [gifts, setGifts] = useState<any[]>([]);
-   const [filter, setFilter] = useState<"all" | "yes" | "no">("all");
+
+   // FORM GIFTS
+   const [title, setTitle] = useState("");
+   const [price, setPrice] = useState("");
+   const [image, setImage] = useState("");
+   const [category, setCategory] = useState("kitchen");
+   const [loading, setLoading] = useState(false);
 
    useEffect(() => {
       load();
@@ -35,280 +46,188 @@ export default function Dashboard() {
    }
 
    // =========================
-   // KPIs RSVP
+   // CREATE GIFT
    // =========================
+   async function handleCreateGift(e: React.FormEvent) {
+      e.preventDefault();
 
-   const total = rsvp.length;
+      if (!title || !price || !image) return;
 
-   const attending = rsvp.filter(r =>
-      r.attending === "Yes, I will be there"
-   ).length;
+      try {
+         setLoading(true);
 
-   const notAttending = total - attending;
-
-   const kids = rsvp.filter(r => Number(r.age) < 12).length;
-
-   const attendanceRate = total
-      ? Math.round((attending / total) * 100)
-      : 0;
-
-   // =========================
-   // FILTER RSVP
-   // =========================
-
-   const filteredRsvp = useMemo(() => {
-      if (filter === "all") return rsvp;
-      if (filter === "yes") return rsvp.filter(r => r.attending === "Yes, I will be there");
-      return rsvp.filter(r => r.attending !== "Yes, I will be there");
-   }, [rsvp, filter]);
-
-   // =========================
-   // VOTES ANALYSIS (🔥 NOVO)
-   // =========================
-
-   const voteStats = useMemo(() => {
-
-      if (!votes.length) return [];
-
-      const grouped: Record<string, any> = {};
-
-      votes.forEach((v: any) => {
-
-         const question = v.questions?.question || "Question";
-         const option = v.options?.text || "Option";
-
-         if (!grouped[question]) {
-            grouped[question] = {
-               total: 0,
-               options: {}
-            };
-         }
-
-         grouped[question].total += 1;
-
-         if (!grouped[question].options[option]) {
-            grouped[question].options[option] = 0;
-         }
-
-         grouped[question].options[option] += 1;
-      });
-
-      return Object.entries(grouped).map(([question, data]: any) => {
-
-         const options = Object.entries(data.options).map(([option, count]: any) => {
-            return {
-               option,
-               count,
-               percent: Math.round((count / data.total) * 100)
-            };
+         await createGift({
+            title,
+            price: Number(price),
+            image,
+            category
          });
 
-         return {
-            question,
-            total: data.total,
-            options
-         };
-      });
+         setTitle("");
+         setPrice("");
+         setImage("");
+         setCategory("kitchen");
 
-   }, [votes]);
+         await load();
+
+      } catch (err) {
+         console.error("Erro ao criar presente:", err);
+      } finally {
+         setLoading(false);
+      }
+   }
 
    return (
       <section className="dashboard">
 
-         <div className="dashboard-container">
+         {/* SIDEBAR */}
+         <aside className="sidebar">
 
-            {/* HEADER */}
-            <header className="dashboard-header">
+            <div className="logo">
+               Wedding Admin
+            </div>
 
-               <div className="luxury-title">
-                  <span>Admin Panel</span>
-               </div>
+            <nav className="menu">
 
-               <h1>Wedding Control Center</h1>
+               <button onClick={() => setSection("dashboard")}>
+                  Dashboard
+               </button>
 
-               <p>
-                  Overview completo em tempo real: convidados, votos, mensagens e presentes.
-               </p>
+               <button onClick={() => setSection("guests")}>
+                  Convidados
+               </button>
 
+               <button onClick={() => setSection("messages")}>
+                  Mensagens
+               </button>
+
+               <button onClick={() => setSection("votes")}>
+                  Votações
+               </button>
+
+               <button onClick={() => setSection("gifts")}>
+                  Presentes
+               </button>
+
+            </nav>
+
+         </aside>
+
+         {/* MAIN */}
+         <main className="main">
+
+            {/* TOPBAR */}
+            <header className="topbar">
+               <h1>Dashboard</h1>
+               <div className="user">Admin</div>
             </header>
 
-            {/* =========================
-                KPI GRID
-            ========================= */}
+            <div className="content">
 
-            <div className="kpi-grid">
-
-               <div className="kpi-card">
-                  <span>Total convidados</span>
-                  <strong>{total}</strong>
-               </div>
-
-               <div className="kpi-card highlight">
-                  <span>Confirmados</span>
-                  <strong>{attending}</strong>
-               </div>
-
-               <div className="kpi-card danger">
-                  <span>Não vão</span>
-                  <strong>{notAttending}</strong>
-               </div>
-
-               <div className="kpi-card">
-                  <span>Crianças</span>
-                  <strong>{kids}</strong>
-               </div>
-
-               <div className="kpi-card">
-                  <span>Taxa presença</span>
-                  <strong>{attendanceRate}%</strong>
-               </div>
-
-               <div className="kpi-card">
-                  <span>Mensagens</span>
-                  <strong>{messages.length}</strong>
-               </div>
-
-            </div>
-
-            {/* =========================
-                RSVP PANEL
-            ========================= */}
-
-            <div className="panel">
-
-               <div className="panel-header">
-                  <h2>Lista de Convidados</h2>
-
-                  <div className="panel-actions">
-                     <button onClick={() => setFilter("all")}>Todos</button>
-                     <button onClick={() => setFilter("yes")}>Vão</button>
-                     <button onClick={() => setFilter("no")}>Não vão</button>
+               {/* =========================
+                  DASHBOARD HOME
+               ========================= */}
+               {section === "dashboard" && (
+                  <div className="card-grid">
+                     <div className="card">Convidados: {rsvp.length}</div>
+                     <div className="card">Mensagens: {messages.length}</div>
+                     <div className="card">Votos: {votes.length}</div>
+                     <div className="card">Presentes: {gifts.length}</div>
                   </div>
+               )}
 
-               </div>
+               {/* =========================
+                  PRESENTES (FORM + LISTA)
+               ========================= */}
+               {section === "gifts" && (
+                  <>
+                     <div className="panel">
 
-               <div className="table">
+                        <h2>Criar novo presente</h2>
 
-                  {filteredRsvp.map((r) => (
-                     <div className="row" key={r.id}>
+                        <form onSubmit={handleCreateGift} className="gift-form">
 
-                        <div className="cell name">{r.name}</div>
+                           <input
+                              placeholder="Título do presente"
+                              value={title}
+                              onChange={e => setTitle(e.target.value)}
+                           />
 
-                        <div className="cell">
-                           <span className={r.attending === "Yes, I will be there" ? "tag yes" : "tag no"}>
-                              {r.attending}
-                           </span>
-                        </div>
+                           <input
+                              placeholder="Preço (BRL)"
+                              type="number"
+                              value={price}
+                              onChange={e => setPrice(e.target.value)}
+                           />
 
-                        <div className="cell">{r.category}</div>
+                           <input
+                              placeholder="URL da imagem"
+                              value={image}
+                              onChange={e => setImage(e.target.value)}
+                           />
 
-                        <div className="cell">{r.age} anos</div>
+                           <select
+                              value={category}
+                              onChange={e => setCategory(e.target.value)}
+                           >
+                              <option value="kitchen">Cozinha</option>
+                              <option value="travel">Viagem</option>
+                              <option value="home">Casa</option>
+                           </select>
+
+                           <button className="form-button" disabled={loading}>
+                              {loading ? "A criar..." : "Criar presente"}
+                           </button>
+
+                        </form>
 
                      </div>
-                  ))}
 
-               </div>
+                     <div className="panel">
 
-            </div>
+                        <h2>Presentes criados</h2>
 
-            {/* =========================
-                MESSAGES
-            ========================= */}
-
-            <div className="panel">
-
-               <div className="panel-header">
-                  <h2>Mensagens</h2>
-               </div>
-
-               <div className="table">
-
-                  {messages.map((m) => (
-                     <div className="row" key={m.id}>
-                        <div className="cell name">{m.name}</div>
-                        <div className="cell message">{m.message}</div>
-                     </div>
-                  ))}
-
-               </div>
-
-            </div>
-
-            {/* =========================
-                VOTES (🔥 NOVO COMPLETO)
-            ========================= */}
-
-            <div className="panel">
-
-               <div className="panel-header">
-                  <h2>Resultados das Votações</h2>
-               </div>
-
-               <div className="vote-container">
-
-                  {voteStats.map((q, i) => (
-                     <div className="vote-card" key={i}>
-
-                        <h3>{q.question}</h3>
-
-                        <div className="vote-options">
-
-                           {q.options.map((opt: any, idx: number) => (
-                              <div className="vote-option" key={idx}>
-
-                                 <div className="vote-label">
-                                    {opt.option}
-                                 </div>
-
-                                 <div className="vote-bar-wrapper">
-                                    <div
-                                       className="vote-bar"
-                                       style={{ width: `${opt.percent}%` }}
-                                    />
-                                 </div>
-
-                                 <div className="vote-percent">
-                                    {opt.percent}%
-                                 </div>
-
+                        <div className="table">
+                           {gifts.map(g => (
+                              <div className="row" key={g.id}>
+                                 <div className="cell">{g.title}</div>
+                                 <div className="cell">R$ {g.price}</div>
+                                 <div className="cell">{g.category}</div>
                               </div>
                            ))}
-
                         </div>
 
-                        <small>Total votos: {q.total}</small>
-
                      </div>
-                  ))}
+                  </>
+               )}
 
-               </div>
+               {/* =========================
+                  OUTRAS SEÇÕES (placeholder)
+               ========================= */}
+               {section === "guests" && (
+                  <div className="panel">
+                     <h2>Convidados</h2>
+                     <p>Em breve...</p>
+                  </div>
+               )}
+
+               {section === "messages" && (
+                  <div className="panel">
+                     <h2>Mensagens</h2>
+                     <p>Em breve...</p>
+                  </div>
+               )}
+
+               {section === "votes" && (
+                  <div className="panel">
+                     <h2>Votações</h2>
+                     <p>Em breve...</p>
+                  </div>
+               )}
 
             </div>
 
-            {/* =========================
-                GIFTS
-            ========================= */}
-
-            <div className="panel">
-
-               <div className="panel-header">
-                  <h2>Presentes</h2>
-               </div>
-
-               <div className="table">
-
-                  {gifts.map((g) => (
-                     <div className="row" key={g.id}>
-                        <div className="cell">{g.name}</div>
-                        <div className="cell">{g.title}</div>
-                     </div>
-                  ))}
-
-               </div>
-
-            </div>
-
-         </div>
+         </main>
 
       </section>
    );

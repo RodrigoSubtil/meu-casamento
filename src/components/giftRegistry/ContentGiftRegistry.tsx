@@ -138,9 +138,8 @@ export default function ContentGiftRegistry() {
                   </div>
 
                   <p className="section-subtitle">
-                     Queremos viver este dia com muito carinho e partilha.
-                     Caso desejem oferecer um presente, preparamos algumas
-                     sugestões para tornar este momento ainda mais especial.
+                     Ter vocês dividindo esse momento com a gente já é, sem dúvida, o nosso maior e melhor presente!
+                     Aos que carinhosamente desejam nos presentear, deixamos aqui algumas opções virtuais. Como moramos em Portugal, infelizmente não teremos como levar itens físicos na viagem de regresso. Por isso, organizamos uma lista onde todos os presentes serão revertidos em dinheiro, nos ajudando no início da nossa vida a dois.
                   </p>
 
                </div>

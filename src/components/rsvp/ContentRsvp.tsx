@@ -23,9 +23,7 @@ export default function ContentRsvp() {
    const [errors, setErrors] = useState<RsvpErrors>({});
    const [success, setSuccess] = useState<boolean>(false);
 
-   async function handleSubmit(
-      e: React.FormEvent<HTMLFormElement>
-   ) {
+   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
 
       setSuccess(false);
@@ -119,10 +117,9 @@ export default function ContentRsvp() {
 
                   <div className="rsvp-grid">
 
+                     {/* NAME */}
                      <div className="form-group">
-                        <label className="form-label">
-                           Nome completo
-                        </label>
+                        <label className="form-label">Nome completo</label>
 
                         <input
                            className={`form-input ${errors.name ? "form-error-input" : ""}`}
@@ -135,23 +132,17 @@ export default function ContentRsvp() {
                         </span>
                      </div>
 
+                     {/* ATTENDING */}
                      <div className="form-group">
-                        <label className="form-label">
-                           Vai comparecer?
-                        </label>
+                        <label className="form-label">Vai comparecer?</label>
 
                         <select
                            className={`form-select ${errors.attending ? "form-error-input" : ""}`}
                            value={attending}
                            onChange={(e) => setAttending(e.target.value)}
                         >
-                           <option>
-                              Sim, vou estar presente
-                           </option>
-
-                           <option>
-                              Desculpe, não vou poder ir
-                           </option>
+                           <option>Sim, vou estar presente</option>
+                           <option>Desculpe, não vou poder ir</option>
                         </select>
 
                         <span className={`form-error ${errors.attending ? "show" : ""}`}>
@@ -159,27 +150,18 @@ export default function ContentRsvp() {
                         </span>
                      </div>
 
+                     {/* CATEGORY */}
                      <div className="form-group">
-                        <label className="form-label">
-                           Categoria
-                        </label>
+                        <label className="form-label">Categoria</label>
 
                         <select
                            className={`form-select ${errors.category ? "form-error-input" : ""}`}
                            value={category}
                            onChange={(e) => setCategory(e.target.value)}
                         >
-                           <option value="">
-                              Selecione uma opção
-                           </option>
-
-                           <option value="family">
-                              Família
-                           </option>
-
-                           <option value="friend">
-                              Amigo(a)
-                           </option>
+                           <option value="">Selecione uma opção</option>
+                           <option value="family">Família</option>
+                           <option value="friend">Amigo(a)</option>
                         </select>
 
                         <span className={`form-error ${errors.category ? "show" : ""}`}>
@@ -187,10 +169,9 @@ export default function ContentRsvp() {
                         </span>
                      </div>
 
+                     {/* AGE */}
                      <div className="form-group">
-                        <label className="form-label">
-                           Idade
-                        </label>
+                        <label className="form-label">Idade</label>
 
                         <input
                            type="number"
@@ -206,10 +187,7 @@ export default function ContentRsvp() {
 
                   </div>
 
-                  <button
-                     className="form-button"
-                     disabled={loading}
-                  >
+                  <button className="form-button" disabled={loading}>
                      {loading ? "A enviar..." : "Enviar"}
                   </button>
 
