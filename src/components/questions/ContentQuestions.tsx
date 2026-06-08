@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./contentQuestions.css";
 import { supabase } from "../../lib/supabase";
+import { getQuestions } from "../../services/questionsService";
 
 type QuestionUIState = {
    voted?: boolean;
@@ -12,47 +13,35 @@ type VotesMap = Record<number, Record<number, number>>;
 
 export default function ContentQuestions() {
 
-   const questions = [
-      {
-         id: 1,
-         question: "Quem vai chegar primeiro ao casamento?",
-         options: ["Noiva", "Noivo", "Ambos no horário"]
-      },
-      {
-         id: 2,
-         question: "Quem vai chorar primeiro?",
-         options: ["Noiva", "Noivo", "Ambos"]
-      },
-      {
-         id: 3,
-         question: "Quem tem mais probabilidade de esquecer algo importante?",
-         options: ["Noiva", "Noivo", "Ninguém"]
-      },
-      {
-         id: 4,
-         question: "Qual será o melhor momento?",
-         options: ["Cerimónia", "Jantar", "Festa"]
-      },
-      {
-         id: 5,
-         question: "Quem vai dançar mais?",
-         options: ["Noiva", "Noivo", "Ambos igualmente"]
-      }
-   ];
-
+   const [questions, setQuestions] = useState<any[]>([]);
    const [state, setState] = useState<Record<number, QuestionUIState>>({});
    const [votes, setVotes] = useState<VotesMap>({});
 
    useEffect(() => {
+      loadQuestions();
       loadVotes();
    }, []);
 
+   // =========================
+   // 📌 CARREGAR QUESTÕES
+   // =========================
+   async function loadQuestions() {
+      const data = await getQuestions();
+      setQuestions(data);
+   }
+
+   // =========================
+   // 📌 CARREGAR VOTOS
+   // =========================
    async function loadVotes() {
       const { data, error } = await supabase
          .from("votes")
          .select("question_id, option_id");
 
-      if (error) return;
+      if (error) {
+         console.error(error);
+         return;
+      }
 
       const map: VotesMap = {};
 
@@ -65,11 +54,14 @@ export default function ContentQuestions() {
       setVotes(map);
    }
 
-   async function handleVote(questionId: number, optionIndex: number) {
+   // =========================
+   // 📌 VOTAR
+   // =========================
+   async function handleVote(questionId: number, optionId: number) {
 
       await supabase.from("votes").insert({
          question_id: questionId,
-         option_id: optionIndex + 1
+         option_id: optionId
       });
 
       await loadVotes();
@@ -79,11 +71,14 @@ export default function ContentQuestions() {
          [questionId]: {
             voted: true,
             showResults: false,
-            selectedOption: optionIndex
+            selectedOption: optionId
          }
       }));
    }
 
+   // =========================
+   // 📌 MOSTRAR RESULTADOS
+   // =========================
    function showResults(questionId: number) {
       setState(prev => ({
          ...prev,
@@ -94,6 +89,9 @@ export default function ContentQuestions() {
       }));
    }
 
+   // =========================
+   // 📌 % POR OPÇÃO
+   // =========================
    function getPercent(questionId: number, optionId: number) {
 
       const qVotes = votes[questionId];
@@ -107,6 +105,9 @@ export default function ContentQuestions() {
       return (value / total) * 100;
    }
 
+   // =========================
+   // 📌 RENDER
+   // =========================
    return (
       <section className="questions">
 
@@ -120,7 +121,7 @@ export default function ContentQuestions() {
                   </div>
 
                   <p className="section-subtitle">
-                     Há sempre muitas expectativas e palpites quando um casamento se aproxima, e queremos conhecer os vossos também. Por isso, reunimos aqui algumas perguntas divertidas para vocês. Façam suas apostas e se divirtam com a gente.
+                     Há sempre muitas expectativas e palpites quando um casamento se aproxima...
                   </p>
                </div>
 
@@ -146,16 +147,16 @@ export default function ContentQuestions() {
 
                            <div className="question-options">
 
-                              {q.options.map((opt, index) => {
+                              {q.options.map((opt: any) => {
 
-                                 const percent = getPercent(q.id, index + 1);
-                                 const selected = qState.selectedOption === index;
+                                 const percent = getPercent(q.id, opt.id);
+                                 const selected = qState.selectedOption === opt.id;
 
                                  return (
                                     <button
-                                       key={index}
+                                       key={opt.id}
                                        className={`option-line ${selected ? "selected" : ""}`}
-                                       onClick={() => handleVote(q.id, index)}
+                                       onClick={() => handleVote(q.id, opt.id)}
                                        disabled={qState.voted}
                                     >
 
@@ -169,7 +170,7 @@ export default function ContentQuestions() {
                                        <div className="option-left">
                                           <span className="radio-circle" />
                                           <span className="option-text">
-                                             {opt}
+                                             {opt.text}
                                           </span>
                                        </div>
 

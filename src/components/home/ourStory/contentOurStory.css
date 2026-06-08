@@ -69,18 +69,6 @@
    transition: var(--transition-base);
 }
 
-/* hover suave */
-.story-item:hover {
-   transform: translateY(-6px);
-   box-shadow: var(--shadow-md);
-}
-
-/* segurança contra overflow */
-.story-item * {
-   max-width: 100%;
-   overflow-wrap: break-word;
-}
-
 /* =========================
    DATE
 ========================= */
