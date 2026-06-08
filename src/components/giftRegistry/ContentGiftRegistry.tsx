@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import GiftModal from "./GiftModal";
 import { getGifts, reserveGift } from "../../services/giftService";
 
-type GiftCategory = "all" | "kitchen" | "travel" | "home";
+type GiftCategory = "all" | "product" | "experience";
 
 type Gift = {
    id: number;
@@ -147,7 +147,7 @@ export default function ContentGiftRegistry() {
                {/* FILTERS */}
                <div className="gift-filters">
 
-                  {["all", "kitchen", "travel", "home"].map((cat) => (
+                  {["all", "product", "experience"].map((cat) => (
 
                      <button
                         key={cat}
@@ -158,11 +158,11 @@ export default function ContentGiftRegistry() {
                      >
                         {cat === "all"
                            ? "Todos"
-                           : cat === "kitchen"
-                              ? "Cozinha"
-                              : cat === "travel"
-                                 ? "Viagem"
-                                 : "Casa"}
+                           : cat === "product"
+                              ? "Produto"
+                              : cat === "experience"
+                                 ? "Experiência"
+                                 : ""}
                      </button>
 
                   ))}

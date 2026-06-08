@@ -24,7 +24,7 @@ export default function Dashboard() {
    const [title, setTitle] = useState("");
    const [price, setPrice] = useState("");
    const [image, setImage] = useState("");
-   const [category, setCategory] = useState("kitchen");
+   const [category, setCategory] = useState("product");
    const [loading, setLoading] = useState(false);
 
    useEffect(() => {
@@ -66,7 +66,7 @@ export default function Dashboard() {
          setTitle("");
          setPrice("");
          setImage("");
-         setCategory("kitchen");
+         setCategory("product");
 
          await load();
 
@@ -170,9 +170,8 @@ export default function Dashboard() {
                               value={category}
                               onChange={e => setCategory(e.target.value)}
                            >
-                              <option value="kitchen">Cozinha</option>
-                              <option value="travel">Viagem</option>
-                              <option value="home">Casa</option>
+                              <option value="product">Produto</option>
+                              <option value="experience">Experiência</option>
                            </select>
 
                            <button className="form-button" disabled={loading}>
