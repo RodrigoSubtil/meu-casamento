@@ -46,21 +46,6 @@
    position: relative;
 }
 
-/* linha central apenas desktop */
-.story-timeline::before {
-   content: "";
-   position: absolute;
-
-   left: 50%;
-   top: 0;
-   bottom: 0;
-
-   width: 1px;
-   background: rgba(48, 65, 98, 0.12);
-
-   transform: translateX(-50%);
-}
-
 /* =========================
    CARD (PROBLEMA PRINCIPAL RESOLVIDO)
 ========================= */
@@ -168,7 +153,6 @@
    }
 
    .story-item {
-      text-align: left;
       padding: 26px;
    }
 }

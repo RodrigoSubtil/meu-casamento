@@ -19,33 +19,39 @@ export default function ContentOurStory() {
             <div className="story-timeline">
 
                <div className="story-item">
-                  <span className="story-date">2019</span>
-                  <h3>O primeiro encontro</h3>
-                  <p>Um momento simples que mudou tudo.</p>
-               </div>
-
-               <div className="story-item">
-                  <span className="story-date">2020</span>
-                  <h3>Começamos a nos conhecer</h3>
-                  <p>Conversas, risadas e conexão imediata.</p>
-               </div>
-
-               <div className="story-item">
                   <span className="story-date">2021</span>
-                  <h3>O início oficial</h3>
-                  <p>Decidimos viver essa história juntos.</p>
+                  <h3>O primeiro encontro</h3>
+                  <p>Um olhar, uma conversa e a sensação de que algo especial estava para começar.</p>
                </div>
 
                <div className="story-item">
+                  <span className="story-date">2022</span>
+                  <h3>O início oficial</h3>
+                  <p>Entre risos, mensagens e momentos, nasceu o nosso namoro.</p>
+               </div>
+
+                <div className="story-item">
                   <span className="story-date">2023</span>
-                  <h3>Construindo sonhos</h3>
-                  <p>Viagens, planos e momentos inesquecíveis.</p>
+                  <h3>A distância</h3>
+                  <p>O dia em que a distância seria uma realidade entre nós. A Duda embarca para o outro lado do oceâno, rumo a Portugal.</p>
+               </div>
+
+               <div className="story-item">
+                  <span className="story-date">2024</span>
+                  <h3>O rencontro</h3>
+                  <p>Depois de um ano e meio namorando a distância, nos reencontramos. Rodrigo enfim se muda para Portugal.</p>
+               </div>
+
+               <div className="story-item">
+                  <span className="story-date">2025</span>
+                  <h3>Um passo à frente</h3>
+                  <p>Decidimos dar mais um passo e construir um futuro juntos.</p>
                </div>
 
                <div className="story-item highlight">
                   <span className="story-date">2026</span>
                   <h3>O casamento</h3>
-                  <p>O começo da nossa vida a dois.</p>
+                  <p>O dia do nosso sim, para sempre!</p>
                </div>
 
             </div>

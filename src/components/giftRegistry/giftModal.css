@@ -90,14 +90,14 @@
 }
 
 /* =========================
-   INFO
+   INFO (AJUSTADO)
 ========================= */
 
 .modal-info {
    display: flex;
-   justify-content: space-between;
-   align-items: center;
-   gap: 1rem;
+   flex-direction: column; /* 🔥 empilha */
+   align-items: flex-start;
+   gap: 6px;
 }
 
 .modal-info h3 {
@@ -107,6 +107,9 @@
    font-weight: 400;
 
    color: var(--text-primary);
+
+   width: 100%;
+   margin-bottom: 0.5rem;
 }
 
 .modal-info span {
@@ -114,6 +117,8 @@
    font-weight: 500;
 
    color: var(--color-gold);
+
+   white-space: nowrap; /* 🔥 não quebra linha */
 }
 
 /* =========================
@@ -298,12 +303,10 @@
    color: var(--text-primary);
 }
 
-/* número */
 .code-input span {
    word-break: break-all;
 }
 
-/* botão pequeno copiar */
 .copy-text-btn {
    font-size: 0.72rem;
    font-weight: 600;
@@ -329,7 +332,6 @@
    background: rgba(236,191,133,0.15);
 }
 
-/* quando copia */
 .copy-text-btn.copied {
    color: white;
    background: var(--color-gold);
@@ -360,14 +362,12 @@
 
 .confirm-btn:hover {
    transform: translateY(-2px);
-
    background: #ddb06f;
 }
 
 .confirm-btn:disabled {
    opacity: 0.5;
    cursor: not-allowed;
-
    transform: none;
 }
 
@@ -453,7 +453,6 @@
       opacity: 0;
       transform: translateY(20px);
    }
-
    to {
       opacity: 1;
       transform: translateY(0);

@@ -52,7 +52,7 @@ export default function ContentLocations() {
                         <p className="location-text">
                            Funny Eventos
                            <br />
-                           19:00 — 15 · 08 · 2026
+                           Após a cerimônia — 15 · 08 · 2026
                         </p>
                      </div>
 
