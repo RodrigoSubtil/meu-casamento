@@ -114,8 +114,17 @@ export default function GiftModal({
             }
          >
 
+            <button
+               className="modal-close"
+               onClick={onClose}
+               aria-label="Fechar"
+            >
+               ×
+            </button>
+
             {step === "choose" && (
                <>
+
 
                   <div className="modal-header">
                      <h2>
@@ -157,11 +166,10 @@ export default function GiftModal({
                   <div className="payment-options">
 
                      <button
-                        className={`payment-card ${
-                           method === "pix"
+                        className={`payment-card ${method === "pix"
                               ? "active"
                               : ""
-                        }`}
+                           }`}
                         onClick={() =>
                            setMethod("pix")
                         }
@@ -174,11 +182,10 @@ export default function GiftModal({
                      </button>
 
                      <button
-                        className={`payment-card ${
-                           method === "mbway"
+                        className={`payment-card ${method === "mbway"
                               ? "active"
                               : ""
-                        }`}
+                           }`}
                         onClick={() =>
                            setMethod("mbway")
                         }
@@ -260,11 +267,10 @@ export default function GiftModal({
                         </span>
 
                         <button
-                           className={`copy-text-btn ${
-                              copied
+                           className={`copy-text-btn ${copied
                                  ? "copied"
                                  : ""
-                           }`}
+                              }`}
                            onClick={handleCopy}
                         >
                            {copied

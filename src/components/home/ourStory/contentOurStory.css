@@ -111,22 +111,6 @@
 }
 
 /* =========================
-   HIGHLIGHT
-========================= */
-
-.story-item.highlight {
-   background: var(--color-navy);
-   border: none;
-   color: white;
-}
-
-.story-item.highlight h3,
-.story-item.highlight p,
-.story-item.highlight .story-date {
-   color: white;
-}
-
-/* =========================
    RESPONSIVO LIMPO (SEM QUEBRAR LAYOUT)
 ========================= */
 

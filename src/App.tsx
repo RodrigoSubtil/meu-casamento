@@ -6,6 +6,7 @@ import GiftRegistry from "./pages/GiftRegistry"
 import Questions from "./pages/Questions"
 import Dashboard from "./pages/dashboard/Dashboard"
 import Gallery from "./pages/Gallery"
+import About from "./pages/Sobre"
 
 
 export default function App() {
@@ -23,6 +24,8 @@ export default function App() {
       <Route path="/gift-registry" element={<GiftRegistry />} />
 
       <Route path="/gallery" element={<Gallery />} />
+
+      <Route path="/about" element={<About />} />
 
       <Route path="/dashboardmr" element={<Dashboard />} />
 

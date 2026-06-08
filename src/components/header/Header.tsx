@@ -18,6 +18,7 @@ export default function Header() {
                      <a href="rsvp">Convidados</a>
                      <a href="gallery">Galeria</a>
                      <a href="questions">Interagir</a>
+                     <a href="about">Sobre</a>
                   </div>
                </div>
 

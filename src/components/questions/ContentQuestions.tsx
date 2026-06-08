@@ -121,7 +121,7 @@ export default function ContentQuestions() {
                   </div>
 
                   <p className="section-subtitle">
-                     Há sempre muitas expectativas e palpites quando um casamento se aproxima...
+                     Há sempre muitas expectativas e palpites quando um casamento se aproxima, e queremos conhecer os vossos também. Por isso, reunimos aqui algumas perguntas divertidas para vocês. Façam suas apostas e se divirtam com a gente.
                   </p>
                </div>
 
