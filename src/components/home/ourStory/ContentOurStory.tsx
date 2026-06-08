@@ -6,32 +6,47 @@ export default function ContentOurStory() {
 
          <div className="our-story-container">
 
-            {/* HEADER GLOBAL */}
+            {/* HEADER */}
             <div className="section-header">
 
                <div className="luxury-title">
                   <span>Nossa História</span>
                </div>
 
-               <p className="section-subtitle">
-                  Tudo começou de forma simples — num momento que nenhum de nós imaginava
-                  que se tornaria inesquecível. Entre longas conversas, sonhos partilhados
-                  e dias comuns que aos poucos se transformaram em algo extraordinário,
-                  encontrámos algo raro: um amor que nos fez sentir em casa.
+            </div>
 
-                  Ao longo de cada desafio, de cada distância e de cada novo começo,
-                  continuámos a escolher um ao outro, dia após dia. Aquilo que começou
-                  de forma inesperada tornou-se, lentamente, o centro das nossas vidas.
+            {/* TIMELINE */}
+            <div className="story-timeline">
 
-                  Tudo começou de forma simples — num momento que nenhum de nós imaginava
-                  que se tornaria inesquecível. Entre longas conversas, sonhos partilhados
-                  e dias comuns que aos poucos se transformaram em algo extraordinário,
-                  encontrámos algo raro: um amor que nos fez sentir em casa.
+               <div className="story-item">
+                  <span className="story-date">2019</span>
+                  <h3>O primeiro encontro</h3>
+                  <p>Um momento simples que mudou tudo.</p>
+               </div>
 
-                  Ao longo de cada desafio, de cada distância e de cada novo começo,
-                  continuámos a escolher um ao outro, dia após dia. Aquilo que começou
-                  de forma inesperada tornou-se, lentamente, o centro das nossas vidas.
-               </p>
+               <div className="story-item">
+                  <span className="story-date">2020</span>
+                  <h3>Começamos a nos conhecer</h3>
+                  <p>Conversas, risadas e conexão imediata.</p>
+               </div>
+
+               <div className="story-item">
+                  <span className="story-date">2021</span>
+                  <h3>O início oficial</h3>
+                  <p>Decidimos viver essa história juntos.</p>
+               </div>
+
+               <div className="story-item">
+                  <span className="story-date">2023</span>
+                  <h3>Construindo sonhos</h3>
+                  <p>Viagens, planos e momentos inesquecíveis.</p>
+               </div>
+
+               <div className="story-item highlight">
+                  <span className="story-date">2026</span>
+                  <h3>O casamento</h3>
+                  <p>O começo da nossa vida a dois.</p>
+               </div>
 
             </div>
 

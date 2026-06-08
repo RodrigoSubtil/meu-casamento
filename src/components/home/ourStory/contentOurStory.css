@@ -1,26 +1,23 @@
 /* =========================
-   OUR STORY
+   SECTION BASE
 ========================= */
 
 .our-story {
    background: var(--color-white);
    width: 100%;
-
+   padding: 120px 0;
    display: flex;
    justify-content: center;
-
-   padding: 120px 0;
-
-   overflow-x: hidden; /* 🔥 evita overflow invisível */
+   box-sizing: border-box;
 }
 
 /* =========================
-   CONTAINER
+   CONTAINER (RESPIRA LATERAL)
 ========================= */
 
 .our-story-container {
    width: 100%;
-   max-width: 900px;
+   max-width: 1000px; /* usa teu global */
 
    margin: 0 auto;
 
@@ -28,49 +25,165 @@
    flex-direction: column;
    align-items: center;
 
-   text-align: center;
+   gap: var(--space-8);
 
-   gap: 1.5rem;
-
-   padding: 0 20px;
-
+   padding: 0 32px;
    box-sizing: border-box;
 }
 
 /* =========================
-   HEADER FIX
+   TIMELINE (FULL WIDTH REAL)
 ========================= */
 
-.section-header {
+.story-timeline {
    width: 100%;
+
    display: flex;
    flex-direction: column;
-   align-items: center;
 
-   gap: 1rem;
+   gap: 2.5rem;
+
+   position: relative;
+}
+
+/* linha central apenas desktop */
+.story-timeline::before {
+   content: "";
+   position: absolute;
+
+   left: 50%;
+   top: 0;
+   bottom: 0;
+
+   width: 1px;
+   background: rgba(48, 65, 98, 0.12);
+
+   transform: translateX(-50%);
 }
 
 /* =========================
-   TITLE FIX
+   CARD (PROBLEMA PRINCIPAL RESOLVIDO)
 ========================= */
 
-.luxury-title {
-   width: 100%;
+.story-item {
+   width: 100%;           /* 🔥 ocupa tudo */
+   max-width: 100%;       /* 🔥 remove limitação anterior */
+
+   padding: 32px;
+
+   border: var(--border-thin);
+   border-radius: var(--radius-xl);
+
+   background: var(--color-white);
+   box-shadow: var(--shadow-sm);
+
    text-align: center;
+
+   box-sizing: border-box;
+
+   transition: var(--transition-base);
+}
+
+/* hover suave */
+.story-item:hover {
+   transform: translateY(-6px);
+   box-shadow: var(--shadow-md);
+}
+
+/* segurança contra overflow */
+.story-item * {
+   max-width: 100%;
+   overflow-wrap: break-word;
 }
 
 /* =========================
-   SUBTITLE FIX (AQUI É O PROBLEMA REAL)
+   DATE
 ========================= */
 
-.section-subtitle {
-   width: 100%;
-   max-width: 700px;  /* 🔥 impede estourar layout */
+.story-date {
+   display: block;
+   margin-bottom: 10px;
 
+   font-size: var(--text-xs);
+   letter-spacing: 0.2em;
+   text-transform: uppercase;
+
+   color: var(--color-gold);
+}
+
+/* =========================
+   TITULO
+========================= */
+
+.story-item h3 {
+   margin: 0 0 10px 0;
+
+   font-size: var(--text-lg);
+   font-weight: 400;
+
+   color: var(--text-primary);
+}
+
+/* =========================
+   TEXTO
+========================= */
+
+.story-item p {
    margin: 0;
 
+   font-size: var(--text-sm);
    line-height: 1.8;
-   text-align: center;
 
-   word-break: break-word; /* 🔥 evita overflow por texto longo */
+   color: var(--text-muted);
+}
+
+/* =========================
+   HIGHLIGHT
+========================= */
+
+.story-item.highlight {
+   background: var(--color-navy);
+   border: none;
+   color: white;
+}
+
+.story-item.highlight h3,
+.story-item.highlight p,
+.story-item.highlight .story-date {
+   color: white;
+}
+
+/* =========================
+   RESPONSIVO LIMPO (SEM QUEBRAR LAYOUT)
+========================= */
+
+@media (max-width: 900px) {
+
+   .our-story-container {
+      padding: 0 20px;
+   }
+
+   .story-timeline::before {
+      display: none;
+   }
+
+   .story-item {
+      text-align: left;
+      padding: 26px;
+   }
+}
+
+@media (max-width: 480px) {
+
+   .our-story-container {
+      padding: 0 16px;
+   }
+
+   .story-item {
+      padding: 22px;
+   }
+
+   .story-item p {
+      line-height: 1.7;
+   }
 }

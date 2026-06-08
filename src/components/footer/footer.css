@@ -1,13 +1,15 @@
 .footer {
    width: 100%;
-   padding: 60px 0;
+   padding: 60px 20px; /* 🔥 evita encostar nas bordas no mobile */
 
    background: var(--color-white);
-   border-top: 1px solid rgba(48, 65, 98, 0.101); /* leve separação */
+   border-top: 1px solid rgba(48, 65, 98, 0.101);
 
    display: flex;
    justify-content: center;
    align-items: center;
+
+   box-sizing: border-box;
 }
 
 /* =========================
@@ -23,6 +25,8 @@
    justify-content: space-between;
 
    text-align: center;
+
+   gap: 20px; /* 🔥 evita colar quando encolhe */
 }
 
 /* =========================
@@ -40,18 +44,12 @@
    color: rgba(48,65,98,0.6);
 }
 
-/* LEFT alinhado esquerda */
-.footer-left {
-   text-align: left;
-}
-
-/* RIGHT alinhado direita */
-.footer-right {
-   text-align: right;
-}
+/* alinhamentos */
+.footer-left { text-align: left; }
+.footer-right { text-align: right; }
 
 /* =========================
-   CENTER (NOME MAIOR)
+   CENTER
 ========================= */
 
 .footer-center {
@@ -62,29 +60,52 @@
 .footer-names {
    font-family: var(--font-display);
 
-   font-size: 1.4rem; /* 🔥 maior como pediu */
+   font-size: 1.4rem;
    letter-spacing: 0.02em;
 
    color: var(--text-primary);
 }
 
 /* =========================
-   RESPONSIVO
+   RESPONSIVO TABLET
 ========================= */
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+
    .footer-container {
       flex-direction: column;
-      gap: 14px;
+      gap: 18px;
    }
 
    .footer-left,
-   .footer-right {
+   .footer-right,
+   .footer-center {
       width: 100%;
       text-align: center;
    }
 
-   .footer-center {
-      width: 100%;
+   .footer-names {
+      font-size: 1.3rem;
+   }
+}
+
+/* =========================
+   RESPONSIVO MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+   .footer {
+      padding: 50px 16px;
+   }
+
+   .footer-names {
+      font-size: 1.15rem;
+   }
+
+   .footer-left,
+   .footer-right {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
    }
 }

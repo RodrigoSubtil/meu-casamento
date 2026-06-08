@@ -431,7 +431,8 @@ body {
 .section-subtitle {
    max-width: 80%;
 
-   margin: 0;
+   margin: 0 auto;
+   text-align: center;
 
    line-height: 1.8;
 
