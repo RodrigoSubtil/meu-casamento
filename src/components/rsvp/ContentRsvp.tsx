@@ -107,7 +107,7 @@ export default function ContentRsvp() {
 
                </div>
 
-               <form className="rsvp-form" onSubmit={handleSubmit}>
+               <form className="rsvp-form form-separar" onSubmit={handleSubmit}>
 
                   {success && (
                      <div className="form-success show">
