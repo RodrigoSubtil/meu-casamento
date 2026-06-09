@@ -3,7 +3,6 @@ import "./contentRsvp.css";
 import { useState } from "react";
 import { supabase } from "../../lib/supabase.ts";
 
-import { validateRsvp } from "../../utils/validators/rsvpValidator";
 import type { RsvpErrors } from "../../types/rsvp";
 
 import {
@@ -17,23 +16,32 @@ export default function ContentRsvp() {
    const [attending, setAttending] =
       useState<string>("Sim, vou estar presente");
    const [category, setCategory] = useState<string>("");
-   const [age, setAge] = useState<string>("");
 
    const [loading, setLoading] = useState<boolean>(false);
    const [errors, setErrors] = useState<RsvpErrors>({});
    const [success, setSuccess] = useState<boolean>(false);
 
-   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+   async function handleSubmit(
+      e: React.FormEvent<HTMLFormElement>
+   ) {
+
       e.preventDefault();
 
       setSuccess(false);
 
-      const formErrors = validateRsvp({
-         name,
-         attending,
-         category,
-         age
-      });
+      const formErrors: RsvpErrors = {};
+
+      if (!name.trim()) {
+         formErrors.name = "O nome é obrigatório";
+      }
+
+      if (!attending) {
+         formErrors.attending = "Selecione uma opção";
+      }
+
+      if (!category) {
+         formErrors.category = "Selecione uma categoria";
+      }
 
       if (Object.keys(formErrors).length > 0) {
          setErrors(formErrors);
@@ -53,6 +61,7 @@ export default function ContentRsvp() {
          .maybeSingle();
 
       if (existing) {
+
          setErrors({
             name: "Este RSVP já foi registado."
          });
@@ -68,8 +77,7 @@ export default function ContentRsvp() {
                name: cleanName,
                name_key: nameKey,
                attending,
-               category,
-               age: Number(age)
+               category
             }
          ]);
 
@@ -85,7 +93,6 @@ export default function ContentRsvp() {
       setName("");
       setAttending("Sim, vou estar presente");
       setCategory("");
-      setAge("");
    }
 
    return (
@@ -107,7 +114,10 @@ export default function ContentRsvp() {
 
                </div>
 
-               <form className="rsvp-form form-separar" onSubmit={handleSubmit}>
+               <form
+                  className="rsvp-form"
+                  onSubmit={handleSubmit}
+               >
 
                   {success && (
                      <div className="form-success show">
@@ -115,80 +125,122 @@ export default function ContentRsvp() {
                      </div>
                   )}
 
-                  <div className="rsvp-grid">
+                  {/* NOME */}
+                  <div className="form-group">
 
-                     {/* NAME */}
-                     <div className="form-group">
-                        <label className="form-label">Nome completo</label>
+                     <label className="form-label">
+                        Nome completo
+                     </label>
 
-                        <input
-                           className={`form-input ${errors.name ? "form-error-input" : ""}`}
-                           value={name}
-                           onChange={(e) => setName(e.target.value)}
-                        />
+                     <input
+                        className={`form-input ${errors.name
+                              ? "form-error-input"
+                              : ""
+                           }`}
+                        value={name}
+                        onChange={(e) =>
+                           setName(e.target.value)
+                        }
+                     />
 
-                        <span className={`form-error ${errors.name ? "show" : ""}`}>
-                           {errors.name || ""}
-                        </span>
-                     </div>
-
-                     {/* ATTENDING */}
-                     <div className="form-group">
-                        <label className="form-label">Vai comparecer?</label>
-
-                        <select
-                           className={`form-select ${errors.attending ? "form-error-input" : ""}`}
-                           value={attending}
-                           onChange={(e) => setAttending(e.target.value)}
-                        >
-                           <option>Sim, vou estar presente</option>
-                           <option>Desculpe, não vou poder ir</option>
-                        </select>
-
-                        <span className={`form-error ${errors.attending ? "show" : ""}`}>
-                           {errors.attending || ""}
-                        </span>
-                     </div>
-
-                     {/* CATEGORY */}
-                     <div className="form-group">
-                        <label className="form-label">Categoria</label>
-
-                        <select
-                           className={`form-select ${errors.category ? "form-error-input" : ""}`}
-                           value={category}
-                           onChange={(e) => setCategory(e.target.value)}
-                        >
-                           <option value="">Selecione uma opção</option>
-                           <option value="family">Família</option>
-                           <option value="friend">Amigo(a)</option>
-                        </select>
-
-                        <span className={`form-error ${errors.category ? "show" : ""}`}>
-                           {errors.category || ""}
-                        </span>
-                     </div>
-
-                     {/* AGE */}
-                     <div className="form-group">
-                        <label className="form-label">Idade</label>
-
-                        <input
-                           type="number"
-                           className={`form-input ${errors.age ? "form-error-input" : ""}`}
-                           value={age}
-                           onChange={(e) => setAge(e.target.value)}
-                        />
-
-                        <span className={`form-error ${errors.age ? "show" : ""}`}>
-                           {errors.age || ""}
-                        </span>
-                     </div>
+                     <span
+                        className={`form-error ${errors.name
+                              ? "show"
+                              : ""
+                           }`}
+                     >
+                        {errors.name || ""}
+                     </span>
 
                   </div>
 
-                  <button className="form-button" disabled={loading}>
-                     {loading ? "A enviar..." : "Enviar"}
+                  {/* PRESENÇA */}
+                  <div className="form-group">
+
+                     <label className="form-label">
+                        Vai comparecer?
+                     </label>
+
+                     <select
+                        className={`form-select ${errors.attending
+                              ? "form-error-input"
+                              : ""
+                           }`}
+                        value={attending}
+                        onChange={(e) =>
+                           setAttending(e.target.value)
+                        }
+                     >
+                        <option>
+                           Sim, vou estar presente
+                        </option>
+
+                        <option>
+                           Desculpe, não vou poder ir
+                        </option>
+
+                     </select>
+
+                     <span
+                        className={`form-error ${errors.attending
+                              ? "show"
+                              : ""
+                           }`}
+                     >
+                        {errors.attending || ""}
+                     </span>
+
+                  </div>
+
+                  {/* CATEGORIA */}
+                  <div className="form-group">
+
+                     <label className="form-label">
+                        Categoria
+                     </label>
+
+                     <select
+                        className={`form-select ${errors.category
+                              ? "form-error-input"
+                              : ""
+                           }`}
+                        value={category}
+                        onChange={(e) =>
+                           setCategory(e.target.value)
+                        }
+                     >
+                        <option value="">
+                           Selecione uma opção
+                        </option>
+
+                        <option value="adulto">
+                           Adulto
+                        </option>
+
+                        <option value="crianca">
+                           Criança (até 7 anos)
+                        </option>
+
+                     </select>
+
+                     <span
+                        className={`form-error ${errors.category
+                              ? "show"
+                              : ""
+                           }`}
+                     >
+                        {errors.category || ""}
+                     </span>
+
+                  </div>
+
+                  <button
+                     className="form-button"
+                     disabled={loading}
+                  >
+                     {loading
+                        ? "A enviar..."
+                        : "Enviar"}
                   </button>
 
                </form>

@@ -3,10 +3,10 @@ import Home from "./pages/Home"
 import Locations from "./pages/Locations"
 import Rsvp from "./pages/Rsvp"
 import GiftRegistry from "./pages/GiftRegistry"
-import Questions from "./pages/Questions"
 import Dashboard from "./pages/dashboard/Dashboard"
 import Gallery from "./pages/Gallery"
-import About from "./pages/Sobre"
+import About from "./pages/About"
+import AboutWe from "./pages/AboutWe"
 
 
 export default function App() {
@@ -19,9 +19,9 @@ export default function App() {
 
       <Route path="/rsvp" element={<Rsvp />} />
 
-      <Route path="/questions" element={<Questions />} />
-
       <Route path="/gift-registry" element={<GiftRegistry />} />
+
+      <Route path="/about-we" element={<AboutWe />} />
 
       <Route path="/gallery" element={<Gallery />} />
 

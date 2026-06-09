@@ -20,107 +20,90 @@ export default function ContentGiftRegistry() {
 
    const [gifts, setGifts] = useState<Gift[]>([]);
    const [filter, setFilter] = useState<GiftCategory>("all");
+
    const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
+
+   // 💛 presente livre (sem alert)
+   const [customGift, setCustomGift] = useState<Gift | null>(null);
+
    const [loading, setLoading] = useState(false);
 
    const userName = "Convidado";
    const BRL_TO_EUR = 6.3;
 
-   // =========================
-   // LOAD GIFTS
-   // =========================
    useEffect(() => {
-
       async function load() {
-
          try {
-
             const data = await getGifts();
             setGifts(data || []);
-
          } catch (err) {
-
-            console.error("Erro ao buscar gifts:", err);
-
+            console.error(err);
          }
-
       }
 
       load();
-
    }, []);
 
-   // =========================
-   // ABRIR MODAL
-   // =========================
    function handleReserve(gift: Gift) {
-
       if (gift.is_reserved) return;
-
       setSelectedGift(gift);
-
    }
 
-   // =========================
-   // CONFIRMAR RESERVA
-   // =========================
-   async function confirmReservation(
-      method: "pix" | "mbway"
-   ) {
+   // 💛 abre modal de contribuição livre
+   function handleCustomGift() {
+      setCustomGift({
+         id: 999999,
+         title: "Contribuição livre",
+         price: 0,
+         image: "https://images.unsplash.com/photo-1520975928316-7e2b5a8c3b9b",
+         category: "experience",
+         is_reserved: false
+      });
+   }
 
-      if (!selectedGift) return;
+   async function confirmReservation(method: "pix" | "mbway", value?: number) {
+
+      const gift = selectedGift || customGift;
+      if (!gift) return;
+
+      const finalValue = value ?? gift.price;
 
       try {
 
          setLoading(true);
 
          await reserveGift({
-            giftId: selectedGift.id,
-            title: selectedGift.title,
-            priceBRL: selectedGift.price,
-            priceEUR: selectedGift.price / BRL_TO_EUR,
+            giftId: gift.id,
+            title: gift.title,
+            priceBRL: finalValue,
+            priceEUR: finalValue / BRL_TO_EUR,
             method,
             userName
          });
 
-         // Atualiza a UI imediatamente
          setGifts(prev =>
             prev.map(g =>
-               g.id === selectedGift.id
-                  ? {
-                     ...g,
-                     is_reserved: true,
-                     reserved_by: userName
-                  }
+               g.id === gift.id
+                  ? { ...g, is_reserved: true, reserved_by: userName }
                   : g
             )
          );
 
       } catch (err) {
-
          console.error(err);
-         alert("Erro ao reservar presente.");
-
+         alert("Erro ao processar contribuição.");
       } finally {
-
          setLoading(false);
-
+         setSelectedGift(null);
+         setCustomGift(null);
       }
-
    }
 
-   // =========================
-   // FILTRO
-   // =========================
    const filteredGifts = useMemo(() => {
 
-      if (filter === "all") {
-         return gifts;
-      }
+      if (filter === "all") return gifts;
 
-      return gifts.filter(
-         gift => gift.category === filter
-      );
+      return gifts.filter(g => g.category === filter);
 
    }, [gifts, filter]);
 
@@ -131,10 +114,11 @@ export default function ContentGiftRegistry() {
 
             <div className="gift-container">
 
+               {/* HEADER */}
                <div className="section-header">
 
                   <div className="luxury-title-main">
-                     <span>Lista de Presentes</span>
+                     <span>Presentes</span>
                   </div>
 
                   <p className="section-subtitle">
@@ -144,25 +128,40 @@ export default function ContentGiftRegistry() {
 
                </div>
 
+               {/* 💛 BLOCO LIVRE */}
+               <div className="gift-custom">
+
+                  <h3>Contribuição livre</h3>
+
+                  <p>
+                     Escolhe o valor que quiseres contribuir.
+                     Simples, rápido e com significado.
+                  </p>
+
+                  <button
+                     className="form-button"
+                     onClick={handleCustomGift}
+                  >
+                     Contribuir
+                  </button>
+
+               </div>
+
                {/* FILTERS */}
                <div className="gift-filters">
 
-                  {["all", "product", "experience"].map((cat) => (
+                  {["all", "product", "experience"].map(cat => (
 
                      <button
                         key={cat}
                         className={filter === cat ? "active" : ""}
-                        onClick={() =>
-                           setFilter(cat as GiftCategory)
-                        }
+                        onClick={() => setFilter(cat as GiftCategory)}
                      >
                         {cat === "all"
                            ? "Todos"
                            : cat === "product"
                               ? "Produto"
-                              : cat === "experience"
-                                 ? "Experiência"
-                                 : ""}
+                              : "Experiência"}
                      </button>
 
                   ))}
@@ -172,25 +171,15 @@ export default function ContentGiftRegistry() {
                {/* GRID */}
                <div className="gift-grid">
 
-                  {filteredGifts.map((gift) => {
+                  {filteredGifts.map(gift => {
 
-                     const eur =
-                        gift.price / BRL_TO_EUR;
+                     const eur = gift.price / BRL_TO_EUR;
 
                      return (
-
-                        <div
-                           className="gift-card"
-                           key={gift.id}
-                        >
+                        <div className="gift-card" key={gift.id}>
 
                            <div className="gift-image">
-
-                              <img
-                                 src={gift.image}
-                                 alt={gift.title}
-                              />
-
+                              <img src={gift.image} alt={gift.title} />
                            </div>
 
                            <div className="gift-content">
@@ -198,71 +187,46 @@ export default function ContentGiftRegistry() {
                               <h3>{gift.title}</h3>
 
                               <span className="gift-price">
-
-                                 R$ {gift.price
-                                    .toFixed(2)
-                                    .replace(".", ",")}
-
+                                 R$ {gift.price.toFixed(2).replace(".", ",")}
                                  {" • "}
-
-                                 € {eur
-                                    .toFixed(2)
-                                    .replace(".", ",")}
-
+                                 € {eur.toFixed(2).replace(".", ",")}
                               </span>
 
                               <button
                                  className="form-button"
-                                 disabled={
-                                    gift.is_reserved ||
-                                    loading
-                                 }
-                                 onClick={() =>
-                                    handleReserve(gift)
-                                 }
+                                 disabled={gift.is_reserved || loading}
+                                 onClick={() => handleReserve(gift)}
                               >
-                                 {gift.is_reserved
-                                    ? "Reservado"
-                                    : "Presentear"}
+                                 {gift.is_reserved ? "Reservado" : "Presentear"}
                               </button>
 
                            </div>
 
                         </div>
-
                      );
 
                   })}
 
                </div>
 
-               {filteredGifts.length === 0 && (
+               {/* MODAL NORMAL + LIVRE */}
+               {(selectedGift || customGift) && (
 
-                  <div className="gift-empty">
-
-                     <h3>
-                        Nenhum presente encontrado
-                     </h3>
-
-                  </div>
+                  <GiftModal
+                     gift={selectedGift || customGift!}
+                     isCustom={!selectedGift}
+                     onClose={() => {
+                        setSelectedGift(null);
+                        setCustomGift(null);
+                     }}
+                     onConfirm={confirmReservation}
+                  />
 
                )}
 
             </div>
 
          </div>
-
-         {selectedGift && (
-
-            <GiftModal
-               gift={selectedGift}
-               onClose={() =>
-                  setSelectedGift(null)
-               }
-               onConfirm={confirmReservation}
-            />
-
-         )}
 
       </section>
    );

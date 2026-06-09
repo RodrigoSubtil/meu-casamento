@@ -21,6 +21,99 @@
 }
 
 /* =========================
+   SECTION HEADER (AJUSTE GLOBAL CONSISTENTE)
+========================= */
+
+.gift-container .section-header {
+   text-align: center;
+}
+
+/* =========================
+   💛 NOVA SECÇÃO: PRESENTE LIVRE
+========================= */
+
+.gift-custom {
+   width: 100%;
+   max-width: 720px;
+
+   padding: 3rem 2rem;
+
+   border-radius: var(--radius-xl);
+   border: var(--border-thin);
+
+   background: rgba(255, 255, 255, 0.9);
+   box-shadow: var(--shadow-sm);
+
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+
+   gap: 1rem;
+
+   text-align: center;
+}
+
+.gift-custom h3 {
+   margin: 0;
+
+   font-family: var(--font-primary);
+   font-size: var(--text-xl);
+   font-weight: 400;
+
+   color: var(--text-primary);
+}
+
+.gift-custom p {
+   margin: 0;
+
+   font-size: var(--text-md);
+   line-height: 1.7;
+
+   color: var(--text-muted);
+
+   max-width: 520px;
+}
+
+/* INPUT AREA */
+.gift-custom-box {
+   width: 100%;
+   max-width: 420px;
+
+   display: flex;
+   gap: 12px;
+
+   margin-top: 1rem;
+}
+
+.gift-custom-box input {
+   flex: 1;
+
+   height: 48px;
+
+   padding: 0 16px;
+
+   border-radius: var(--radius-lg);
+   border: var(--border-thin);
+
+   font-family: var(--font-primary);
+   font-size: var(--text-md);
+
+   outline: none;
+
+   transition: var(--transition-base);
+}
+
+.gift-custom-box input:focus {
+   border-color: rgba(236,191,133,0.5);
+   box-shadow: 0 0 0 3px rgba(236,191,133,0.15);
+}
+
+.gift-custom-box .form-button {
+   height: 48px;
+   padding: 0 18px;
+}
+
+/* =========================
    FILTERS
 ========================= */
 
@@ -28,6 +121,7 @@
    display: flex;
    flex-wrap: wrap;
    justify-content: center;
+
    margin-bottom: -2rem;
    gap: 12px;
 }
@@ -181,13 +275,27 @@
 }
 
 @media (max-width: 800px) {
+
    .gift-grid {
       grid-template-columns: repeat(2, 1fr);
+   }
+
+   .gift-custom {
+      padding: 2.5rem 1.5rem;
    }
 }
 
 @media (max-width: 500px) {
+
    .gift-grid {
       grid-template-columns: 1fr;
+   }
+
+   .gift-custom-box {
+      flex-direction: column;
+   }
+
+   .gift-custom-box .form-button {
+      width: 100%;
    }
 }

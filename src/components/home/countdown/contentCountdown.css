@@ -3,7 +3,7 @@
 ========================= */
 
 .countdown {
-   padding-bottom: 3rem;
+   padding: 0 20px 120px 20px;
    background: var(--color-white);
    display: flex;
    justify-content: center;
