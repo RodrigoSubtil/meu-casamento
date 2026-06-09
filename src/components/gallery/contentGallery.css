@@ -3,7 +3,7 @@
 ========================= */
 
 .gallery-section {
-   padding: var(--section-padding);
+   padding: 120px 20px;
    background: var(--color-white);
 
    overflow-x: hidden;

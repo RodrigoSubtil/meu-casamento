@@ -3,7 +3,7 @@
 ========================= */
 
 .gift-section {
-   padding: var(--section-padding);
+   padding: 120px 20px;
    background: var(--color-white);
 
    display: flex;
@@ -28,7 +28,7 @@
    display: flex;
    flex-wrap: wrap;
    justify-content: center;
-
+   margin-bottom: -2rem;
    gap: 12px;
 }
 

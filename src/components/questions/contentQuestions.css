@@ -10,7 +10,7 @@
    display: flex;
    justify-content: center;
 
-   padding: var(--section-padding);
+   padding: 120px 20px;
 
    overflow-x: hidden;
 }
