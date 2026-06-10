@@ -194,7 +194,7 @@ export default function ContentGiftRegistry() {
                <div className="gift-hero">
                   <div className="gift-hero-content">
                      <h3>Contribuição livre</h3>
-                     <p>Escolhe o valor que quiser e ajuda da forma que preferir.</p>
+                     <p>Aqui você pode nos presentear com o valor que desejar.</p>
 
                      <button
                         className="form-button"
