@@ -92,6 +92,9 @@
 ========================= */
 
 @media (max-width: 900px) {
+   .locations-container {
+      gap: 2.5rem;
+   }
 
    .location-block,
    .location-block.reverse {
@@ -108,5 +111,16 @@
    .location-map {
       width: 100%;
       height: 260px;
+   }
+}
+
+@media (max-width: 600px) {
+   .locations-container {
+      gap: 2rem;
+   }
+
+   .location-block,
+   .location-block.reverse {
+      gap: 2rem;
    }
 }

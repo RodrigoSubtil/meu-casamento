@@ -9,7 +9,7 @@ export default function ContentOurStory() {
             {/* HEADER */}
             <div className="section-header">
 
-               <div className="luxury-title">
+               <div className="luxury-title-main">
                   <span>Nossa História</span>
                </div>
 

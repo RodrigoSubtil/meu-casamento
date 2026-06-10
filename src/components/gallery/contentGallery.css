@@ -3,7 +3,7 @@
 ========================= */
 
 .gallery-section {
-   padding: 120px 20px;
+   padding: var(--section-padding);
    background: var(--color-white);
 
    overflow-x: hidden;
@@ -125,6 +125,43 @@
    text-align: center;
 
    animation: fadeUp 0.3s ease;
+}
+
+.gallery-downloads {
+   display: flex;
+   justify-content: center;
+   gap: 10px;
+   flex-wrap: wrap;
+}
+
+.gallery-downloads button {
+   min-height: 42px;
+   padding: 0 18px;
+
+   border-radius: 999px;
+   border: var(--border-soft);
+
+   background: rgba(236,191,133,0.08);
+   color: var(--text-primary);
+
+   font-family: var(--font-primary);
+   font-size: 0.72rem;
+   letter-spacing: 0.12em;
+   text-transform: uppercase;
+
+   cursor: pointer;
+   transition: var(--transition-base);
+}
+
+.gallery-downloads button:hover:not(:disabled) {
+   transform: translateY(-2px);
+   background: rgba(236,191,133,0.16);
+   box-shadow: var(--shadow-sm);
+}
+
+.gallery-downloads button:disabled {
+   opacity: 0.55;
+   cursor: not-allowed;
 }
 
 @keyframes fadeUp {
@@ -418,6 +455,9 @@
 ========================= */
 
 @media (max-width: 900px) {
+   .gallery-container {
+      gap: 2.5rem;
+   }
 
    .gallery-upload-content {
       flex-direction: column;
@@ -430,6 +470,17 @@
 }
 
 @media (max-width: 600px) {
+   .gallery-container {
+      gap: 2rem;
+   }
+
+   .gallery-downloads {
+      flex-direction: column;
+   }
+
+   .gallery-downloads button {
+      width: 100%;
+   }
 
    .gallery-grid {
       columns: 1;

@@ -5,7 +5,8 @@
 .about {
    width: 100%;
    background: var(--color-white);
-   padding: 120px 0 4rem 0;
+   padding: var(--section-padding);
+   box-sizing: border-box;
 }
 
 /* =========================
@@ -48,13 +49,13 @@
    gap: 1.5rem;
 
    width: 100%;
+   max-width: 80%;
+   margin: 0 auto;
 
    text-align: center;
 
    color: var(--text-muted);
 
-   /* 👇 ESSA É A CORREÇÃO */
-   padding: 0 1.5rem;
    box-sizing: border-box;
 }
 

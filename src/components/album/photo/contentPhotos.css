@@ -3,7 +3,7 @@
 ========================= */
 
 .album-section {
-   padding: 120px 20px;
+   padding: var(--section-padding);
    background: var(--color-navy-low);
    display: flex;
    justify-content: center;
@@ -95,6 +95,10 @@
 ========================= */
 
 @media (max-width: 800px) {
+   .album-container {
+      gap: 2.5rem;
+   }
+
    .year-grid {
       grid-template-columns: 1fr;
    }
@@ -102,5 +106,11 @@
 }
 
 @media (max-width: 500px) {
+   .album-container {
+      gap: 2rem;
+   }
 
+   .photo {
+      height: 300px;
+   }
 }

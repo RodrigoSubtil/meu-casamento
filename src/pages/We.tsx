@@ -4,7 +4,7 @@ import Header from "../components/header/Header";
 import ContentPhotos from "../components/album/photo/ContentPhotos";
 
 
-export default function AboutWe() {
+export default function We() {
    return (
       <>
          <main>

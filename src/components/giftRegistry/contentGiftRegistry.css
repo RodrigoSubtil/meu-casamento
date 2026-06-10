@@ -1,13 +1,10 @@
 /* =========================
-   GIFT SECTION
+   SECTION
 ========================= */
 
 .gift-section {
-   padding: 120px 20px;
+   padding: var(--section-padding);
    background: var(--color-white);
-
-   display: flex;
-   justify-content: center;
 }
 
 .gift-container {
@@ -20,282 +17,638 @@
    gap: 4rem;
 }
 
-/* =========================
-   SECTION HEADER (AJUSTE GLOBAL CONSISTENTE)
-========================= */
-
 .gift-container .section-header {
-   text-align: center;
-}
-
-/* =========================
-   💛 NOVA SECÇÃO: PRESENTE LIVRE
-========================= */
-
-.gift-custom {
    width: 100%;
-   max-width: 720px;
-
-   padding: 3rem 2rem;
-
-   border-radius: var(--radius-xl);
-   border: var(--border-thin);
-
-   background: rgba(255, 255, 255, 0.9);
-   box-shadow: var(--shadow-sm);
 
    display: flex;
    flex-direction: column;
    align-items: center;
 
-   gap: 1rem;
+   text-align: center;
+}
+
+.gift-container .luxury-title-main {
+   margin-bottom: 1rem;
+}
+
+.gift-container .luxury-title-main span {
+   font-size: 1.2rem;
+}
+
+.gift-container .section-subtitle {
+   max-width: 80%;
+   margin: 0 auto;
+
+   font-size: var(--text-md);
+   line-height: 1.8;
+   color: var(--text-muted);
+}
+
+/* =========================
+   HERO CONTRIBUIÇÃO (MANTIDO + AJUSTADO)
+========================= */
+
+.gift-hero {
+   width: 100%;
+   display: flex;
+   justify-content: center;
+}
+
+.gift-hero-content {
+   width: 100%;
+   max-width: 720px;
+
+   padding: 2.2rem;
+   border-radius: var(--radius-xl);
+
+   background: linear-gradient(
+      135deg,
+      rgba(236,191,133,0.10),
+      rgba(255,255,255,1)
+   );
+
+   border: var(--border-soft);
 
    text-align: center;
 }
 
-.gift-custom h3 {
-   margin: 0;
-
-   font-family: var(--font-primary);
-   font-size: var(--text-xl);
+.gift-hero-content h3 {
+   font-size: var(--text-md);
    font-weight: 400;
-
    color: var(--text-primary);
+   margin-bottom: 6px;
 }
 
-.gift-custom p {
-   margin: 0;
-
-   font-size: var(--text-md);
-   line-height: 1.7;
-
+.gift-hero-content p {
+   font-size: var(--text-sm);
    color: var(--text-muted);
-
-   max-width: 520px;
-}
-
-/* INPUT AREA */
-.gift-custom-box {
-   width: 100%;
-   max-width: 420px;
-
-   display: flex;
-   gap: 12px;
-
-   margin-top: 1rem;
-}
-
-.gift-custom-box input {
-   flex: 1;
-
-   height: 48px;
-
-   padding: 0 16px;
-
-   border-radius: var(--radius-lg);
-   border: var(--border-thin);
-
-   font-family: var(--font-primary);
-   font-size: var(--text-md);
-
-   outline: none;
-
-   transition: var(--transition-base);
-}
-
-.gift-custom-box input:focus {
-   border-color: rgba(236,191,133,0.5);
-   box-shadow: 0 0 0 3px rgba(236,191,133,0.15);
-}
-
-.gift-custom-box .form-button {
-   height: 48px;
-   padding: 0 18px;
+   margin-bottom: 14px;
+   line-height: 1.6;
 }
 
 /* =========================
-   FILTERS
+   FILTERS (MENOR + MAIS CLEAN)
 ========================= */
 
 .gift-filters {
    display: flex;
-   flex-wrap: wrap;
    justify-content: center;
-
-   margin-bottom: -2rem;
-   gap: 12px;
+   gap: 10px;
+   flex-wrap: wrap;
 }
 
 .gift-filters button {
-   padding: 10px 18px;
+   font-size: var(--text-xs);
+   padding: 8px 14px;
 
    border-radius: 999px;
    border: var(--border-thin);
 
    background: transparent;
-
-   font-size: var(--text-sm);
    color: var(--text-muted);
 
    cursor: pointer;
-
    transition: var(--transition-base);
 }
 
 .gift-filters button:hover {
-   border-color: rgba(236,191,133,0.35);
    color: var(--text-primary);
+   border-color: rgba(236,191,133,0.35);
 }
 
 .gift-filters button.active {
    background: rgba(236,191,133,0.12);
-   border-color: rgba(236,191,133,0.35);
    color: var(--text-primary);
+   border-color: rgba(236,191,133,0.35);
 }
 
 /* =========================
-   GRID
+   GRID (MENOS DENSO)
 ========================= */
 
 .gift-grid {
-   width: 100%;
-
    display: grid;
    grid-template-columns: repeat(4, 1fr);
-
-   gap: var(--space-6);
+   gap: 14px;
 }
 
 /* =========================
-   CARD
+   CARD (AJUSTADO SEM FICAR GRANDE)
 ========================= */
 
 .gift-card {
-   border-radius: var(--radius-lg);
+   background: var(--color-white);
    border: var(--border-thin);
-
-   background: white;
-
+   border-radius: var(--radius-lg);
    overflow: hidden;
 
-   box-shadow: var(--shadow-sm);
+   box-shadow: 0 2px 10px rgba(0,0,0,0.04);
 
    transition: var(--transition-base);
 }
 
 .gift-card:hover {
-   transform: translateY(-4px);
+   transform: translateY(-3px);
    box-shadow: var(--shadow-md);
 }
 
 /* IMAGE */
 .gift-image {
-   width: 100%;
-   height: 200px;
-
+   height: 170px;
    overflow: hidden;
 }
 
 .gift-image img {
    width: 100%;
    height: 100%;
-
    object-fit: cover;
-
-   transition: transform 0.5s ease;
+   transition: transform 0.4s ease;
 }
 
 .gift-card:hover img {
-   transform: scale(1.05);
+   transform: scale(1.04);
 }
 
 /* CONTENT */
 .gift-content {
-   padding: 16px;
-
+   padding: 12px;
    display: flex;
    flex-direction: column;
-
-   gap: 10px;
+   gap: 6px;
 }
 
 .gift-content h3 {
-   margin: 0;
-
-   font-size: var(--text-md);
+   font-size: var(--text-xs);
    font-weight: 400;
-
    color: var(--text-primary);
+   margin: 0;
 }
 
 .gift-price {
-   font-size: var(--text-sm);
+   display: flex;
+   flex-direction: column;
+   gap: 3px;
+
+   font-size: var(--text-xs);
    color: var(--text-muted);
+}
+
+.gift-price small,
+.gift-modal-summary strong small {
+   display: block;
+
+   margin-top: 3px;
+
+   font-size: 0.68rem;
+   font-weight: 400;
+   color: rgba(48,65,98,0.58);
 }
 
 /* BUTTON */
 .gift-content .form-button {
-   width: 100%;
-   height: 44px;
-
-   margin-top: 8px;
+   height: 42px;
+   font-size: 0.72rem;
 }
 
 /* =========================
-   EMPTY STATE
+   MODAL (IMPORTANTE: NÃO PRETO, NÃO PESADO)
 ========================= */
 
-.gift-empty {
-   text-align: center;
+.gift-overlay {
+   position: fixed;
+   inset: 0;
+   background:
+      radial-gradient(circle at 50% 12%, rgba(236,191,133,0.18), transparent 32%),
+      rgba(48,65,98,0.58);
+   backdrop-filter: blur(7px);
 
-   padding: 3rem 1rem;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   padding: 22px;
+   z-index: 999;
 }
 
-.gift-empty h3 {
-   margin: 0;
+.gift-modal {
+   width: 100%;
+   max-width: 500px;
+   max-height: calc(100vh - 44px);
+   overflow-y: auto;
 
+   background:
+      linear-gradient(180deg, rgba(250,246,241,0.92), rgba(255,255,255,1) 42%),
+      var(--color-white);
+   border: 1px solid rgba(255,255,255,0.72);
+   border-radius: var(--radius-xl);
+
+   padding: 28px;
+
+   box-shadow: 0 28px 90px rgba(18,29,49,0.22);
+   animation: giftModalIn 0.22s ease;
+}
+
+@keyframes giftModalIn {
+   from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+   }
+}
+
+/* HEADER */
+.gift-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: flex-start;
+   gap: 1.2rem;
+
+   margin-bottom: 1.1rem;
+}
+
+.gift-modal-kicker {
+   display: block;
+   margin-bottom: 8px;
+
+   font-size: 0.66rem;
+   letter-spacing: 0.22em;
+   text-transform: uppercase;
+
+   color: var(--color-gold);
+}
+
+.gift-header h2 {
+   font-size: var(--text-xl);
+   font-weight: 400;
+   line-height: 1.35;
+   color: var(--text-primary);
+   margin: 0;
+}
+
+.gift-close-btn {
+   flex: 0 0 auto;
+   width: 36px;
+   height: 36px;
+   border-radius: 50%;
+   border: var(--border-thin);
+
+   background: rgba(255,255,255,0.72);
+   color: var(--text-muted);
+
+   font-size: 1.3rem;
+   line-height: 1;
+   cursor: pointer;
+   transition: var(--transition-base);
+}
+
+.gift-close-btn:hover {
+   color: var(--text-primary);
+   border-color: rgba(236,191,133,0.45);
+   transform: rotate(90deg);
+}
+
+.gift-progress {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 8px;
+
+   margin-bottom: 1.35rem;
+}
+
+.gift-progress span {
+   height: 3px;
+   border-radius: 999px;
+   background: rgba(48,65,98,0.12);
+}
+
+.gift-progress span.active {
+   background: var(--color-gold);
+}
+
+/* STEP */
+.gift-step {
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+}
+
+.gift-step-copy {
+   text-align: center;
+}
+
+.gift-step-copy h3,
+.gift-step.center h3 {
+   margin: 0;
    font-size: var(--text-lg);
+   font-weight: 400;
    color: var(--text-primary);
 }
 
-.gift-empty p {
-   margin-top: 8px;
+.gift-step-copy p,
+.gift-success-text {
+   max-width: 370px;
+   margin: 8px auto 0;
+   font-size: var(--text-sm);
+   line-height: 1.7;
+   color: rgba(48,65,98,0.72);
+}
+
+.gift-modal-summary,
+.gift-total {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 1rem;
+
+   padding: 16px 18px;
+   border: var(--border-soft);
+   border-radius: var(--radius-lg);
+
+   background: rgba(255,255,255,0.74);
+}
+
+.gift-modal-summary span,
+.gift-total span,
+.gift-payment-label,
+.gift-amount-field span {
+   font-size: 0.68rem;
+   letter-spacing: 0.14em;
+   text-transform: uppercase;
+   color: rgba(48,65,98,0.62);
+}
+
+.gift-modal-summary strong,
+.gift-total strong {
+   font-size: var(--text-md);
+   font-weight: 400;
+   color: var(--text-primary);
+   text-align: right;
+}
+
+.gift-exchange-note {
+   margin: -4px auto 0;
+   max-width: 360px;
+
+   text-align: center;
+   font-size: 0.72rem;
+   line-height: 1.6;
+   color: rgba(48,65,98,0.58);
+}
+
+.gift-amount-field {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.gift-amount-field .form-input {
+   padding: 15px 16px;
+   border-radius: var(--radius-lg);
+   font-size: var(--text-sm);
+}
+
+/* METHODS */
+.gift-methods {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 10px;
+}
+
+.gift-methods button {
+   min-height: 82px;
+   padding: 16px 12px;
+
+   border-radius: var(--radius-lg);
+   border: var(--border-thin);
+
+   background: rgba(255,255,255,0.76);
 
    color: var(--text-muted);
+   font-family: var(--font-primary);
+
+   cursor: pointer;
+   transition: var(--transition-base);
+}
+
+.gift-methods button strong,
+.gift-methods button span {
+   display: block;
+}
+
+.gift-methods button strong {
+   margin-bottom: 6px;
+   font-size: var(--text-sm);
+   font-weight: 400;
+   color: var(--text-primary);
+}
+
+.gift-methods button span {
+   font-size: 0.68rem;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+   color: rgba(48,65,98,0.58);
+}
+
+.gift-methods button:hover {
+   transform: translateY(-2px);
+   border-color: rgba(236,191,133,0.45);
+   box-shadow: var(--shadow-sm);
+}
+
+.gift-methods button.active {
+   background: rgba(236,191,133,0.14);
+   border-color: var(--color-gold);
+   box-shadow: 0 12px 28px rgba(207,162,102,0.16);
+}
+
+/* INFO ROW */
+.gift-payment-card {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+
+   padding: 16px;
+   border: var(--border-thin);
+   border-radius: var(--radius-lg);
+
+   background: rgba(255,255,255,0.78);
+}
+
+.gift-account-details {
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+
+   color: var(--text-primary);
+   font-size: var(--text-sm);
+}
+
+.gift-account-details span:last-child {
+   color: rgba(48,65,98,0.62);
+   font-size: var(--text-xs);
+}
+
+.gift-info-row {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   gap: 12px;
+
+   padding: 12px 12px 12px 14px;
+   border-radius: var(--radius-md);
+
+   background: rgba(48,65,98,0.04);
+
+   font-size: var(--text-sm);
+   color: var(--text-primary);
+}
+
+.gift-info-row span {
+   min-width: 0;
+   overflow-wrap: anywhere;
+}
+
+/* COPY */
+.copy-btn {
+   flex: 0 0 auto;
+   min-height: 32px;
+   padding: 0 12px;
+
+   border-radius: 999px;
+   border: var(--border-soft);
+
+   background: white;
+   color: var(--text-primary);
+
+   font-family: var(--font-primary);
+   font-size: 0.68rem;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+
+   cursor: pointer;
+   transition: var(--transition-base);
+}
+
+.copy-btn:hover {
+   background: rgba(236,191,133,0.12);
+}
+
+/* BUTTON */
+.gift-btn {
+   height: 48px;
+   width: 100%;
+   font-family: var(--font-primary);
+   font-size: var(--text-xs);
+   letter-spacing: 0.13em;
+   text-transform: uppercase;
+
+   border-radius: 999px;
+   border: none;
+
+   background: var(--color-gold);
+   color: white;
+   cursor: pointer;
+   transition: var(--transition-base);
+}
+
+.gift-btn:hover:not(:disabled) {
+   transform: translateY(-2px);
+   background: #ddb06f;
+   box-shadow: var(--shadow-md);
+}
+
+.gift-btn:disabled {
+   opacity: 0.48;
+   cursor: not-allowed;
+}
+
+/* SUCCESS */
+.gift-step.center {
+   text-align: center;
+}
+
+.success-icon {
+   width: 68px;
+   height: 68px;
+
+   border-radius: 50%;
+   background: rgba(91,163,121,0.13);
+   border: 1px solid rgba(91,163,121,0.24);
+   color: #3c8c5f;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   margin: 0 auto 4px;
+
+   font-size: 1.7rem;
 }
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE (MANTIDO LIMPO)
 ========================= */
 
-@media (max-width: 1100px) {
-   .gift-grid {
-      grid-template-columns: repeat(3, 1fr);
-   }
-}
-
-@media (max-width: 800px) {
-
-   .gift-grid {
-      grid-template-columns: repeat(2, 1fr);
+@media (max-width: 900px) {
+   .gift-container {
+      gap: 2.5rem;
    }
 
-   .gift-custom {
-      padding: 2.5rem 1.5rem;
+   .gift-container .section-subtitle {
+      max-width: 100%;
+      font-size: 0.98rem;
+      line-height: 1.75;
    }
+
+   .gift-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 500px) {
+   .gift-grid { grid-template-columns: 1fr; }
 
-   .gift-grid {
+   .gift-section {
+      padding: var(--section-padding);
+   }
+
+   .gift-container {
+      gap: 2rem;
+   }
+
+   .gift-container .section-subtitle {
+      font-size: 0.95rem;
+      line-height: 1.7;
+   }
+
+   .gift-overlay {
+      align-items: flex-end;
+      padding: 12px;
+   }
+
+   .gift-modal {
+      max-height: calc(100vh - 24px);
+      padding: 22px 18px;
+      border-radius: 22px;
+   }
+
+   .gift-header h2 {
+      font-size: var(--text-lg);
+   }
+
+   .gift-methods {
       grid-template-columns: 1fr;
    }
 
-   .gift-custom-box {
+   .gift-modal-summary,
+   .gift-total,
+   .gift-info-row {
+      align-items: flex-start;
       flex-direction: column;
    }
 
-   .gift-custom-box .form-button {
+   .copy-btn {
       width: 100%;
    }
 }

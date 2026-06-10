@@ -3,7 +3,7 @@
 ========================= */
 
 .message-section {
-   padding: 120px 20px;
+   padding: var(--section-padding);
    background: var(--color-navy-low);
 }
 
@@ -146,6 +146,9 @@
 ========================= */
 
 @media (max-width: 900px) {
+   .message-container {
+      gap: 2.5rem;
+   }
 
    .message-title {
       font-size: 2.2rem;
@@ -158,12 +161,12 @@
 
 @media (max-width: 600px) {
 
-   .message-container {
-      gap: 1.8rem; /* 🔥 ainda mais compacto no mobile */
-   }
-
    .message-title {
       font-size: 1.9rem;
+   }
+
+   .message-container {
+      gap: 2rem;
    }
 
    .message-subtitle {

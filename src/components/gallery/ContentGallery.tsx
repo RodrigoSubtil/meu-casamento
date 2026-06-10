@@ -15,12 +15,15 @@ type GalleryPhoto = {
     created_at: string;
 };
 
+type DownloadGroup = "all" | AlbumType;
+
 export default function ContentGallery() {
 
     const [selectedAlbum, setSelectedAlbum] = useState<AlbumType>("ceremony");
     const [showModal, setShowModal] = useState(false);
     const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
     const [loading, setLoading] = useState(false);
+    const [downloadingGroup, setDownloadingGroup] = useState<DownloadGroup | null>(null);
 
     // 👇 NOVO
     const [uploadMessage, setUploadMessage] = useState<string>("");
@@ -42,6 +45,9 @@ export default function ContentGallery() {
     }
 
     const currentPhotos = photos.filter(p => p.album === selectedAlbum);
+    const ceremonyPhotos = photos.filter(p => p.album === "ceremony");
+    const partyPhotos = photos.filter(p => p.album === "party");
+    const hasPhotos = photos.length > 0;
 
     function openUploadModal() {
         setShowModal(true);
@@ -91,7 +97,7 @@ export default function ContentGallery() {
         }
     }
 
-    async function handleDownload(url: string, filename: string) {
+    async function downloadFile(url: string, filename: string) {
         try {
             const response = await fetch(url);
             const blob = await response.blob();
@@ -110,6 +116,36 @@ export default function ContentGallery() {
 
         } catch (err) {
             console.error(err);
+        }
+    }
+
+    function getPhotoFilename(photo: GalleryPhoto, index = 0) {
+        const albumName = photo.album === "ceremony" ? "cerimonia" : "festa";
+        const extension = photo.image_url.split(".").pop()?.split("?")[0] || "jpg";
+
+        return `${albumName}-foto-${index + 1}-${photo.id}.${extension}`;
+    }
+
+    async function handleDownload(url: string, filename: string) {
+        await downloadFile(url, filename);
+    }
+
+    async function handleDownloadMany(group: DownloadGroup) {
+        const photosToDownload =
+            group === "all"
+                ? photos
+                : photos.filter(photo => photo.album === group);
+
+        if (photosToDownload.length === 0) return;
+
+        try {
+            setDownloadingGroup(group);
+
+            for (const [index, photo] of photosToDownload.entries()) {
+                await downloadFile(photo.image_url, getPhotoFilename(photo, index));
+            }
+        } finally {
+            setDownloadingGroup(null);
         }
     }
 
@@ -155,6 +191,45 @@ export default function ContentGallery() {
                     {uploadMessage && (
                         <div className="gallery-success-message">
                             {uploadMessage}
+                        </div>
+                    )}
+
+                    {/* DOWNLOADS */}
+                    {hasPhotos && (
+                        <div className="gallery-downloads">
+                            <button
+                                type="button"
+                                onClick={() => handleDownloadMany("all")}
+                                disabled={downloadingGroup !== null}
+                            >
+                                {downloadingGroup === "all"
+                                    ? "A baixar..."
+                                    : "Descarregar todas as fotos"}
+                            </button>
+
+                            {ceremonyPhotos.length > 0 && (
+                                <button
+                                    type="button"
+                                    onClick={() => handleDownloadMany("ceremony")}
+                                    disabled={downloadingGroup !== null}
+                                >
+                                    {downloadingGroup === "ceremony"
+                                        ? "A baixar..."
+                                        : "Descarregar cerimônia"}
+                                </button>
+                            )}
+
+                            {partyPhotos.length > 0 && (
+                                <button
+                                    type="button"
+                                    onClick={() => handleDownloadMany("party")}
+                                    disabled={downloadingGroup !== null}
+                                >
+                                    {downloadingGroup === "party"
+                                        ? "A baixar..."
+                                        : "Descarregar festa"}
+                                </button>
+                            )}
                         </div>
                     )}
 

@@ -16,7 +16,7 @@ export default function Header() {
                   <div className="dropdown-menu">
                      <a href="locations">Localizações</a>
                      <a href="rsvp">Convidados</a>
-                     <a href="about-we">Sobre Nós</a>
+                     <a href="we">Nós</a>
                      <a href="gallery">Galeria</a>
                      <a href="about">Sobre</a>
                   </div>

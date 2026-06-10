@@ -4,7 +4,7 @@
 
 .rsvp {
    background: var(--color-white);
-   padding: 120px 20px;
+   padding: var(--section-padding);
 }
 
 /* =========================
@@ -115,7 +115,7 @@
    }
 
    .rsvp-container {
-      gap: 2rem;
+      gap: 2.5rem;
    }
 
    .rsvp-form {
@@ -139,7 +139,7 @@
 @media (max-width: 600px) {
 
    .rsvp-container {
-      gap: 1.8rem;
+      gap: 2rem;
    }
 
    .rsvp-form {
