@@ -1,233 +1,324 @@
 import "./dashboard.css";
-import { useEffect, useState } from "react";
 
+import { useEffect, useMemo, useState } from "react";
 import {
-   getRsvp,
-   getMessages,
-   getVotes,
    getGifts,
-   createGift
+   getMessages,
+   getPurchases,
+   getRsvp
 } from "../../services/dashboardService";
 
-type Section = "dashboard" | "gifts" | "guests" | "messages" | "votes";
+type RsvpItem = {
+   id?: number;
+   name?: string;
+   attending?: string;
+   category?: string;
+   created_at?: string;
+};
+
+type MessageItem = {
+   id?: number;
+   name?: string;
+   message?: string;
+   created_at?: string;
+};
+
+type GiftItem = {
+   id?: number;
+   title?: string;
+   price?: number;
+   image?: string;
+   category?: string;
+   is_reserved?: boolean;
+};
+
+type PurchaseItem = {
+   id?: number;
+   gift_id?: number;
+   title?: string;
+   price_brl?: number;
+   price_eur?: number;
+   method?: "pix" | "mbway";
+   status?: string;
+   created_at?: string;
+};
+
+const currencyBRL = new Intl.NumberFormat("pt-BR", {
+   style: "currency",
+   currency: "BRL"
+});
+
+const currencyEUR = new Intl.NumberFormat("pt-PT", {
+   style: "currency",
+   currency: "EUR"
+});
+
+function isAttending(value?: string) {
+   return value?.toLowerCase().includes("sim") ?? false;
+}
+
+function formatDate(value?: string) {
+   if (!value) return "Sem data";
+
+   return new Intl.DateTimeFormat("pt-PT", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+   }).format(new Date(value));
+}
 
 export default function Dashboard() {
-
-   const [section, setSection] = useState<Section>("dashboard");
-
-   const [rsvp, setRsvp] = useState<any[]>([]);
-   const [messages, setMessages] = useState<any[]>([]);
-   const [votes, setVotes] = useState<any[]>([]);
-   const [gifts, setGifts] = useState<any[]>([]);
-
-   // FORM GIFTS
-   const [title, setTitle] = useState("");
-   const [price, setPrice] = useState("");
-   const [image, setImage] = useState("");
-   const [category, setCategory] = useState("product");
-   const [loading, setLoading] = useState(false);
+   const [rsvps, setRsvps] = useState<RsvpItem[]>([]);
+   const [messages, setMessages] = useState<MessageItem[]>([]);
+   const [gifts, setGifts] = useState<GiftItem[]>([]);
+   const [purchases, setPurchases] = useState<PurchaseItem[]>([]);
+   const [loading, setLoading] = useState(true);
+   const [error, setError] = useState("");
 
    useEffect(() => {
-      load();
+      async function loadDashboard() {
+         try {
+            setLoading(true);
+            setError("");
+
+            const [rsvpData, messageData, giftData, purchaseData] =
+               await Promise.all([
+                  getRsvp(),
+                  getMessages(),
+                  getGifts(),
+                  getPurchases()
+               ]);
+
+            setRsvps(rsvpData);
+            setMessages(messageData);
+            setGifts(giftData);
+            setPurchases(purchaseData);
+         } catch (err) {
+            console.error(err);
+            setError("Nao foi possivel carregar os dados do dashboard.");
+         } finally {
+            setLoading(false);
+         }
+      }
+
+      loadDashboard();
    }, []);
 
-   async function load() {
-      const [r, m, v, g] = await Promise.all([
-         getRsvp(),
-         getMessages(),
-         getVotes(),
-         getGifts()
-      ]);
+   const stats = useMemo(() => {
+      const confirmed = rsvps.filter((item) => isAttending(item.attending));
+      const declined = rsvps.filter((item) => !isAttending(item.attending));
+      const adults = confirmed.filter((item) =>
+         item.category?.toLowerCase().includes("adulto")
+      );
+      const children = confirmed.filter((item) =>
+         item.category?.toLowerCase().includes("crianca")
+      );
+      const paidPurchases = purchases.filter(
+         (item) => item.status !== "cancelled"
+      );
+      const purchasedGiftIds = new Set(
+         paidPurchases
+            .map((item) => item.gift_id)
+            .filter((id): id is number => Boolean(id) && id !== 999999)
+      );
+      const totalBRL = paidPurchases.reduce(
+         (sum, item) => sum + Number(item.price_brl || 0),
+         0
+      );
+      const totalEUR = paidPurchases.reduce(
+         (sum, item) => sum + Number(item.price_eur || 0),
+         0
+      );
 
-      setRsvp(r);
-      setMessages(m);
-      setVotes(v);
-      setGifts(g);
-   }
-
-   // =========================
-   // CREATE GIFT
-   // =========================
-   async function handleCreateGift(e: React.FormEvent) {
-      e.preventDefault();
-
-      if (!title || !price || !image) return;
-
-      try {
-         setLoading(true);
-
-         await createGift({
-            title,
-            price: Number(price),
-            image,
-            category
-         });
-
-         setTitle("");
-         setPrice("");
-         setImage("");
-         setCategory("product");
-
-         await load();
-
-      } catch (err) {
-         console.error("Erro ao criar presente:", err);
-      } finally {
-         setLoading(false);
-      }
-   }
+      return {
+         totalGuests: rsvps.length,
+         confirmed: confirmed.length,
+         declined: declined.length,
+         adults: adults.length,
+         children: children.length,
+         messages: messages.length,
+         gifts: gifts.length,
+         purchasedGifts: paidPurchases.length,
+         availableGifts: gifts.filter((item) => !purchasedGiftIds.has(Number(item.id))).length,
+         totalBRL,
+         totalEUR
+      };
+   }, [gifts, messages, purchases, rsvps]);
 
    return (
-      <section className="dashboard">
-
-         {/* SIDEBAR */}
-         <aside className="sidebar">
-
-            <div className="logo">
-               Wedding Admin
-            </div>
-
-            <nav className="menu">
-
-               <button onClick={() => setSection("dashboard")}>
-                  Dashboard
-               </button>
-
-               <button onClick={() => setSection("guests")}>
-                  Convidados
-               </button>
-
-               <button onClick={() => setSection("messages")}>
-                  Mensagens
-               </button>
-
-               <button onClick={() => setSection("votes")}>
-                  Votações
-               </button>
-
-               <button onClick={() => setSection("gifts")}>
-                  Presentes
-               </button>
-
-            </nav>
-
-         </aside>
-
-         {/* MAIN */}
-         <main className="main">
-
-            {/* TOPBAR */}
-            <header className="topbar">
-               <h1>Dashboard</h1>
-               <div className="user">Admin</div>
-            </header>
-
-            <div className="content">
-
-               {/* =========================
-                  DASHBOARD HOME
-               ========================= */}
-               {section === "dashboard" && (
-                  <div className="card-grid">
-                     <div className="card">Convidados: {rsvp.length}</div>
-                     <div className="card">Mensagens: {messages.length}</div>
-                     <div className="card">Votos: {votes.length}</div>
-                     <div className="card">Presentes: {gifts.length}</div>
-                  </div>
-               )}
-
-               {/* =========================
-                  PRESENTES (FORM + LISTA)
-               ========================= */}
-               {section === "gifts" && (
-                  <>
-                     <div className="panel">
-
-                        <h2>Criar novo presente</h2>
-
-                        <form onSubmit={handleCreateGift} className="gift-form">
-
-                           <input
-                              placeholder="Título do presente"
-                              value={title}
-                              onChange={e => setTitle(e.target.value)}
-                           />
-
-                           <input
-                              placeholder="Preço (BRL)"
-                              type="number"
-                              value={price}
-                              onChange={e => setPrice(e.target.value)}
-                           />
-
-                           <input
-                              placeholder="URL da imagem"
-                              value={image}
-                              onChange={e => setImage(e.target.value)}
-                           />
-
-                           <select
-                              value={category}
-                              onChange={e => setCategory(e.target.value)}
-                           >
-                              <option value="product">Produto</option>
-                              <option value="experience">Experiência</option>
-                           </select>
-
-                           <button className="form-button" disabled={loading}>
-                              {loading ? "A criar..." : "Criar presente"}
-                           </button>
-
-                        </form>
-
+      <main className="dashboard-page">
+         <section className="dashboard">
+            <div className="container">
+               <div className="dashboard-container">
+                  <header className="dashboard-header">
+                     <div className="luxury-title-main">
+                        <span>Dashboard</span>
                      </div>
 
-                     <div className="panel">
+                     <p className="section-subtitle">
+                        Visao geral dos convidados, mensagens e presentes do casamento.
+                     </p>
+                  </header>
 
-                        <h2>Presentes criados</h2>
+                  {loading && (
+                     <div className="dashboard-state">
+                        Carregando dados do casamento...
+                     </div>
+                  )}
 
-                        <div className="table">
-                           {gifts.map(g => (
-                              <div className="row" key={g.id}>
-                                 <div className="cell">{g.title}</div>
-                                 <div className="cell">R$ {g.price}</div>
-                                 <div className="cell">{g.category}</div>
+                  {error && !loading && (
+                     <div className="dashboard-state error">
+                        {error}
+                     </div>
+                  )}
+
+                  {!loading && !error && (
+                     <>
+                        <section className="dashboard-summary">
+                           <article>
+                              <span>Confirmados</span>
+                              <strong>{stats.confirmed}</strong>
+                              <small>{stats.declined} nao vao</small>
+                           </article>
+
+                           <article>
+                              <span>Convidados</span>
+                              <strong>{stats.totalGuests}</strong>
+                              <small>{stats.adults} adultos / {stats.children} criancas</small>
+                           </article>
+
+                           <article>
+                              <span>Presentes comprados</span>
+                              <strong>{stats.purchasedGifts}</strong>
+                              <small>{stats.availableGifts} disponiveis</small>
+                           </article>
+
+                           <article>
+                              <span>Mensagens</span>
+                              <strong>{stats.messages}</strong>
+                              <small>recados recebidos</small>
+                           </article>
+                        </section>
+
+                        <section className="dashboard-money">
+                           <div>
+                              <span>Total em real</span>
+                              <strong>{currencyBRL.format(stats.totalBRL)}</strong>
+                           </div>
+
+                           <div>
+                              <span>Total em euro</span>
+                              <strong>{currencyEUR.format(stats.totalEUR)}</strong>
+                           </div>
+                        </section>
+
+                        <div className="dashboard-grid">
+                           <section className="dashboard-panel">
+                              <div className="dashboard-panel-header">
+                                 <div>
+                                    <span>RSVP</span>
+                                    <h2>Confirmacoes</h2>
+                                 </div>
                               </div>
-                           ))}
+
+                              <div className="dashboard-split">
+                                 <div>
+                                    <span>Sim</span>
+                                    <strong>{stats.confirmed}</strong>
+                                 </div>
+                                 <div>
+                                    <span>Nao</span>
+                                    <strong>{stats.declined}</strong>
+                                 </div>
+                                 <div>
+                                    <span>Adultos</span>
+                                    <strong>{stats.adults}</strong>
+                                 </div>
+                                 <div>
+                                    <span>Criancas</span>
+                                    <strong>{stats.children}</strong>
+                                 </div>
+                              </div>
+
+                              <div className="dashboard-list">
+                                 {rsvps.length === 0 && (
+                                    <p className="dashboard-empty">Nenhum RSVP recebido ainda.</p>
+                                 )}
+
+                                 {rsvps.map((item) => (
+                                    <article key={item.id ?? item.name}>
+                                       <div>
+                                          <strong>{item.name || "Sem nome"}</strong>
+                                          <span>{item.category || "Sem categoria"}</span>
+                                       </div>
+                                       <em className={isAttending(item.attending) ? "yes" : "no"}>
+                                          {isAttending(item.attending) ? "Sim" : "Nao"}
+                                       </em>
+                                    </article>
+                                 ))}
+                              </div>
+                           </section>
+
+                           <section className="dashboard-panel">
+                              <div className="dashboard-panel-header">
+                                 <div>
+                                    <span>Presentes</span>
+                                    <h2>Comprados</h2>
+                                 </div>
+                              </div>
+
+                              <div className="dashboard-list gift-list">
+                                 {purchases.length === 0 && (
+                                    <p className="dashboard-empty">Nenhum presente comprado ainda.</p>
+                                 )}
+
+                                 {purchases.map((item) => (
+                                    <article key={item.id ?? `${item.gift_id}-${item.created_at}`}>
+                                       <div>
+                                          <strong>{item.title || "Presente"}</strong>
+                                          <span>{formatDate(item.created_at)} · {item.method?.toUpperCase() || "Metodo"}</span>
+                                       </div>
+                                       <div className="dashboard-price">
+                                          <strong>{currencyBRL.format(Number(item.price_brl || 0))}</strong>
+                                          <span>{currencyEUR.format(Number(item.price_eur || 0))}</span>
+                                       </div>
+                                    </article>
+                                 ))}
+                              </div>
+                           </section>
                         </div>
 
-                     </div>
-                  </>
-               )}
+                        <section className="dashboard-panel messages-panel">
+                           <div className="dashboard-panel-header">
+                              <div>
+                                 <span>Mensagens</span>
+                                 <h2>Recados dos convidados</h2>
+                              </div>
+                           </div>
 
-               {/* =========================
-                  OUTRAS SEÇÕES (placeholder)
-               ========================= */}
-               {section === "guests" && (
-                  <div className="panel">
-                     <h2>Convidados</h2>
-                     <p>Em breve...</p>
-                  </div>
-               )}
+                           <div className="dashboard-messages">
+                              {messages.length === 0 && (
+                                 <p className="dashboard-empty">Nenhuma mensagem recebida ainda.</p>
+                              )}
 
-               {section === "messages" && (
-                  <div className="panel">
-                     <h2>Mensagens</h2>
-                     <p>Em breve...</p>
-                  </div>
-               )}
-
-               {section === "votes" && (
-                  <div className="panel">
-                     <h2>Votações</h2>
-                     <p>Em breve...</p>
-                  </div>
-               )}
-
+                              {messages.map((item) => (
+                                 <article key={item.id ?? `${item.name}-${item.created_at}`}>
+                                    <div>
+                                       <strong>{item.name || "Convidado"}</strong>
+                                       <span>{formatDate(item.created_at)}</span>
+                                    </div>
+                                    <p>{item.message || "Mensagem sem texto."}</p>
+                                 </article>
+                              ))}
+                           </div>
+                        </section>
+                     </>
+                  )}
+               </div>
             </div>
-
-         </main>
-
-      </section>
+         </section>
+      </main>
    );
 }

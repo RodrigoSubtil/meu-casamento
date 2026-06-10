@@ -16,7 +16,11 @@
    flex-direction: column;
    align-items: center;
 
-   gap: 4rem;
+   gap: 2rem;
+}
+
+.locations-container .section-header {
+   margin-bottom: 2.5rem;
 }
 
 /* =========================
@@ -94,7 +98,7 @@
 
 @media (max-width: 900px) {
    .locations-container {
-      gap: 2.5rem;
+      gap: 2rem;
    }
 
    .location-block,
@@ -119,7 +123,11 @@
 
 @media (max-width: 600px) {
    .locations-container {
-      gap: 3rem;
+      gap: 1.6rem;
+   }
+
+   .locations-container .section-header {
+      margin-bottom: 1.8rem;
    }
 
    .location-block,

@@ -22,7 +22,8 @@ export async function getRsvp() {
 export async function getMessages() {
    const { data, error } = await supabase
       .from("messages")
-      .select("*");
+      .select("*")
+      .order("created_at", { ascending: false });
 
    if (error) {
       console.error(error);
@@ -60,7 +61,8 @@ export async function getVotes() {
 export async function getGifts() {
    const { data, error } = await supabase
       .from("gifts")
-      .select("*");
+      .select("*")
+      .order("id", { ascending: true });
 
    if (error) {
       console.error(error);
@@ -97,4 +99,21 @@ export async function createGift(gift: {
    }
 
    return data;
+}
+
+/* =========================
+   PURCHASES
+========================= */
+export async function getPurchases() {
+   const { data, error } = await supabase
+      .from("purchases")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+   if (error) {
+      console.error(error);
+      return [];
+   }
+
+   return data ?? [];
 }

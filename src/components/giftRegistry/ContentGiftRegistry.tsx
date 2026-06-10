@@ -287,19 +287,15 @@ export default function ContentGiftRegistry() {
 
                         {step === 1 && (
                            <div className="gift-step">
-                              <div className="gift-modal-summary">
-                                 <span>{isCustom ? "Valor livre" : "Valor do presente"}</span>
-                                 <strong>
-                                    {isCustom
-                                       ? "Escolhe o valor"
-                                       : (
-                                          <>
-                                             {formatAmount(selectedGift.price, "BRL")}
-                                             <small>{formatAmount(convertBRLToEUR(selectedGift.price), "EUR")}</small>
-                                          </>
-                                       )}
-                                 </strong>
-                              </div>
+                              {!isCustom && (
+                                 <div className="gift-modal-summary">
+                                    <span>Valor do presente</span>
+                                    <strong>
+                                       {formatAmount(selectedGift.price, "BRL")}
+                                       <small>{formatAmount(convertBRLToEUR(selectedGift.price), "EUR")}</small>
+                                    </strong>
+                                 </div>
+                              )}
 
                               {!isCustom && (
                                  <p className="gift-exchange-note">

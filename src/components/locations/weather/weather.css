@@ -23,7 +23,7 @@
    flex-direction: column;
    align-items: center;
 
-   gap: 4rem;
+   gap: 4.5rem;
 
    box-sizing: border-box;
    padding: 0;
@@ -172,7 +172,7 @@
 
 @media (max-width: 768px) {
    .weather-container {
-      gap: 2.5rem;
+      gap: 4.5rem;
    }
 
    .weather-timeline {
@@ -182,7 +182,7 @@
 
 @media (max-width: 600px) {
    .weather-container {
-      gap: 2.6rem;
+      gap: 3.4rem;
    }
 
    .weather-timeline {

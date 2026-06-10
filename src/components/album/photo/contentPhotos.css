@@ -14,7 +14,11 @@
    display: flex;
    flex-direction: column;
    align-items: center;
-   gap: 4rem;
+   gap: 2.4rem;
+}
+
+.album-container .section-header {
+   margin-bottom: 2.1rem;
 }
 
 /* =========================
@@ -96,7 +100,7 @@
 
 @media (max-width: 800px) {
    .album-container {
-      gap: 2.5rem;
+      gap: 2.4rem;
    }
 
    .year-grid {
@@ -107,7 +111,11 @@
 
 @media (max-width: 500px) {
    .album-container {
-      gap: 2.6rem;
+      gap: 2rem;
+   }
+
+   .album-container .section-header {
+      margin-bottom: 1.4rem;
    }
 
    .photo {

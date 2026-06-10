@@ -22,7 +22,7 @@
    display: flex;
    flex-direction: column;
  
-   gap: 4rem;
+   gap: 2rem;
 
    box-sizing: border-box;
 }
@@ -125,6 +125,10 @@
    text-align: center;
 
    animation: fadeUp 0.3s ease;
+}
+
+.gallery-container .section-header {
+   margin-bottom: 2.5rem;
 }
 
 .gallery-downloads {
@@ -456,7 +460,7 @@
 
 @media (max-width: 900px) {
    .gallery-container {
-      gap: 2.5rem;
+      gap: 2rem;
    }
 
    .gallery-upload-content {
@@ -471,7 +475,11 @@
 
 @media (max-width: 600px) {
    .gallery-container {
-      gap: 2.6rem;
+      gap: 1.6rem;
+   }
+
+   .gallery-container .section-header {
+      margin-bottom: 1.8rem;
    }
 
    .gallery-downloads {

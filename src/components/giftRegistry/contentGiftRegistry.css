@@ -14,7 +14,7 @@
    flex-direction: column;
    align-items: center;
 
-   gap: 4rem;
+   gap: 2rem;
 }
 
 .gift-container .section-header {
@@ -25,6 +25,7 @@
    align-items: center;
 
    text-align: center;
+   margin-bottom: 2.5rem;
 }
 
 .gift-container .luxury-title-main {
@@ -52,9 +53,6 @@
    width: 100%;
    display: flex;
    justify-content: center;
-
-   margin-top: -1.5rem;
-   margin-bottom: -1.5rem;
 }
 
 .gift-hero-content {
@@ -98,8 +96,6 @@
    justify-content: center;
    gap: 10px;
    flex-wrap: wrap;
-
-   margin-top: -1.5rem;
 }
 
 .gift-filters button {
@@ -618,12 +614,7 @@
 
 @media (max-width: 900px) {
    .gift-container {
-      gap: 2.5rem;
-   }
-
-   .gift-hero,
-   .gift-filters {
-      margin: 0;
+      gap: 2rem;
    }
 
    .gift-container .section-subtitle {
@@ -643,7 +634,11 @@
    }
 
    .gift-container {
-      gap: 2.6rem;
+      gap: 1.6rem;
+   }
+
+   .gift-container .section-header {
+      margin-bottom: 1.8rem;
    }
 
    .gift-container .section-subtitle {
