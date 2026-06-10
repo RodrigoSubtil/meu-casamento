@@ -116,7 +116,7 @@
 @media (max-width: 900px) {
 
    .our-story-container {
-      gap: 1rem;
+      gap: 1.4rem;
    }
 
    .story-timeline::before {

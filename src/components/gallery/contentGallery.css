@@ -471,7 +471,7 @@
 
 @media (max-width: 600px) {
    .gallery-container {
-      gap: 2rem;
+      gap: 2.6rem;
    }
 
    .gallery-downloads {

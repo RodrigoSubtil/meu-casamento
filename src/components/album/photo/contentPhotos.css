@@ -107,7 +107,7 @@
 
 @media (max-width: 500px) {
    .album-container {
-      gap: 2rem;
+      gap: 2.6rem;
    }
 
    .photo {
