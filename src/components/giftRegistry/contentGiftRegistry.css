@@ -422,24 +422,19 @@
    display: flex;
    flex-direction: column;
    gap: 12px;
-
-   padding: 18px;
-   border: var(--border-soft);
-   border-radius: var(--radius-lg);
-   background: rgba(236,191,133,0.08);
 }
 
 .gift-amount-field .form-input {
    padding: 15px 16px;
    border-radius: var(--radius-lg);
    font-size: var(--text-sm);
-   background: rgba(255,255,255,0.92);
 }
 
 .gift-amount-field span {
    color: var(--text-primary);
    font-size: 0.74rem;
    letter-spacing: 0.16em;
+   font-weight: 600;
 }
 
 /* METHODS */

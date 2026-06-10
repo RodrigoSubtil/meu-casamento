@@ -38,12 +38,12 @@
 
    display: grid;
 
-   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+   grid-template-columns: repeat(auto-fit, minmax(190px, 190px));
 
    justify-content: center;
    align-items: start;
 
-   gap: 2.5rem 2rem;
+   gap: 2.5rem;
 
    /* 🔥 IMPORTANTE: centralização real */
    justify-items: center;
@@ -69,6 +69,7 @@
    width: 100%;
    max-width: 190px;
    margin: 0 auto;
+   box-sizing: border-box;
 
    display: flex;
    flex-direction: column;
@@ -176,7 +177,12 @@
    }
 
    .weather-timeline {
-      gap: 2rem 1.5rem;
+      grid-template-columns: repeat(2, minmax(0, 260px));
+      gap: 2rem;
+   }
+
+   .weather-card {
+      max-width: 260px;
    }
 }
 
@@ -187,7 +193,7 @@
 
    .weather-timeline {
       grid-template-columns: 1fr;
-      gap: 1.4rem;
+      gap: 1.6rem;
    }
 
    .weather-card {
