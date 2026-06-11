@@ -98,6 +98,15 @@ export default function ContentMessage() {
                   {loading ? "Enviando..." : "Enviar Mensagem"}
                </button>
 
+               <div className="message-next-steps" aria-label="Próximos passos">
+                  <span>Os próximos passos sugeridos são:</span>
+
+                  <div className="message-next-actions">
+                     <a href="/rsvp">Confirmar presença</a>
+                     <a href="/gift-registry">Presentear-nos</a>
+                  </div>
+               </div>
+
             </form>
 
          </div>
