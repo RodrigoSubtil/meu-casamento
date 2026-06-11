@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./contentCountdown.css";
 
 export default function ContentCountdown() {
-   const targetDate = new Date("2026-08-15T00:00:00").getTime();
+   const targetDate = new Date("2026-08-15T17:00:00-03:00").getTime();
 
    const [timeLeft, setTimeLeft] = useState({
       days: 0,

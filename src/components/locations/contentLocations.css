@@ -37,6 +37,10 @@
    gap: 1.6rem;
 }
 
+.location-block + .location-block {
+   margin-top: 2.6rem;
+}
+
 .location-block.reverse {
    flex-direction: row-reverse;
 }
@@ -109,6 +113,10 @@
       gap: 1rem;
    }
 
+   .location-block + .location-block {
+      margin-top: 2.8rem;
+   }
+
    .location-info {
       width: 100%;
       align-items: center;
@@ -133,6 +141,10 @@
    .location-block,
    .location-block.reverse {
       gap: 0.8rem;
+   }
+
+   .location-block + .location-block {
+      margin-top: 2.4rem;
    }
 
    .location-info {
