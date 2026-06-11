@@ -16,10 +16,11 @@ type GalleryPhoto = {
 };
 
 type DownloadGroup = "all" | AlbumType;
+type GalleryFilter = "all" | AlbumType;
 
 export default function ContentGallery() {
 
-    const [selectedAlbum, setSelectedAlbum] = useState<AlbumType>("ceremony");
+    const [selectedAlbum, setSelectedAlbum] = useState<GalleryFilter>("all");
     const [showModal, setShowModal] = useState(false);
     const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
     const [loading, setLoading] = useState(false);
@@ -70,7 +71,10 @@ export default function ContentGallery() {
         }
     }
 
-    const currentPhotos = photos.filter(p => p.album === selectedAlbum);
+    const currentPhotos =
+        selectedAlbum === "all"
+            ? photos
+            : photos.filter(p => p.album === selectedAlbum);
     const ceremonyPhotos = photos.filter(p => p.album === "ceremony");
     const partyPhotos = photos.filter(p => p.album === "party");
     const hasPhotos = photos.length > 0;
@@ -299,6 +303,13 @@ export default function ContentGallery() {
 
                     {/* TABS */}
                     <div className="gallery-tabs">
+                        <button
+                            className={selectedAlbum === "all" ? "active" : ""}
+                            onClick={() => setSelectedAlbum("all")}
+                        >
+                            Todas
+                        </button>
+
                         <button
                             className={selectedAlbum === "ceremony" ? "active" : ""}
                             onClick={() => setSelectedAlbum("ceremony")}
