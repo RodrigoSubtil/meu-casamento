@@ -482,7 +482,7 @@ export default function ContentGiftRegistry() {
                            <div className="gift-step center">
                               <div className="success-icon">&#10003;</div>
                               <h3>Presente reservado</h3>
-                              <p className="gift-success-text">Obrigado pelo carinho. A tua confirmação ficou guardada para os noivos.</p>
+                              <p className="gift-success-text">Obrigado pelo carinho.</p>
 
                               <button className="gift-btn" type="button" onClick={closeModal}>
                                  Fechar
