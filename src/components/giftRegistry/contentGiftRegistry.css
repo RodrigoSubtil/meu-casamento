@@ -446,9 +446,16 @@
    font-weight: 600;
 }
 
-.gift-payer-field .form-error {
+.gift-payer-field .form-error,
+.gift-amount-field .form-error,
+.gift-method-error {
    min-height: 0;
    padding-left: 0;
+}
+
+.gift-method-error {
+   justify-content: center;
+   margin-top: -4px;
 }
 
 /* METHODS */

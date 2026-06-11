@@ -32,6 +32,8 @@ export default function ContentGiftRegistry() {
    const [customAmount, setCustomAmount] = useState<number>(0);
    const [payerName, setPayerName] = useState("");
    const [payerNameError, setPayerNameError] = useState("");
+   const [customAmountError, setCustomAmountError] = useState("");
+   const [methodError, setMethodError] = useState("");
 
    const [loading, setLoading] = useState(false);
    const [copied, setCopied] = useState<"pix" | "mbway" | null>(null);
@@ -64,7 +66,7 @@ export default function ContentGiftRegistry() {
             setBrlToEurRate(rate);
             setExchangeDate(data?.date || null);
             setExchangeFallback(false);
-         } catch (error) {
+         } catch {
             if (controller.signal.aborted) return;
 
             setBrlToEurRate(FALLBACK_BRL_TO_EUR_RATE);
@@ -113,6 +115,8 @@ export default function ContentGiftRegistry() {
       setCustomAmount(0);
       setPayerName("");
       setPayerNameError("");
+      setCustomAmountError("");
+      setMethodError("");
       setCopied(null);
    }
 
@@ -124,6 +128,8 @@ export default function ContentGiftRegistry() {
       setCustomAmount(0);
       setPayerName("");
       setPayerNameError("");
+      setCustomAmountError("");
+      setMethodError("");
       setLoading(false);
       setCopied(null);
    }
@@ -163,6 +169,35 @@ export default function ContentGiftRegistry() {
       }).format(value);
    }
 
+   function validateGiftStep() {
+      let hasError = false;
+
+      if (!payerName.trim()) {
+         setPayerNameError("Informe o nome de quem vai enviar o dinheiro.");
+         hasError = true;
+      } else {
+         setPayerNameError("");
+      }
+
+      if (isCustom && customAmount <= 0) {
+         setCustomAmountError("Informe o valor da contribuição.");
+         hasError = true;
+      } else {
+         setCustomAmountError("");
+      }
+
+      if (!method) {
+         setMethodError("Selecione uma forma de pagamento.");
+         hasError = true;
+      } else {
+         setMethodError("");
+      }
+
+      if (!hasError) {
+         setStep(2);
+      }
+   }
+
    async function confirmReservation() {
       if (!selectedGift || !method) return;
 
@@ -196,7 +231,7 @@ export default function ContentGiftRegistry() {
          );
 
          setStep(3);
-      } catch (e) {
+      } catch {
          alert("Erro ao reservar presente.");
       } finally {
          setLoading(false);
@@ -369,15 +404,22 @@ export default function ContentGiftRegistry() {
                                     <label className="gift-amount-field">
                                        <span>Quanto gostarias de contribuir?</span>
                                        <input
-                                          className="form-input"
+                                          className={`form-input ${customAmountError ? "form-error-input" : ""}`}
                                           type="number"
                                           min={1}
                                           placeholder="Ex.: 100"
                                           value={customAmount || ""}
-                                          onChange={(e) =>
-                                             setCustomAmount(Number(e.target.value))
-                                          }
+                                          onChange={(e) => {
+                                             setCustomAmount(Number(e.target.value));
+                                             setCustomAmountError("");
+                                          }}
                                        />
+
+                                       {customAmountError && (
+                                          <small className="form-error show">
+                                             {customAmountError}
+                                          </small>
+                                       )}
                                     </label>
                                  )}
                               </div>
@@ -386,7 +428,10 @@ export default function ContentGiftRegistry() {
                                  <button
                                     className={method === "pix" ? "active" : ""}
                                     type="button"
-                                    onClick={() => setMethod("pix")}
+                                    onClick={() => {
+                                       setMethod("pix");
+                                       setMethodError("");
+                                    }}
                                  >
                                     <strong>PIX</strong>
                                     <span>Brasil</span>
@@ -395,18 +440,26 @@ export default function ContentGiftRegistry() {
                                  <button
                                     className={method === "mbway" ? "active" : ""}
                                     type="button"
-                                    onClick={() => setMethod("mbway")}
+                                    onClick={() => {
+                                       setMethod("mbway");
+                                       setMethodError("");
+                                    }}
                                  >
                                     <strong>MB WAY</strong>
                                     <span>Portugal</span>
                                  </button>
                               </div>
 
+                              {methodError && (
+                                 <small className="form-error gift-method-error show">
+                                    {methodError}
+                                 </small>
+                              )}
+
                               <button
                                  className="gift-btn"
                                  type="button"
-                                 disabled={!method || !payerName.trim() || (isCustom && customAmount <= 0)}
-                                 onClick={() => setStep(2)}
+                                 onClick={validateGiftStep}
                               >
                                  Continuar
                               </button>
