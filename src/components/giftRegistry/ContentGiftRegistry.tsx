@@ -351,7 +351,7 @@ export default function ContentGiftRegistry() {
                                     <input
                                        className={`form-input ${payerNameError ? "form-error-input" : ""}`}
                                        type="text"
-                                       placeholder="Ex.: Maria Silva"
+                                       placeholder="Ex.: Maria Eduarda"
                                        value={payerName}
                                        onChange={(event) => {
                                           setPayerName(event.target.value);

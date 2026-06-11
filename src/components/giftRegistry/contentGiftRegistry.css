@@ -439,6 +439,7 @@
 
 .gift-amount-field span,
 .gift-payer-field span {
+   text-transform: uppercase;
    color: var(--text-primary);
    font-size: 0.74rem;
    letter-spacing: 0.16em;
