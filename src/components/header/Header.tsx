@@ -1,3 +1,5 @@
+import { IoIosArrowDown } from "react-icons/io";
+
 import "./header.css";
 
 export default function Header() {
@@ -9,8 +11,11 @@ export default function Header() {
                <a href="./">Home</a>
 
                <div className="nav-dropdown">
-                  <button className="nav-button">
+                  <button className="nav-button" type="button">
                      Páginas
+                     <span className="nav-arrow" aria-hidden="true">
+                        <IoIosArrowDown />
+                     </span>
                   </button>
 
                   <div className="dropdown-menu">

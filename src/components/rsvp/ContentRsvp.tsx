@@ -2,6 +2,7 @@ import "./contentRsvp.css";
 
 import { useState } from "react";
 import { supabase } from "../../lib/supabase.ts";
+import ModalConfirmation from "../modalConfirmation/ModalConfirmation";
 
 import type { RsvpErrors } from "../../types/rsvp";
 
@@ -165,12 +166,6 @@ export default function ContentRsvp() {
                   className="rsvp-form"
                   onSubmit={handleSubmit}
                >
-                  {success && (
-                     <div className="form-success show">
-                        Enviado com sucesso!
-                     </div>
-                  )}
-
                   <div className="rsvp-guests">
                      {guests.map((guest, index) => {
                         const guestErrors = errors[index] || {};
@@ -316,6 +311,25 @@ export default function ContentRsvp() {
                </form>
             </div>
          </div>
+
+         <ModalConfirmation
+            open={success}
+            eyebrow="Resposta enviada"
+            title="A sua confirmação foi registada"
+            description="Obrigado por nos ajudar com a organização do grande dia. Agora, se quiser, pode deixar uma mensagem para nós ou seguir para a lista de presentes."
+            actions={[
+               {
+                  label: "Enviar mensagem",
+                  href: "/#mensagem",
+                  variant: "primary"
+               },
+               {
+                  label: "Presentear-nos",
+                  href: "/gift-registry"
+               }
+            ]}
+            onClose={() => setSuccess(false)}
+         />
       </section>
    );
 }

@@ -70,6 +70,7 @@
 
    display: inline-flex;
    align-items: center;
+   gap: 8px;
 
    transition: all 0.25s ease;
 
@@ -118,6 +119,22 @@
    box-shadow: none !important;
 }
 
+.nav-arrow {
+   width: 13px;
+   height: 13px;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   color: currentColor;
+   font-size: 0.82rem;
+   transition: transform 0.25s ease;
+}
+
+.nav-dropdown:hover .nav-arrow,
+.nav-dropdown:focus-within .nav-arrow {
+   transform: rotate(180deg);
+}
+
 /* =========================
    DROPDOWN MENU (DARK)
 ========================= */
@@ -152,7 +169,8 @@
 }
 
 /* abrir */
-.nav-dropdown:hover .dropdown-menu {
+.nav-dropdown:hover .dropdown-menu,
+.nav-dropdown:focus-within .dropdown-menu {
    opacity: 1;
    visibility: visible;
    transform: translateX(-50%) translateY(0);

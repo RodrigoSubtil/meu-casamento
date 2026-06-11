@@ -50,7 +50,7 @@ export default function ContentLocations() {
                      <div className="location-info">
                         <h2 className="location-title">Festa</h2>
                         <p className="location-text">
-                           Funny Eventos
+                           Fanny Eventos
                            <br />
                            Após a cerimônia — 15 · 08 · 2026
                         </p>

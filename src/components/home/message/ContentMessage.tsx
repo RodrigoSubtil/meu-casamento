@@ -3,6 +3,7 @@ import { validateMessage } from "../../../utils/validators/messageValidator";
 
 import { useState } from "react";
 import { supabase } from "../../../lib/supabase.ts";
+import ModalConfirmation from "../../modalConfirmation/ModalConfirmation";
 
 import "./contentMessage.css";
 
@@ -47,7 +48,7 @@ export default function ContentMessage() {
    }
 
    return (
-      <section className="message-section">
+      <section className="message-section" id="mensagem">
          <div className="message-container">
 
             <div className="section-header">
@@ -59,13 +60,6 @@ export default function ContentMessage() {
             </div>
 
             <form className="message-form" onSubmit={handleSubmit}>
-
-               {/* SUCCESS GLOBAL */}
-               {success && (
-                  <div className="form-success show">
-                     Sua mensagem foi enviada com sucesso
-                  </div>
-               )}
 
                {/* NAME */}
                <div className="form-group">
@@ -107,6 +101,25 @@ export default function ContentMessage() {
             </form>
 
          </div>
+
+         <ModalConfirmation
+            open={success}
+            eyebrow="Mensagem enviada"
+            title="Recebemos o seu carinho"
+            description="Obrigado por deixar uma mensagem para nós. Se ainda não confirmou a presença ou quiser nos presentear, deixamos os próximos passos aqui pertinho."
+            actions={[
+               {
+                  label: "Confirmar presença",
+                  href: "/rsvp",
+                  variant: "primary"
+               },
+               {
+                  label: "Presentear-nos",
+                  href: "/gift-registry"
+               }
+            ]}
+            onClose={() => setSuccess(false)}
+         />
       </section>
    );
 }

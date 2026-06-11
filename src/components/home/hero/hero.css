@@ -49,7 +49,7 @@
 
    text-align: center;
 
-   gap: 3rem;
+   gap: 2.4rem;
 
    padding: 0 1.5rem;
 
@@ -89,6 +89,49 @@
    margin: 0;
 }
 
+.hero-actions {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-wrap: wrap;
+   gap: 0.8rem;
+   margin-top: 0.2rem;
+}
+
+.hero-action {
+   min-height: 44px;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+
+   padding: 0 1.35rem;
+   border: 1px solid rgba(207,162,102,0.5);
+   border-radius: 999px;
+
+   background: rgba(207,162,102,0.24);
+   color: var(--text-primary);
+
+   font-family: var(--font-primary);
+   font-size: 0.72rem;
+   letter-spacing: 0.13em;
+   text-transform: uppercase;
+   text-decoration: none;
+
+   box-shadow:
+      0 10px 26px rgba(48,65,98,0.09),
+      0 0 0 1px rgba(255,255,255,0.34) inset;
+   transition: var(--transition-base);
+}
+
+.hero-action:hover {
+   transform: translateY(-2px);
+   border-color: rgba(207,162,102,0.68);
+   background: rgba(207,162,102,0.32);
+   box-shadow:
+      0 14px 32px rgba(48,65,98,0.12),
+      0 0 0 1px rgba(255,255,255,0.45) inset;
+}
+
 /* =========================
    📱 MOBILE PADRÃO (NOVO MELHORADO)
 ========================= */
@@ -96,12 +139,35 @@
 @media (max-width: 768px) {
 
    .hero {
-      min-height: 90vh;
+      min-height: auto;
+      padding: 110px 0 168px;
       background-position: center top;
+      mask-image: none;
+      -webkit-mask-image: none;
+   }
+
+   .hero::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 148px;
+      z-index: 1;
+      pointer-events: none;
+
+      background: linear-gradient(
+         to bottom,
+         rgba(250,246,241,0) 0%,
+         rgba(250,246,241,0.62) 34%,
+         rgba(255,255,255,0.9) 76%,
+         var(--color-white) 100%
+      );
    }
 
    .hero-container {
-      gap: 1.5rem;
+      gap: 1.15rem;
+      padding: 0 1.2rem;
    }
 
    .hero-title {
@@ -112,7 +178,25 @@
    .hero-subtitle {
       max-width: 100%;
       font-size: 0.95rem;
-      line-height: 1.6;
+      line-height: 1.52;
+   }
+
+   .hero-actions {
+      width: 100%;
+      max-width: 360px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.65rem;
+      margin-top: 0.3rem;
+   }
+
+   .hero-action {
+      width: 100%;
+      min-height: 44px;
+      padding: 0 1rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      box-sizing: border-box;
    }
 }
 
@@ -123,7 +207,11 @@
 @media (max-width: 480px) {
 
    .hero {
-      min-height: 85vh;
+      padding: 104px 0 154px;
+   }
+
+   .hero::after {
+      height: 134px;
    }
 
    .hero-title {
@@ -132,5 +220,16 @@
 
    .hero-subtitle {
       font-size: 0.9rem;
+   }
+
+   .hero-actions {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .hero-action {
+      width: 100%;
+      box-sizing: border-box;
    }
 }
