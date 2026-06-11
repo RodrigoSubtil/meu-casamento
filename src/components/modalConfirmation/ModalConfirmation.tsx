@@ -14,7 +14,7 @@ type ModalConfirmationProps = {
    eyebrow: string;
    title: string;
    description: string;
-   actions: ModalAction[];
+   actions?: ModalAction[];
    onClose: () => void;
 };
 
@@ -29,13 +29,34 @@ export default function ModalConfirmation({
    useEffect(() => {
       if (!open) return;
 
+      const scrollY = window.scrollY;
+      const previousOverflow = document.body.style.overflow;
+      const previousPosition = document.body.style.position;
+      const previousTop = document.body.style.top;
+      const previousWidth = document.body.style.width;
+      const previousHtmlOverflow = document.documentElement.style.overflow;
+
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+
       function handleKeyDown(event: KeyboardEvent) {
          if (event.key === "Escape") onClose();
       }
 
       document.addEventListener("keydown", handleKeyDown);
 
-      return () => document.removeEventListener("keydown", handleKeyDown);
+      return () => {
+         document.removeEventListener("keydown", handleKeyDown);
+         document.documentElement.style.overflow = previousHtmlOverflow;
+         document.body.style.overflow = previousOverflow;
+         document.body.style.position = previousPosition;
+         document.body.style.top = previousTop;
+         document.body.style.width = previousWidth;
+         window.scrollTo(0, scrollY);
+      };
    }, [open, onClose]);
 
    if (!open) return null;
@@ -68,20 +89,22 @@ export default function ModalConfirmation({
 
             <p>{description}</p>
 
-            <div className="confirmation-actions">
-               {actions.map((action) => (
-                  <a
-                     key={action.href}
-                     className={`confirmation-action ${action.variant === "primary"
-                           ? "primary"
-                           : ""
-                        }`}
-                     href={action.href}
-                  >
-                     {action.label}
-                  </a>
-               ))}
-            </div>
+            {actions && actions.length > 0 && (
+               <div className="confirmation-actions">
+                  {actions.map((action) => (
+                     <a
+                        key={action.href}
+                        className={`confirmation-action ${action.variant === "primary"
+                              ? "primary"
+                              : ""
+                           }`}
+                        href={action.href}
+                     >
+                        {action.label}
+                     </a>
+                  ))}
+               </div>
+            )}
          </div>
       </div>
    );

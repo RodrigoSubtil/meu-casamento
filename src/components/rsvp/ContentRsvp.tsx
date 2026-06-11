@@ -316,18 +316,7 @@ export default function ContentRsvp() {
             open={success}
             eyebrow="Resposta enviada"
             title="A sua confirmação foi registada"
-            description="Obrigado por nos ajudar com a organização do grande dia. Agora, se quiser, pode deixar uma mensagem para nós ou seguir para a lista de presentes."
-            actions={[
-               {
-                  label: "Enviar mensagem",
-                  href: "/#mensagem",
-                  variant: "primary"
-               },
-               {
-                  label: "Presentear-nos",
-                  href: "/gift-registry"
-               }
-            ]}
+            description="Obrigado por nos ajudar com a organização do grande dia."
             onClose={() => setSuccess(false)}
          />
       </section>

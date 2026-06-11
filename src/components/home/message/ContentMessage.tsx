@@ -104,18 +104,7 @@ export default function ContentMessage() {
             open={success}
             eyebrow="Mensagem enviada"
             title="Recebemos o seu carinho"
-            description="Obrigado por deixar uma mensagem para nós. Se ainda não confirmou a presença ou quiser nos presentear, deixamos os próximos passos aqui pertinho."
-            actions={[
-               {
-                  label: "Confirmar presença",
-                  href: "/rsvp",
-                  variant: "primary"
-               },
-               {
-                  label: "Presentear-nos",
-                  href: "/gift-registry"
-               }
-            ]}
+            description="Obrigado por deixar uma mensagem para nós, ficamos muito felizes."
             onClose={() => setSuccess(false)}
          />
       </section>
