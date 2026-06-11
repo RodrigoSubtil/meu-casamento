@@ -39,6 +39,7 @@ type PurchaseItem = {
    price_brl?: number;
    price_eur?: number;
    method?: "pix" | "mbway";
+   payer_name?: string;
    status?: string;
    created_at?: string;
 };
@@ -278,7 +279,9 @@ export default function Dashboard() {
                                     <article key={item.id ?? `${item.gift_id}-${item.created_at}`}>
                                        <div>
                                           <strong>{item.title || "Presente"}</strong>
-                                          <span>{formatDate(item.created_at)} · {item.method?.toUpperCase() || "Metodo"}</span>
+                                          <span>
+                                             {item.payer_name || "Sem nome"} · {formatDate(item.created_at)} · {item.method?.toUpperCase() || "Metodo"}
+                                          </span>
                                        </div>
                                        <div className="dashboard-price">
                                           <strong>{currencyBRL.format(Number(item.price_brl || 0))}</strong>

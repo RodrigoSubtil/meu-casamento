@@ -30,11 +30,11 @@ export default function ContentGiftRegistry() {
    const [step, setStep] = useState(1);
    const [method, setMethod] = useState<"pix" | "mbway" | "">("");
    const [customAmount, setCustomAmount] = useState<number>(0);
+   const [payerName, setPayerName] = useState("");
+   const [payerNameError, setPayerNameError] = useState("");
 
    const [loading, setLoading] = useState(false);
    const [copied, setCopied] = useState<"pix" | "mbway" | null>(null);
-
-   const userName = "Convidado";
 
    useEffect(() => {
       getGifts()
@@ -111,6 +111,8 @@ export default function ContentGiftRegistry() {
       setStep(1);
       setMethod("");
       setCustomAmount(0);
+      setPayerName("");
+      setPayerNameError("");
       setCopied(null);
    }
 
@@ -120,6 +122,8 @@ export default function ContentGiftRegistry() {
       setStep(1);
       setMethod("");
       setCustomAmount(0);
+      setPayerName("");
+      setPayerNameError("");
       setLoading(false);
       setCopied(null);
    }
@@ -162,6 +166,11 @@ export default function ContentGiftRegistry() {
    async function confirmReservation() {
       if (!selectedGift || !method) return;
 
+      if (!payerName.trim()) {
+         setPayerNameError("Informe o nome de quem vai enviar o dinheiro.");
+         return;
+      }
+
       const price = selectedGift.id === 999999 ? customAmount : selectedGift.price;
       const priceBRL = isCustom && method === "mbway" ? convertEURToBRL(price) : price;
       const priceEUR = isCustom && method === "mbway" ? price : convertBRLToEUR(price);
@@ -175,13 +184,13 @@ export default function ContentGiftRegistry() {
             priceBRL,
             priceEUR,
             method,
-            userName
+            userName: payerName.trim()
          });
 
          setGifts((prev) =>
             prev.map((g) =>
                g.id === selectedGift.id
-                  ? { ...g, is_reserved: true, reserved_by: userName }
+                  ? { ...g, is_reserved: true, reserved_by: payerName.trim() }
                   : g
             )
          );
@@ -331,25 +340,46 @@ export default function ContentGiftRegistry() {
                                  </p>
                               )}
 
-                              {isCustom && (
-                                 <label className="gift-amount-field">
-                                    <span>Quanto gostarias de contribuir?</span>
-                                    <input
-                                       className="form-input"
-                                       type="number"
-                                       min={1}
-                                       placeholder="Ex.: 100"
-                                       value={customAmount || ""}
-                                       onChange={(e) =>
-                                          setCustomAmount(Number(e.target.value))
-                                       }
-                                    />
-                                 </label>
-                              )}
-
                               <div className="gift-step-copy">
                                  <h3>Como prefere presentear?</h3>
                                  <p>Escolhe a forma de pagamento e depois confirma a reserva do presente.</p>
+                              </div>
+
+                              <div className="gift-input-stack">
+                                 <label className="gift-payer-field">
+                                    <span>Nome de quem vai enviar o dinheiro</span>
+                                    <input
+                                       className={`form-input ${payerNameError ? "form-error-input" : ""}`}
+                                       type="text"
+                                       placeholder="Ex.: Maria Silva"
+                                       value={payerName}
+                                       onChange={(event) => {
+                                          setPayerName(event.target.value);
+                                          setPayerNameError("");
+                                       }}
+                                    />
+                                    {payerNameError && (
+                                       <small className="form-error show">
+                                          {payerNameError}
+                                       </small>
+                                    )}
+                                 </label>
+
+                                 {isCustom && (
+                                    <label className="gift-amount-field">
+                                       <span>Quanto gostarias de contribuir?</span>
+                                       <input
+                                          className="form-input"
+                                          type="number"
+                                          min={1}
+                                          placeholder="Ex.: 100"
+                                          value={customAmount || ""}
+                                          onChange={(e) =>
+                                             setCustomAmount(Number(e.target.value))
+                                          }
+                                       />
+                                    </label>
+                                 )}
                               </div>
 
                               <div className="gift-methods">
@@ -375,7 +405,7 @@ export default function ContentGiftRegistry() {
                               <button
                                  className="gift-btn"
                                  type="button"
-                                 disabled={!method || (isCustom && customAmount <= 0)}
+                                 disabled={!method || !payerName.trim() || (isCustom && customAmount <= 0)}
                                  onClick={() => setStep(2)}
                               >
                                  Continuar

@@ -41,6 +41,7 @@ export async function reserveGift(data: ReserveGiftParams) {
             price_brl: data.priceBRL,
             price_eur: data.priceEUR,
             method: data.method,
+            payer_name: data.userName,
             status: "paid",
             created_at: new Date().toISOString()
          }

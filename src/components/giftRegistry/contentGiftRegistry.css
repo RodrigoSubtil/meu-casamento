@@ -384,8 +384,7 @@
 
 .gift-modal-summary span,
 .gift-total span,
-.gift-payment-label,
-.gift-amount-field span {
+.gift-payment-label {
    font-size: 0.68rem;
    letter-spacing: 0.14em;
    text-transform: uppercase;
@@ -418,23 +417,37 @@
    color: rgba(48,65,98,0.58);
 }
 
-.gift-amount-field {
+.gift-input-stack {
    display: flex;
    flex-direction: column;
-   gap: 12px;
+   gap: 0.65rem;
 }
 
-.gift-amount-field .form-input {
-   padding: 15px 16px;
+.gift-amount-field,
+.gift-payer-field {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+}
+
+.gift-amount-field .form-input,
+.gift-payer-field .form-input {
+   padding: 12px 14px;
    border-radius: var(--radius-lg);
-   font-size: var(--text-sm);
+   font-size: 0.82rem;
 }
 
-.gift-amount-field span {
+.gift-amount-field span,
+.gift-payer-field span {
    color: var(--text-primary);
    font-size: 0.74rem;
    letter-spacing: 0.16em;
    font-weight: 600;
+}
+
+.gift-payer-field .form-error {
+   min-height: 0;
+   padding-left: 0;
 }
 
 /* METHODS */
