@@ -39,6 +39,80 @@
    gap: 1.8rem;
 }
 
+.rsvp-guests {
+   width: 100%;
+
+   display: flex;
+   flex-direction: column;
+   gap: 1.4rem;
+}
+
+.rsvp-person {
+   width: 100%;
+
+   display: flex;
+   flex-direction: column;
+   gap: 1.4rem;
+
+   padding: 1.4rem;
+   border: var(--border-thin);
+   border-radius: var(--radius-lg);
+   background: rgba(255,255,255,0.78);
+
+   box-sizing: border-box;
+}
+
+.rsvp-person-header {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 1rem;
+}
+
+.rsvp-person-header span {
+   font-size: var(--text-xs);
+   letter-spacing: 0.16em;
+   text-transform: uppercase;
+   color: var(--color-gold);
+}
+
+.rsvp-remove,
+.rsvp-add {
+   font-family: var(--font-primary);
+   cursor: pointer;
+   transition: var(--transition-base);
+}
+
+.rsvp-remove {
+   border: none;
+   background: transparent;
+   color: rgba(48,65,98,0.64);
+   font-size: var(--text-xs);
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+}
+
+.rsvp-remove:hover {
+   color: var(--text-primary);
+}
+
+.rsvp-add {
+   min-height: 48px;
+   border: var(--border-soft);
+   border-radius: 999px;
+   background: rgba(236,191,133,0.08);
+   color: var(--text-primary);
+   font-size: var(--text-xs);
+   letter-spacing: 0.13em;
+   text-transform: uppercase;
+}
+
+.rsvp-add:hover {
+   transform: translateY(-2px);
+   background: rgba(236,191,133,0.16);
+   box-shadow: var(--shadow-sm);
+}
+
 /* =========================
    GRID
 ========================= */
@@ -144,6 +218,15 @@
 
    .rsvp-form {
       gap: 1.5rem;
+   }
+
+   .rsvp-guests {
+      gap: 1.2rem;
+   }
+
+   .rsvp-person {
+      padding: 1.1rem;
+      gap: 1.2rem;
    }
 
    .rsvp-grid {

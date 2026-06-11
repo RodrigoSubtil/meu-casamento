@@ -27,7 +27,7 @@ export default function ContentLocations() {
                   <div className="location-block">
 
                      <div className="location-info">
-                        <h2 className="location-title">Cerimónia</h2>
+                        <h2 className="location-title">Cerimônia</h2>
                         <p className="location-text">
                            Igreja Santa Rita de Cássia
                            <br />

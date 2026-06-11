@@ -10,61 +10,122 @@ import {
    makeNameKey
 } from "../../utils/normalize/normalizeName";
 
+type Guest = {
+   id: number;
+   name: string;
+   attending: string;
+   category: string;
+};
+
+function createGuest(): Guest {
+   return {
+      id: Date.now() + Math.random(),
+      name: "",
+      attending: "Sim, vou estar presente",
+      category: ""
+   };
+}
+
 export default function ContentRsvp() {
-
-   const [name, setName] = useState<string>("");
-   const [attending, setAttending] =
-      useState<string>("Sim, vou estar presente");
-   const [category, setCategory] = useState<string>("");
-
+   const [guests, setGuests] = useState<Guest[]>([createGuest()]);
    const [loading, setLoading] = useState<boolean>(false);
-   const [errors, setErrors] = useState<RsvpErrors>({});
+   const [errors, setErrors] = useState<RsvpErrors[]>([{}]);
    const [success, setSuccess] = useState<boolean>(false);
 
-   async function handleSubmit(
-      e: React.FormEvent<HTMLFormElement>
+   function updateGuest(
+      guestId: number,
+      field: keyof Omit<Guest, "id">,
+      value: string
    ) {
+      setGuests((current) =>
+         current.map((guest) =>
+            guest.id === guestId
+               ? { ...guest, [field]: value }
+               : guest
+         )
+      );
+   }
 
+   function addGuest() {
+      setGuests((current) => [...current, createGuest()]);
+      setErrors((current) => [...current, {}]);
+   }
+
+   function removeGuest(guestId: number) {
+      if (guests.length === 1) return;
+
+      const nextGuests = guests.filter((guest) => guest.id !== guestId);
+      const nextErrors = errors.filter((_, index) => guests[index]?.id !== guestId);
+
+      setGuests(nextGuests);
+      setErrors(nextErrors.length ? nextErrors : [{}]);
+   }
+
+   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
-
       setSuccess(false);
 
-      const formErrors: RsvpErrors = {};
+      const formErrors: RsvpErrors[] = guests.map(() => ({}));
+      const usedNames = new Set<string>();
 
-      if (!name.trim()) {
-         formErrors.name = "O nome é obrigatório";
-      }
+      guests.forEach((guest, index) => {
+         const nameKey = makeNameKey(guest.name);
 
-      if (!attending) {
-         formErrors.attending = "Selecione uma opção";
-      }
+         if (!guest.name.trim()) {
+            formErrors[index].name = "O nome é obrigatório";
+         } else if (usedNames.has(nameKey)) {
+            formErrors[index].name = "Este nome já foi adicionado.";
+         } else {
+            usedNames.add(nameKey);
+         }
 
-      if (!category) {
-         formErrors.category = "Selecione uma categoria";
-      }
+         if (!guest.attending) {
+            formErrors[index].attending = "Selecione uma opção";
+         }
 
-      if (Object.keys(formErrors).length > 0) {
+         if (!guest.category) {
+            formErrors[index].category = "Selecione uma categoria";
+         }
+      });
+
+      if (formErrors.some((item) => Object.keys(item).length > 0)) {
          setErrors(formErrors);
          return;
       }
 
-      setErrors({});
+      const guestsToSave = guests.map((guest) => ({
+         name: normalizeName(guest.name),
+         name_key: makeNameKey(guest.name),
+         attending: guest.attending,
+         category: guest.category
+      }));
+
+      setErrors(guests.map(() => ({})));
       setLoading(true);
 
-      const cleanName = normalizeName(name);
-      const nameKey = makeNameKey(name);
-
-      const { data: existing } = await supabase
+      const { data: existingGuests, error: existingError } = await supabase
          .from("rsvp")
-         .select("id")
-         .eq("name_key", nameKey)
-         .maybeSingle();
+         .select("name_key")
+         .in("name_key", guestsToSave.map((guest) => guest.name_key));
 
-      if (existing) {
+      if (existingError) {
+         console.error(existingError);
+         setLoading(false);
+         return;
+      }
 
-         setErrors({
-            name: "Este RSVP já foi registado."
-         });
+      if (existingGuests && existingGuests.length > 0) {
+         const existingKeys = new Set(
+            existingGuests.map((guest) => guest.name_key)
+         );
+
+         setErrors(
+            guestsToSave.map((guest) => ({
+               name: existingKeys.has(guest.name_key)
+                  ? "Este RSVP já foi registado."
+                  : undefined
+            }))
+         );
 
          setLoading(false);
          return;
@@ -72,14 +133,7 @@ export default function ContentRsvp() {
 
       const { error } = await supabase
          .from("rsvp")
-         .insert([
-            {
-               name: cleanName,
-               name_key: nameKey,
-               attending,
-               category
-            }
-         ]);
+         .insert(guestsToSave);
 
       setLoading(false);
 
@@ -89,21 +143,15 @@ export default function ContentRsvp() {
       }
 
       setSuccess(true);
-
-      setName("");
-      setAttending("Sim, vou estar presente");
-      setCategory("");
+      setGuests([createGuest()]);
+      setErrors([{}]);
    }
 
    return (
       <section className="rsvp">
-
          <div className="container">
-
             <div className="rsvp-container">
-
                <div className="section-header">
-
                   <div className="luxury-title-main">
                      <span>Convidados</span>
                   </div>
@@ -111,128 +159,149 @@ export default function ContentRsvp() {
                   <p className="section-subtitle">
                      Cada detalhe da nossa festa está sendo preparado com muito carinho para tornar este dia ainda mais especial. Para nos ajudar na organização e garantir que tudo aconteça da melhor forma possível, contamos com a confirmação da sua presença até o dia 15 de julho. Mal podemos esperar para celebrar esse dia ao lado de vocês!
                   </p>
-
                </div>
 
                <form
                   className="rsvp-form"
                   onSubmit={handleSubmit}
                >
-
                   {success && (
                      <div className="form-success show">
                         Enviado com sucesso!
                      </div>
                   )}
 
-                  {/* NOME */}
-                  <div className="form-group">
+                  <div className="rsvp-guests">
+                     {guests.map((guest, index) => {
+                        const guestErrors = errors[index] || {};
 
-                     <label className="form-label">
-                        Nome completo
-                     </label>
+                        return (
+                           <div className="rsvp-person" key={guest.id}>
+                              <div className="rsvp-person-header">
+                                 <span>Pessoa {index + 1}</span>
 
-                     <input
-                        className={`form-input ${errors.name
-                              ? "form-error-input"
-                              : ""
-                           }`}
-                        value={name}
-                        onChange={(e) =>
-                           setName(e.target.value)
-                        }
-                     />
+                                 {guests.length > 1 && (
+                                    <button
+                                       type="button"
+                                       className="rsvp-remove"
+                                       onClick={() => removeGuest(guest.id)}
+                                    >
+                                       Remover
+                                    </button>
+                                 )}
+                              </div>
 
-                     <span
-                        className={`form-error ${errors.name
-                              ? "show"
-                              : ""
-                           }`}
-                     >
-                        {errors.name || ""}
-                     </span>
+                              <div className="form-group">
+                                 <label className="form-label">
+                                    Nome completo
+                                 </label>
 
+                                 <input
+                                    className={`form-input ${guestErrors.name
+                                          ? "form-error-input"
+                                          : ""
+                                       }`}
+                                    value={guest.name}
+                                    onChange={(event) =>
+                                       updateGuest(guest.id, "name", event.target.value)
+                                    }
+                                 />
+
+                                 <span
+                                    className={`form-error ${guestErrors.name
+                                          ? "show"
+                                          : ""
+                                       }`}
+                                 >
+                                    {guestErrors.name || ""}
+                                 </span>
+                              </div>
+
+                              <div className="rsvp-grid">
+                                 <div className="form-group">
+                                    <label className="form-label">
+                                       Vai comparecer?
+                                    </label>
+
+                                    <select
+                                       className={`form-select ${guestErrors.attending
+                                             ? "form-error-input"
+                                             : ""
+                                          }`}
+                                       value={guest.attending}
+                                       onChange={(event) =>
+                                          updateGuest(guest.id, "attending", event.target.value)
+                                       }
+                                    >
+                                       <option>
+                                          Sim, vou estar presente
+                                       </option>
+
+                                       <option>
+                                          Desculpe, não vou poder ir
+                                       </option>
+                                    </select>
+
+                                    <span
+                                       className={`form-error ${guestErrors.attending
+                                             ? "show"
+                                             : ""
+                                          }`}
+                                    >
+                                       {guestErrors.attending || ""}
+                                    </span>
+                                 </div>
+
+                                 <div className="form-group">
+                                    <label className="form-label">
+                                       Categoria
+                                    </label>
+
+                                    <select
+                                       className={`form-select ${guestErrors.category
+                                             ? "form-error-input"
+                                             : ""
+                                          }`}
+                                       value={guest.category}
+                                       onChange={(event) =>
+                                          updateGuest(guest.id, "category", event.target.value)
+                                       }
+                                    >
+                                       <option value="">
+                                          Selecione uma opção
+                                       </option>
+
+                                       <option value="adulto">
+                                          Adulto
+                                       </option>
+
+                                       <option value="crianca">
+                                          Criança (até 7 anos)
+                                       </option>
+                                    </select>
+
+                                    <span
+                                       className={`form-error ${guestErrors.category
+                                             ? "show"
+                                             : ""
+                                          }`}
+                                    >
+                                       {guestErrors.category || ""}
+                                    </span>
+                                 </div>
+                              </div>
+                           </div>
+                        );
+                     })}
                   </div>
 
-                  {/* PRESENÇA */}
-                  <div className="form-group">
-
-                     <label className="form-label">
-                        Vai comparecer?
-                     </label>
-
-                     <select
-                        className={`form-select ${errors.attending
-                              ? "form-error-input"
-                              : ""
-                           }`}
-                        value={attending}
-                        onChange={(e) =>
-                           setAttending(e.target.value)
-                        }
-                     >
-                        <option>
-                           Sim, vou estar presente
-                        </option>
-
-                        <option>
-                           Desculpe, não vou poder ir
-                        </option>
-
-                     </select>
-
-                     <span
-                        className={`form-error ${errors.attending
-                              ? "show"
-                              : ""
-                           }`}
-                     >
-                        {errors.attending || ""}
-                     </span>
-
-                  </div>
-
-                  {/* CATEGORIA */}
-                  <div className="form-group">
-
-                     <label className="form-label">
-                        Categoria
-                     </label>
-
-                     <select
-                        className={`form-select ${errors.category
-                              ? "form-error-input"
-                              : ""
-                           }`}
-                        value={category}
-                        onChange={(e) =>
-                           setCategory(e.target.value)
-                        }
-                     >
-                        <option value="">
-                           Selecione uma opção
-                        </option>
-
-                        <option value="adulto">
-                           Adulto
-                        </option>
-
-                        <option value="crianca">
-                           Criança (até 7 anos)
-                        </option>
-
-                     </select>
-
-                     <span
-                        className={`form-error ${errors.category
-                              ? "show"
-                              : ""
-                           }`}
-                     >
-                        {errors.category || ""}
-                     </span>
-
-                  </div>
+                  <button
+                     className="rsvp-add"
+                     type="button"
+                     onClick={addGuest}
+                  >
+                     Adicionar familiares
+                  </button>
 
                   <button
                      className="form-button"
@@ -240,15 +309,13 @@ export default function ContentRsvp() {
                   >
                      {loading
                         ? "A enviar..."
-                        : "Enviar"}
+                        : guests.length > 1
+                           ? "Enviar confirmações"
+                           : "Enviar"}
                   </button>
-
                </form>
-
             </div>
-
          </div>
-
       </section>
    );
 }

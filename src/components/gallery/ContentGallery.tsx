@@ -268,7 +268,7 @@ export default function ContentGallery() {
 
                                 <div className="gallery-modal-actions">
                                     <button onClick={() => chooseAlbum("ceremony")}>
-                                        Cerimónia
+                                        Cerimônia
                                     </button>
 
                                     <button onClick={() => chooseAlbum("party")}>
@@ -303,7 +303,7 @@ export default function ContentGallery() {
                             className={selectedAlbum === "ceremony" ? "active" : ""}
                             onClick={() => setSelectedAlbum("ceremony")}
                         >
-                            Cerimónia
+                            Cerimônia
                         </button>
 
                         <button
