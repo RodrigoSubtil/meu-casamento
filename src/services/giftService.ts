@@ -9,7 +9,7 @@ export type ReserveGiftParams = {
    priceBRL: number;
    priceEUR: number;
    method: "pix" | "mbway";
-   userName?: string;
+   userName: string;
 };
 
 /* =========================
