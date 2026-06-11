@@ -729,6 +729,10 @@
       line-height: 1.48;
    }
 
+   .gift-step-copy {
+      margin-bottom: 0.22rem;
+   }
+
    .gift-modal-summary,
    .gift-total {
       padding: 12px 14px;
@@ -755,6 +759,7 @@
    }
 
    .gift-input-stack {
+      margin-top: 0.12rem;
       gap: 0.52rem;
    }
 
@@ -834,7 +839,11 @@
    }
 
    .gift-step {
-      gap: 0.58rem;
+      gap: 0.66rem;
+   }
+
+   .gift-step-copy {
+      margin-bottom: 0.14rem;
    }
 
    .gift-step-copy p,
