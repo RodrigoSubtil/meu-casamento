@@ -125,66 +125,6 @@
    margin-top: 0.5rem;
 }
 
-.message-next-steps {
-   width: 100%;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   gap: 0.9rem;
-
-   margin-top: -0.25rem;
-   padding: 1.1rem 1rem 0;
-   border-top: 1px solid rgba(207,162,102,0.22);
-
-   text-align: center;
-   box-sizing: border-box;
-}
-
-.message-next-steps span {
-   max-width: 420px;
-
-   color: rgba(48,65,98,0.66);
-   font-size: var(--text-sm);
-   line-height: 1.7;
-}
-
-.message-next-actions {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-wrap: wrap;
-   gap: 0.7rem;
-}
-
-.message-next-actions a {
-   min-height: 40px;
-   display: inline-flex;
-   align-items: center;
-   justify-content: center;
-
-   padding: 0 1.05rem;
-   border: 1px solid rgba(207,162,102,0.42);
-   border-radius: 999px;
-
-   background: rgba(207,162,102,0.14);
-   color: var(--text-primary);
-
-   font-family: var(--font-primary);
-   font-size: 0.68rem;
-   letter-spacing: 0.11em;
-   text-transform: uppercase;
-   text-decoration: none;
-
-   transition: var(--transition-base);
-}
-
-.message-next-actions a:hover {
-   transform: translateY(-2px);
-   background: rgba(207,162,102,0.22);
-   border-color: rgba(207,162,102,0.58);
-   box-shadow: var(--shadow-sm);
-}
-
 /* =========================
    ANIMATION
 ========================= */
@@ -233,14 +173,4 @@
       font-size: 0.92rem;
    }
 
-   .message-next-actions {
-      width: 100%;
-      flex-direction: column;
-      align-items: stretch;
-   }
-
-   .message-next-actions a {
-      width: 100%;
-      box-sizing: border-box;
-   }
 }

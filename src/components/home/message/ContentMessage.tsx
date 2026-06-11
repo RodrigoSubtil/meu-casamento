@@ -61,7 +61,6 @@ export default function ContentMessage() {
 
             <form className="message-form" onSubmit={handleSubmit}>
 
-               {/* NAME */}
                <div className="form-group">
                   <label className="form-label">Seu nome</label>
 
@@ -78,7 +77,6 @@ export default function ContentMessage() {
                   </span>
                </div>
 
-               {/* MESSAGE */}
                <div className="form-group">
                   <label className="form-label">Sua mensagem</label>
 
@@ -97,15 +95,6 @@ export default function ContentMessage() {
                <button className="form-button" disabled={loading}>
                   {loading ? "Enviando..." : "Enviar Mensagem"}
                </button>
-
-               <div className="message-next-steps" aria-label="Próximos passos">
-                  <span>Os próximos passos sugeridos são:</span>
-
-                  <div className="message-next-actions">
-                     <a href="/rsvp">Confirmar presença</a>
-                     <a href="/gift-registry">Presentear-nos</a>
-                  </div>
-               </div>
 
             </form>
 
