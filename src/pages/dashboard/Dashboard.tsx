@@ -54,6 +54,8 @@ const currencyEUR = new Intl.NumberFormat("pt-PT", {
    currency: "EUR"
 });
 
+const FALLBACK_BRL_TO_EUR_RATE = 1 / 6.3;
+
 function isAttending(value?: string) {
    return value?.toLowerCase().includes("sim") ?? false;
 }
@@ -70,6 +72,14 @@ function formatDate(value?: string) {
    }).format(new Date(value));
 }
 
+function getPurchaseValue(item: PurchaseItem) {
+   if (item.method === "mbway") {
+      return currencyEUR.format(Number(item.price_eur || 0));
+   }
+
+   return currencyBRL.format(Number(item.price_brl || 0));
+}
+
 export default function Dashboard() {
    const [rsvps, setRsvps] = useState<RsvpItem[]>([]);
    const [messages, setMessages] = useState<MessageItem[]>([]);
@@ -77,6 +87,7 @@ export default function Dashboard() {
    const [purchases, setPurchases] = useState<PurchaseItem[]>([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState("");
+   const [brlToEurRate, setBrlToEurRate] = useState(FALLBACK_BRL_TO_EUR_RATE);
 
    useEffect(() => {
       async function loadDashboard() {
@@ -107,6 +118,38 @@ export default function Dashboard() {
       loadDashboard();
    }, []);
 
+   useEffect(() => {
+      const controller = new AbortController();
+
+      async function loadExchangeRate() {
+         try {
+            const response = await fetch(
+               "https://api.frankfurter.dev/v2/rates?base=BRL&quotes=EUR",
+               { signal: controller.signal }
+            );
+
+            if (!response.ok) throw new Error("Erro ao buscar cotacao");
+
+            const data = await response.json();
+            const rate = Number(data?.rates?.EUR);
+
+            if (!Number.isFinite(rate) || rate <= 0) {
+               throw new Error("Cotacao invalida");
+            }
+
+            setBrlToEurRate(rate);
+         } catch {
+            if (controller.signal.aborted) return;
+
+            setBrlToEurRate(FALLBACK_BRL_TO_EUR_RATE);
+         }
+      }
+
+      loadExchangeRate();
+
+      return () => controller.abort();
+   }, []);
+
    const stats = useMemo(() => {
       const confirmed = rsvps.filter((item) => isAttending(item.attending));
       const declined = rsvps.filter((item) => !isAttending(item.attending));
@@ -125,13 +168,21 @@ export default function Dashboard() {
             .filter((id): id is number => Boolean(id) && id !== 999999)
       );
       const totalBRL = paidPurchases.reduce(
-         (sum, item) => sum + Number(item.price_brl || 0),
+         (sum, item) =>
+            item.method === "pix"
+               ? sum + Number(item.price_brl || 0)
+               : sum,
          0
       );
       const totalEUR = paidPurchases.reduce(
-         (sum, item) => sum + Number(item.price_eur || 0),
+         (sum, item) =>
+            item.method === "mbway"
+               ? sum + Number(item.price_eur || 0)
+               : sum,
          0
       );
+      const totalConvertedBRL = totalBRL + (totalEUR / brlToEurRate);
+      const totalConvertedEUR = totalEUR + (totalBRL * brlToEurRate);
 
       return {
          totalGuests: rsvps.length,
@@ -144,9 +195,11 @@ export default function Dashboard() {
          purchasedGifts: paidPurchases.length,
          availableGifts: gifts.filter((item) => !purchasedGiftIds.has(Number(item.id))).length,
          totalBRL,
-         totalEUR
+         totalEUR,
+         totalConvertedBRL,
+         totalConvertedEUR
       };
-   }, [gifts, messages, purchases, rsvps]);
+   }, [brlToEurRate, gifts, messages, purchases, rsvps]);
 
    return (
       <main className="dashboard-page">
@@ -179,39 +232,48 @@ export default function Dashboard() {
                      <>
                         <section className="dashboard-summary">
                            <article>
-                              <span>Confirmados</span>
-                              <strong>{stats.confirmed}</strong>
-                              <small>{stats.declined} nao vao</small>
-                           </article>
-
-                           <article>
-                              <span>Convidados</span>
+                              <span>Respostas RSVP</span>
                               <strong>{stats.totalGuests}</strong>
-                              <small>{stats.adults} adultos / {stats.children} criancas</small>
+                              <small>{stats.confirmed} sim / {stats.declined} nao</small>
                            </article>
 
                            <article>
-                              <span>Presentes comprados</span>
-                              <strong>{stats.purchasedGifts}</strong>
-                              <small>{stats.availableGifts} disponiveis</small>
+                              <span>Presencas confirmadas</span>
+                              <strong>{stats.confirmed}</strong>
+                              <small>pessoas que vao</small>
                            </article>
 
                            <article>
-                              <span>Mensagens</span>
-                              <strong>{stats.messages}</strong>
-                              <small>recados recebidos</small>
+                              <span>Adultos confirmados</span>
+                              <strong>{stats.adults}</strong>
+                              <small>confirmaram presenca</small>
+                           </article>
+
+                           <article>
+                              <span>Criancas confirmadas</span>
+                              <strong>{stats.children}</strong>
+                              <small>confirmaram presenca</small>
                            </article>
                         </section>
 
                         <section className="dashboard-money">
                            <div>
-                              <span>Total em real</span>
+                              <span>Total recebido em real</span>
                               <strong>{currencyBRL.format(stats.totalBRL)}</strong>
                            </div>
 
                            <div>
-                              <span>Total em euro</span>
+                              <span>Total recebido em euro</span>
                               <strong>{currencyEUR.format(stats.totalEUR)}</strong>
+                           </div>
+
+                           <div className="dashboard-money-total">
+                              <span>Total recebido</span>
+                              <strong>
+                                 {currencyBRL.format(stats.totalConvertedBRL)}
+                                 <span aria-hidden="true">/</span>
+                                 <small>{currencyEUR.format(stats.totalConvertedEUR)}</small>
+                              </strong>
                            </div>
                         </section>
 
@@ -221,25 +283,6 @@ export default function Dashboard() {
                                  <div>
                                     <span>RSVP</span>
                                     <h2>Confirmacoes</h2>
-                                 </div>
-                              </div>
-
-                              <div className="dashboard-split">
-                                 <div>
-                                    <span>Sim</span>
-                                    <strong>{stats.confirmed}</strong>
-                                 </div>
-                                 <div>
-                                    <span>Nao</span>
-                                    <strong>{stats.declined}</strong>
-                                 </div>
-                                 <div>
-                                    <span>Adultos</span>
-                                    <strong>{stats.adults}</strong>
-                                 </div>
-                                 <div>
-                                    <span>Criancas</span>
-                                    <strong>{stats.children}</strong>
                                  </div>
                               </div>
 
@@ -284,8 +327,7 @@ export default function Dashboard() {
                                           </span>
                                        </div>
                                        <div className="dashboard-price">
-                                          <strong>{currencyBRL.format(Number(item.price_brl || 0))}</strong>
-                                          <span>{currencyEUR.format(Number(item.price_eur || 0))}</span>
+                                          <strong>{getPurchaseValue(item)}</strong>
                                        </div>
                                     </article>
                                  ))}
