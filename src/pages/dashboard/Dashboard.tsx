@@ -201,6 +201,15 @@ export default function Dashboard() {
       };
    }, [brlToEurRate, gifts, messages, purchases, rsvps]);
 
+   const sortedRsvps = useMemo(
+      () => [...rsvps].sort((a, b) =>
+         (a.name || "").localeCompare(b.name || "", "pt", {
+            sensitivity: "base"
+         })
+      ),
+      [rsvps]
+   );
+
    return (
       <main className="dashboard-page">
          <section className="dashboard">
@@ -286,16 +295,22 @@ export default function Dashboard() {
                                  </div>
                               </div>
 
-                              <div className="dashboard-list">
+                              <div className="dashboard-list rsvp-list">
                                  {rsvps.length === 0 && (
                                     <p className="dashboard-empty">Nenhum RSVP recebido ainda.</p>
                                  )}
 
-                                 {rsvps.map((item) => (
+                                 {sortedRsvps.map((item) => (
                                     <article key={item.id ?? item.name}>
                                        <div>
                                           <strong>{item.name || "Sem nome"}</strong>
-                                          <span>{item.category || "Sem categoria"}</span>
+                                          <span className="rsvp-details">
+                                             <time dateTime={item.created_at}>
+                                                {formatDate(item.created_at)}
+                                             </time>
+                                             <span aria-hidden="true">·</span>
+                                             {item.category || "Sem categoria"}
+                                          </span>
                                        </div>
                                        <em className={isAttending(item.attending) ? "yes" : "no"}>
                                           {isAttending(item.attending) ? "Sim" : "Nao"}

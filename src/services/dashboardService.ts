@@ -6,7 +6,8 @@ import { supabase } from "../lib/supabase";
 export async function getRsvp() {
    const { data, error } = await supabase
       .from("rsvp")
-      .select("*");
+      .select("*")
+      .order("name", { ascending: true });
 
    if (error) {
       console.error(error);
