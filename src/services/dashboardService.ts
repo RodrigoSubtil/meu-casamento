@@ -7,7 +7,7 @@ export async function getRsvp() {
    const { data, error } = await supabase
       .from("rsvp")
       .select("*")
-      .order("name", { ascending: true });
+      .order("created_at", { ascending: false });
 
    if (error) {
       console.error(error);

@@ -201,14 +201,18 @@ export default function Dashboard() {
       };
    }, [brlToEurRate, gifts, messages, purchases, rsvps]);
 
-   const sortedRsvps = useMemo(
-      () => [...rsvps].sort((a, b) =>
-         (a.name || "").localeCompare(b.name || "", "pt", {
+   const sortedRsvps = useMemo(() => {
+      return [...rsvps].sort((a, b) => {
+         const dateA = new Date(a.created_at || 0).getTime();
+         const dateB = new Date(b.created_at || 0).getTime();
+
+         if (dateA !== dateB) return dateB - dateA;
+
+         return (a.name || "").localeCompare(b.name || "", "pt", {
             sensitivity: "base"
-         })
-      ),
-      [rsvps]
-   );
+         });
+      });
+   }, [rsvps]);
 
    return (
       <main className="dashboard-page">
