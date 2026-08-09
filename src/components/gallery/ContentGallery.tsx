@@ -1,22 +1,18 @@
 import "./contentGallery.css";
 
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { FaDownload, FaEye, FaPlay, FaTimes, FaTrash } from "react-icons/fa";
 import {
+    deleteGalleryPhoto,
     uploadGalleryPhoto,
-    getGalleryPhotos
+    getGalleryPhotos,
+    type GalleryAlbum,
+    type GalleryPhoto
 } from "../../services/galleryService";
 
-type AlbumType = "ceremony" | "party";
-
-type GalleryPhoto = {
-    id: number;
-    image_url: string;
-    album: AlbumType;
-    created_at: string;
-};
-
-type DownloadGroup = "all" | AlbumType;
-type GalleryFilter = "all" | AlbumType;
+type DownloadGroup = "all" | GalleryAlbum;
+type GalleryFilter = "all" | GalleryAlbum;
 
 export default function ContentGallery() {
 
@@ -25,19 +21,19 @@ export default function ContentGallery() {
     const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
     const [loading, setLoading] = useState(false);
     const [downloadingGroup, setDownloadingGroup] = useState<DownloadGroup | null>(null);
-
-    // 👇 NOVO
-    const [uploadMessage, setUploadMessage] = useState<string>("");
+    const [deletingPhotoId, setDeletingPhotoId] = useState<number | null>(null);
+    const [viewingPhoto, setViewingPhoto] = useState<GalleryPhoto | null>(null);
+    const [galleryMessage, setGalleryMessage] = useState<string>("");
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const selectedUploadAlbum = useRef<AlbumType>("ceremony");
+    const selectedUploadAlbum = useRef<GalleryAlbum>("ceremony");
 
     useEffect(() => {
         loadPhotos();
     }, []);
 
     useEffect(() => {
-        if (!showModal) return;
+        if (!showModal && !viewingPhoto) return;
 
         const scrollY = window.scrollY;
         const previousOverflow = document.body.style.overflow;
@@ -60,7 +56,18 @@ export default function ContentGallery() {
             document.body.style.width = previousWidth;
             window.scrollTo(0, scrollY);
         };
-    }, [showModal]);
+    }, [showModal, viewingPhoto]);
+
+    useEffect(() => {
+        if (!viewingPhoto) return;
+
+        function handleKeyDown(event: KeyboardEvent) {
+            if (event.key === "Escape") setViewingPhoto(null);
+        }
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [viewingPhoto]);
 
     async function loadPhotos() {
         try {
@@ -83,7 +90,7 @@ export default function ContentGallery() {
         setShowModal(true);
     }
 
-    function chooseAlbum(album: AlbumType) {
+    function chooseAlbum(album: GalleryAlbum) {
         selectedUploadAlbum.current = album;
         setShowModal(false);
         fileInputRef.current?.click();
@@ -95,7 +102,7 @@ export default function ContentGallery() {
 
         try {
             setLoading(true);
-            setUploadMessage("");
+            setGalleryMessage("");
 
             await Promise.all(
                 Array.from(files).map(file =>
@@ -105,15 +112,14 @@ export default function ContentGallery() {
 
             await loadPhotos();
 
-            // 👇 SUCESSO
-            setUploadMessage(
+            setGalleryMessage(
                 files.length === 1
                     ? "Foto enviada com sucesso!"
                     : "Fotos enviadas com sucesso!"
             );
 
             setTimeout(() => {
-                setUploadMessage("");
+                setGalleryMessage("");
             }, 3000);
 
         } catch (err) {
@@ -179,6 +185,29 @@ export default function ContentGallery() {
         }
     }
 
+    async function handleDelete(photo: GalleryPhoto) {
+        const confirmed = window.confirm(
+            "Tem certeza que deseja apagar esta foto? Esta ação não pode ser desfeita."
+        );
+
+        if (!confirmed) return;
+
+        try {
+            setDeletingPhotoId(photo.id);
+            setGalleryMessage("");
+            await deleteGalleryPhoto(photo);
+            setPhotos(current => current.filter(item => item.id !== photo.id));
+            setViewingPhoto(current => current?.id === photo.id ? null : current);
+            setGalleryMessage("Foto apagada com sucesso.");
+            setTimeout(() => setGalleryMessage(""), 3000);
+        } catch (err) {
+            console.error(err);
+            setGalleryMessage("Não foi possível apagar a foto.");
+        } finally {
+            setDeletingPhotoId(null);
+        }
+    }
+
     return (
         <section className="gallery-section">
 
@@ -206,21 +235,29 @@ export default function ContentGallery() {
                                 <p>Envie várias fotos de uma vez.</p>
                             </div>
 
-                            <button
-                                className="upload-main-button"
-                                onClick={openUploadModal}
-                                disabled={loading}
-                            >
-                                {loading ? "A enviar..." : "Anexar fotos"}
-                            </button>
+                            <div className="gallery-upload-actions">
+                                <button
+                                    className="upload-main-button"
+                                    onClick={openUploadModal}
+                                    disabled={loading}
+                                >
+                                    {loading ? "A enviar..." : "Anexar fotos"}
+                                </button>
+
+                                {hasPhotos && (
+                                    <Link className="gallery-slides-button" to="/slides">
+                                        <FaPlay aria-hidden="true" />
+                                        Ver em slides
+                                    </Link>
+                                )}
+                            </div>
 
                         </div>
                     </div>
 
-                    {/* 👇 MENSAGEM DE SUCESSO */}
-                    {uploadMessage && (
+                    {galleryMessage && (
                         <div className="gallery-success-message">
-                            {uploadMessage}
+                            {galleryMessage}
                         </div>
                     )}
 
@@ -234,7 +271,7 @@ export default function ContentGallery() {
                             >
                                 {downloadingGroup === "all"
                                     ? "A baixar..."
-                                    : "Descarregar todas as fotos"}
+                                    : "Download álbuns Cerimônia e Festa"}
                             </button>
 
                             {ceremonyPhotos.length > 0 && (
@@ -245,7 +282,7 @@ export default function ContentGallery() {
                                 >
                                     {downloadingGroup === "ceremony"
                                         ? "A baixar..."
-                                        : "Descarregar cerimônia"}
+                                        : "Download álbum Cerimônia"}
                                 </button>
                             )}
 
@@ -257,7 +294,7 @@ export default function ContentGallery() {
                                 >
                                     {downloadingGroup === "party"
                                         ? "A baixar..."
-                                        : "Descarregar festa"}
+                                        : "Download álbum Festa"}
                                 </button>
                             )}
                         </div>
@@ -332,20 +369,64 @@ export default function ContentGallery() {
 
                                 <img src={photo.image_url} alt="" />
 
-                                <div className="gallery-overlay">
+                                <div className="gallery-item-actions">
                                     <button
-                                        className="download-btn"
+                                        type="button"
                                         onClick={() =>
-                                            handleDownload(photo.image_url, `foto-${photo.id}.jpg`)
+                                            handleDownload(photo.image_url, getPhotoFilename(photo))
                                         }
                                     >
-                                        Descarregar
+                                        <FaDownload aria-hidden="true" />
+                                        Download
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setViewingPhoto(photo)}
+                                    >
+                                        <FaEye aria-hidden="true" />
+                                        Ver foto
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className="gallery-delete-button"
+                                        onClick={() => handleDelete(photo)}
+                                        disabled={deletingPhotoId === photo.id}
+                                    >
+                                        <FaTrash aria-hidden="true" />
+                                        {deletingPhotoId === photo.id ? "Apagando..." : "Apagar foto"}
                                     </button>
                                 </div>
 
                             </div>
                         ))}
                     </div>
+
+                    {viewingPhoto && (
+                        <div
+                            className="gallery-lightbox"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label="Visualização da foto"
+                            onClick={() => setViewingPhoto(null)}
+                        >
+                            <button
+                                type="button"
+                                className="gallery-lightbox-close"
+                                aria-label="Fechar foto"
+                                onClick={() => setViewingPhoto(null)}
+                            >
+                                <FaTimes aria-hidden="true" />
+                            </button>
+
+                            <img
+                                src={viewingPhoto.image_url}
+                                alt="Foto ampliada da galeria"
+                                onClick={event => event.stopPropagation()}
+                            />
+                        </div>
+                    )}
 
                     {/* EMPTY */}
                     {currentPhotos.length === 0 && (

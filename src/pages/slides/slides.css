@@ -1,0 +1,250 @@
+.slideshow-page {
+   position: fixed;
+   inset: 0;
+   width: 100vw;
+   height: 100dvh;
+   overflow: hidden;
+
+   background: #07080a;
+   color: white;
+   font-family: var(--font-sans);
+}
+
+.slideshow-stage {
+   position: absolute;
+   inset: 0;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.slideshow-photo {
+   width: 100%;
+   height: 100%;
+   display: block;
+   object-fit: contain;
+
+   animation: slideshowPhotoEnter 900ms ease both;
+   will-change: opacity, transform;
+}
+
+@keyframes slideshowPhotoEnter {
+   from {
+      opacity: 0;
+      transform: scale(0.985);
+   }
+   to {
+      opacity: 1;
+      transform: scale(1);
+   }
+}
+
+.slideshow-controls {
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   z-index: 2;
+
+   min-height: 76px;
+   padding: 18px 22px;
+   box-sizing: border-box;
+
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 18px;
+
+   background: rgba(7, 8, 10, 0.72);
+   opacity: 0;
+   transform: translateY(-8px);
+   pointer-events: none;
+   transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.slideshow-controls.visible,
+.slideshow-controls:focus-within {
+   opacity: 1;
+   transform: translateY(0);
+   pointer-events: auto;
+}
+
+.slideshow-back-button {
+   min-height: 40px;
+   padding: 0 14px;
+
+   display: inline-flex;
+   align-items: center;
+   gap: 9px;
+
+   border: 1px solid rgba(255, 255, 255, 0.22);
+   border-radius: 6px;
+   background: rgba(255, 255, 255, 0.08);
+   color: white;
+
+   font-size: 0.82rem;
+   text-decoration: none;
+   transition: background 200ms ease;
+}
+
+.slideshow-back-button:hover {
+   background: rgba(255, 255, 255, 0.16);
+}
+
+.slideshow-controls-right {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.slideshow-live-status {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+
+   color: rgba(255, 255, 255, 0.82);
+   font-size: 0.75rem;
+}
+
+.slideshow-live-status > span {
+   width: 8px;
+   height: 8px;
+   border-radius: 50%;
+   background: #ddb06f;
+}
+
+.slideshow-live-status.live > span {
+   background: #5bd08a;
+   box-shadow: 0 0 0 4px rgba(91, 208, 138, 0.16);
+}
+
+.slideshow-icon-button {
+   width: 42px;
+   height: 42px;
+   padding: 0;
+
+   display: grid;
+   place-items: center;
+
+   border: 1px solid rgba(255, 255, 255, 0.22);
+   border-radius: 50%;
+   background: rgba(255, 255, 255, 0.08);
+   color: white;
+
+   cursor: pointer;
+   transition: background 200ms ease;
+}
+
+.slideshow-icon-button:hover {
+   background: rgba(255, 255, 255, 0.16);
+}
+
+.slideshow-meta {
+   position: absolute;
+   left: 50%;
+   bottom: 22px;
+   z-index: 1;
+
+   display: flex;
+   align-items: center;
+   gap: 12px;
+
+   padding: 8px 12px;
+   border-radius: 6px;
+   background: rgba(7, 8, 10, 0.66);
+   color: rgba(255, 255, 255, 0.78);
+
+   font-size: 0.72rem;
+   transform: translateX(-50%);
+}
+
+.slideshow-meta span + span::before {
+   content: "";
+   display: inline-block;
+   width: 3px;
+   height: 3px;
+   margin: 0 12px 2px 0;
+   border-radius: 50%;
+   background: rgba(255, 255, 255, 0.45);
+}
+
+.slideshow-progress {
+   position: absolute;
+   left: 0;
+   bottom: 0;
+   z-index: 2;
+
+   width: 100%;
+   height: 3px;
+   background: #cfa266;
+   transform-origin: left;
+   animation: slideshowProgress 5s linear both;
+}
+
+@keyframes slideshowProgress {
+   from { transform: scaleX(0); }
+   to { transform: scaleX(1); }
+}
+
+.slideshow-empty {
+   position: absolute;
+   inset: 0;
+
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   gap: 12px;
+
+   padding: 24px;
+   text-align: center;
+}
+
+.slideshow-empty p {
+   margin: 0;
+   color: white;
+   font-family: var(--font-primary);
+   font-size: 1.35rem;
+}
+
+.slideshow-empty span {
+   color: rgba(255, 255, 255, 0.6);
+   font-size: 0.88rem;
+}
+
+@media (max-width: 600px) {
+   .slideshow-controls {
+      min-height: 68px;
+      padding: 13px 14px;
+   }
+
+   .slideshow-back-button {
+      width: 42px;
+      min-height: 42px;
+      padding: 0;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0;
+   }
+
+   .slideshow-back-button svg {
+      font-size: 0.9rem;
+   }
+
+   .slideshow-live-status {
+      font-size: 0;
+   }
+
+   .slideshow-meta {
+      bottom: 18px;
+      white-space: nowrap;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .slideshow-photo,
+   .slideshow-progress {
+      animation: none;
+   }
+}

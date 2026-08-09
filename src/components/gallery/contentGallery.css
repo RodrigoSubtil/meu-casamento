@@ -64,11 +64,20 @@
    line-height: 1.7;
 }
 
+.gallery-upload-actions {
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+   gap: 12px;
+   flex-wrap: wrap;
+}
+
 /* =========================
    MAIN UPLOAD BUTTON
 ========================= */
 
-.upload-main-button {
+.upload-main-button,
+.gallery-slides-button {
    height: 48px;
    padding: 0 24px;
 
@@ -92,12 +101,25 @@
    align-items: center;
    justify-content: center;
    gap: 10px;
+
+   box-sizing: border-box;
+   text-decoration: none;
 }
 
-.upload-main-button:hover {
+.upload-main-button:hover,
+.gallery-slides-button:hover {
    transform: translateY(-2px);
    box-shadow: var(--shadow-md);
    background: #ddb06f;
+}
+
+.gallery-slides-button {
+   border: 1px solid rgba(48, 65, 98, 0.16);
+   background: var(--color-navy);
+}
+
+.gallery-slides-button:hover {
+   background: #3b5077;
 }
 
 .upload-main-button:disabled {
@@ -257,51 +279,117 @@
    transform: scale(1.05);
 }
 
-/* =========================
-   OVERLAY
-========================= */
+.gallery-item-actions {
+   display: grid;
+   grid-template-columns: repeat(3, minmax(0, 1fr));
+   border-top: 1px solid rgba(48, 65, 98, 0.08);
+}
 
-.gallery-overlay {
-   position: absolute;
-   inset: 0;
+.gallery-item-actions button {
+   min-width: 0;
+   min-height: 52px;
+   padding: 8px 6px;
 
-   background: rgba(0,0,0,0.35);
+   border: 0;
+   border-right: 1px solid rgba(48, 65, 98, 0.08);
+   background: white;
+   color: var(--text-primary);
 
    display: flex;
-   justify-content: center;
    align-items: center;
+   justify-content: center;
+   gap: 6px;
 
-   opacity: 0;
+   font-family: var(--font-primary);
+   font-size: 0.68rem;
+   line-height: 1.3;
+   text-align: center;
 
-   transition: 0.3s ease;
+   cursor: pointer;
+   transition: var(--transition-base);
 }
 
-.gallery-item:hover .gallery-overlay {
-   opacity: 1;
+.gallery-item-actions button:last-child {
+   border-right: 0;
+}
+
+.gallery-item-actions button:hover:not(:disabled) {
+   background: rgba(236, 191, 133, 0.12);
+   color: #9b6c30;
+}
+
+.gallery-item-actions button:disabled {
+   opacity: 0.55;
+   cursor: wait;
+}
+
+.gallery-item-actions .gallery-delete-button {
+   color: #a14949;
+}
+
+.gallery-item-actions .gallery-delete-button:hover:not(:disabled) {
+   background: rgba(161, 73, 73, 0.08);
+   color: #7f3030;
+}
+
+.gallery-item-actions svg {
+   flex: 0 0 auto;
+   font-size: 0.78rem;
 }
 
 /* =========================
-   DOWNLOAD BUTTON
+   PHOTO VIEWER
 ========================= */
 
-.download-btn {
-   padding: 0.6rem 1.2rem;
+.gallery-lightbox {
+   position: fixed;
+   inset: 0;
+   z-index: 100000;
 
-   border-radius: 999px;
-   border: none;
+   display: flex;
+   align-items: center;
+   justify-content: center;
 
-   cursor: pointer;
+   padding: 28px;
+   box-sizing: border-box;
 
-   font-size: 0.8rem;
-
-   background: var(--color-gold);
-   color: white;
-
-   transition: 0.2s ease;
+   background: rgba(5, 7, 12, 0.94);
+   animation: galleryLightboxFade 0.25s ease;
 }
 
-.download-btn:hover {
-   transform: scale(1.05);
+.gallery-lightbox img {
+   width: auto;
+   height: auto;
+   max-width: 100%;
+   max-height: calc(100dvh - 56px);
+   object-fit: contain;
+}
+
+.gallery-lightbox-close {
+   position: fixed;
+   top: 18px;
+   right: 18px;
+   z-index: 1;
+
+   width: 44px;
+   height: 44px;
+   padding: 0;
+
+   display: grid;
+   place-items: center;
+
+   border: 1px solid rgba(255, 255, 255, 0.25);
+   border-radius: 50%;
+   background: rgba(0, 0, 0, 0.45);
+   color: white;
+
+   font-size: 1rem;
+   cursor: pointer;
+}
+
+@keyframes galleryLightboxFade {
+   from { opacity: 0; }
+   to { opacity: 1; }
 }
 
 /* =========================
@@ -468,6 +556,10 @@
       align-items: flex-start;
    }
 
+   .gallery-upload-actions {
+      justify-content: flex-start;
+   }
+
    .gallery-grid {
       columns: 2 180px;
    }
@@ -490,7 +582,20 @@
       width: 100%;
    }
 
+   .gallery-upload-actions {
+      width: 100%;
+   }
+
+   .upload-main-button,
+   .gallery-slides-button {
+      width: 100%;
+   }
+
    .gallery-grid {
       columns: 1;
+   }
+
+   .gallery-lightbox {
+      padding: 16px;
    }
 }

@@ -7,6 +7,7 @@ import Dashboard from "./pages/dashboard/Dashboard"
 import Gallery from "./pages/Gallery"
 import About from "./pages/About"
 import We from "./pages/We"
+import Slides from "./pages/slides/Slides"
 
 
 export default function App() {
@@ -24,6 +25,8 @@ export default function App() {
       <Route path="/we" element={<We />} />
 
       <Route path="/gallery" element={<Gallery />} />
+
+      <Route path="/slides" element={<Slides />} />
 
       <Route path="/about" element={<About />} />
 

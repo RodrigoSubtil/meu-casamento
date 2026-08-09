@@ -1,6 +1,15 @@
 import { supabase } from "../lib/supabase";
 
-export async function uploadGalleryPhoto(file: File, album: string) {
+export type GalleryAlbum = "ceremony" | "party";
+
+export type GalleryPhoto = {
+   id: number;
+   image_url: string;
+   album: GalleryAlbum;
+   created_at: string;
+};
+
+export async function uploadGalleryPhoto(file: File, album: GalleryAlbum) {
 
    // 🔥 GARANTE NOME ÚNICO (MUITO IMPORTANTE)
    const fileExt = file.name.split(".").pop();
@@ -55,5 +64,44 @@ export async function getGalleryPhotos() {
       throw error;
    }
 
-   return data;
+   return (data || []) as GalleryPhoto[];
+}
+
+function getGalleryStoragePath(imageUrl: string) {
+   const publicPathMarker = "/storage/v1/object/public/gallery/";
+
+   try {
+      const pathname = new URL(imageUrl).pathname;
+      const markerIndex = pathname.indexOf(publicPathMarker);
+
+      if (markerIndex === -1) return null;
+
+      return decodeURIComponent(
+         pathname.slice(markerIndex + publicPathMarker.length)
+      );
+   } catch {
+      return null;
+   }
+}
+
+export async function deleteGalleryPhoto(photo: GalleryPhoto) {
+   const { error: databaseError } = await supabase
+      .from("gallery_photos")
+      .delete()
+      .eq("id", photo.id);
+
+   if (databaseError) throw databaseError;
+
+   const storagePath = getGalleryStoragePath(photo.image_url);
+
+   if (!storagePath) return;
+
+   const { error: storageError } = await supabase
+      .storage
+      .from("gallery")
+      .remove([storagePath]);
+
+   if (storageError) {
+      console.error("Não foi possível remover o arquivo do Storage:", storageError);
+   }
 }
