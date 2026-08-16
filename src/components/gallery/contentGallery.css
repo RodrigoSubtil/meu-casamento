@@ -470,6 +470,120 @@
    transform: translateY(-2px);
 }
 
+.gallery-download-modal {
+   max-width: 480px;
+   gap: 1.25rem;
+   text-align: left;
+}
+
+.gallery-download-modal-label {
+   color: var(--color-gold);
+   font-size: 0.7rem;
+   letter-spacing: 0.12em;
+   text-transform: uppercase;
+}
+
+.gallery-download-modal-text {
+   margin: 0;
+   color: var(--text-muted);
+   font-size: 0.92rem;
+   line-height: 1.65;
+}
+
+.gallery-download-batch-summary {
+   display: flex;
+   align-items: baseline;
+   gap: 10px;
+   padding: 1rem 0;
+   border-top: var(--border-thin);
+   border-bottom: var(--border-thin);
+   color: var(--text-muted);
+}
+
+.gallery-download-batch-summary strong {
+   color: var(--text-primary);
+   font-size: 1.8rem;
+   font-weight: 400;
+}
+
+.gallery-download-modal-actions {
+   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.gallery-download-modal-actions button {
+   min-height: 52px;
+   height: auto;
+   padding: 12px 18px;
+}
+
+.gallery-download-modal-actions .gallery-download-primary {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 9px;
+   border-color: var(--color-gold);
+   background: var(--color-gold);
+   color: white;
+}
+
+.gallery-download-modal-actions .gallery-download-primary:hover {
+   background: #ddb06f;
+   box-shadow: var(--shadow-sm);
+}
+
+.gallery-download-status {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 1.25rem;
+   text-align: center;
+}
+
+.gallery-download-progress {
+   width: 100%;
+   height: 10px;
+   overflow: hidden;
+   border-radius: 999px;
+   background: rgba(48,65,98,0.10);
+}
+
+.gallery-download-progress span {
+   display: block;
+   height: 100%;
+   border-radius: inherit;
+   background: var(--color-gold);
+   transition: width 0.25s ease;
+}
+
+.gallery-download-progress-value {
+   color: var(--text-primary);
+   font-size: 0.9rem;
+   font-weight: 500;
+}
+
+.gallery-download-complete-icon {
+   width: 52px;
+   height: 52px;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background: rgba(91, 163, 121, 0.12);
+   color: #3c8c5f;
+   font-size: 1.15rem;
+}
+
+.gallery-download-remaining {
+   margin: 0;
+   color: var(--text-primary);
+   font-size: 0.92rem;
+   line-height: 1.6;
+}
+
+.gallery-download-status .gallery-download-modal-actions {
+   width: 100%;
+}
+
 /* =========================
    CLOSE BUTTON
 ========================= */
@@ -597,5 +711,16 @@
 
    .gallery-lightbox {
       padding: 16px;
+   }
+
+   .gallery-download-modal {
+      max-height: calc(100vh - 32px);
+      padding: 1.5rem;
+      overflow-y: auto;
+   }
+
+   .gallery-download-modal-actions {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
    }
 }
