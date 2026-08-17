@@ -55,6 +55,7 @@ const currencyEUR = new Intl.NumberFormat("pt-PT", {
 });
 
 const FALLBACK_BRL_TO_EUR_RATE = 1 / 6.3;
+const TIE_GIFT_TOTAL_BRL = 3387;
 
 function isAttending(value?: string) {
    return value?.toLowerCase().includes("sim") ?? false;
@@ -181,8 +182,11 @@ export default function Dashboard() {
                : sum,
          0
       );
-      const totalConvertedBRL = totalBRL + (totalEUR / brlToEurRate);
-      const totalConvertedEUR = totalEUR + (totalBRL * brlToEurRate);
+      const totalConvertedBRL = totalBRL
+         + TIE_GIFT_TOTAL_BRL
+         + (totalEUR / brlToEurRate);
+      const totalConvertedEUR = totalEUR
+         + ((totalBRL + TIE_GIFT_TOTAL_BRL) * brlToEurRate);
 
       return {
          totalGuests: rsvps.length,
@@ -196,6 +200,7 @@ export default function Dashboard() {
          availableGifts: gifts.filter((item) => !purchasedGiftIds.has(Number(item.id))).length,
          totalBRL,
          totalEUR,
+         tieGiftBRL: TIE_GIFT_TOTAL_BRL,
          totalConvertedBRL,
          totalConvertedEUR
       };
@@ -271,17 +276,23 @@ export default function Dashboard() {
 
                         <section className="dashboard-money">
                            <div>
-                              <span>Total recebido em real</span>
+                              <span>Presentes em real</span>
                               <strong>{currencyBRL.format(stats.totalBRL)}</strong>
                            </div>
 
                            <div>
-                              <span>Total recebido em euro</span>
+                              <span>Presentes em euro</span>
                               <strong>{currencyEUR.format(stats.totalEUR)}</strong>
                            </div>
 
+                           <div>
+                              <span>Presentes da gravata</span>
+                              <strong>{currencyBRL.format(stats.tieGiftBRL)}</strong>
+                              <small>Valor fixo em real</small>
+                           </div>
+
                            <div className="dashboard-money-total">
-                              <span>Total recebido</span>
+                              <span>Total arrecadado</span>
                               <strong>
                                  {currencyBRL.format(stats.totalConvertedBRL)}
                                  <span aria-hidden="true">/</span>

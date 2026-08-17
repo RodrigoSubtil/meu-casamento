@@ -88,7 +88,7 @@
 
 .dashboard-money {
    display: grid;
-   grid-template-columns: repeat(3, 1fr);
+   grid-template-columns: repeat(4, 1fr);
    gap: 1px;
    overflow: hidden;
 }
@@ -105,6 +105,11 @@
    color: var(--color-gold);
    font-size: 2rem;
    font-weight: 400;
+}
+
+.dashboard-money > div > small {
+   color: var(--text-muted);
+   font-size: var(--text-xs);
 }
 
 .dashboard-money-total {
@@ -307,6 +312,9 @@
       grid-template-columns: repeat(2, 1fr);
    }
 
+   .dashboard-money {
+      grid-template-columns: repeat(2, 1fr);
+   }
 }
 
 @media (max-width: 700px) {
