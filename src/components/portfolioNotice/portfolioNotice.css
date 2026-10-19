@@ -1,0 +1,23 @@
+.portfolio-notice {
+   width: 100%;
+   max-width: 720px;
+   box-sizing: border-box;
+   margin: 0 auto;
+   padding: 16px 20px;
+   border: var(--border-soft);
+   border-radius: var(--radius-lg);
+   background: rgba(236, 191, 133, 0.1);
+   color: var(--text-primary);
+   font-family: var(--font-primary);
+   font-size: var(--text-sm);
+   line-height: 1.7;
+   text-align: center;
+}
+
+/* O bloqueio mantém a cor e a opacidade originais dos botões. */
+.form-button.portfolio-action:disabled {
+   opacity: 1;
+   background: var(--color-gold);
+   color: var(--color-white);
+   box-shadow: none;
+}

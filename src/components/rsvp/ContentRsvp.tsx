@@ -3,6 +3,8 @@ import "./contentRsvp.css";
 import { useState } from "react";
 import { supabase } from "../../lib/supabase.ts";
 import ModalConfirmation from "../modalConfirmation/ModalConfirmation";
+import PortfolioNotice from "../portfolioNotice/PortfolioNotice";
+import { PORTFOLIO_MODE } from "../../config/portfolio";
 
 import type { RsvpErrors } from "../../types/rsvp";
 
@@ -64,6 +66,8 @@ export default function ContentRsvp() {
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
+      if (PORTFOLIO_MODE) return;
+
       setSuccess(false);
 
       const formErrors: RsvpErrors[] = guests.map(() => ({}));
@@ -165,7 +169,15 @@ export default function ContentRsvp() {
                <form
                   className="rsvp-form"
                   onSubmit={handleSubmit}
+                  aria-describedby={PORTFOLIO_MODE ? "rsvp-closed-notice" : undefined}
                >
+                  {PORTFOLIO_MODE && (
+                     <PortfolioNotice id="rsvp-closed-notice">
+                        Já não é possível confirmar presença. Você pode explorar e preencher
+                        o formulário, mas o envio está encerrado.
+                     </PortfolioNotice>
+                  )}
+
                   <div className="rsvp-guests">
                      {guests.map((guest, index) => {
                         const guestErrors = errors[index] || {};
@@ -299,8 +311,10 @@ export default function ContentRsvp() {
                   </button>
 
                   <button
-                     className="form-button"
-                     disabled={loading}
+                     className={`form-button${PORTFOLIO_MODE ? " portfolio-action" : ""}`}
+                     type="submit"
+                     disabled={PORTFOLIO_MODE || loading}
+                     aria-describedby={PORTFOLIO_MODE ? "rsvp-closed-notice" : undefined}
                   >
                      {loading
                         ? "A enviar..."

@@ -5,10 +5,11 @@ import {
    FaCloud,
    FaCloudRain,
    FaCloudSun,
-   FaGlassCheers,
    FaQuestion,
    FaSun
 } from "react-icons/fa";
+import { PORTFOLIO_MODE } from "../../../config/portfolio";
+import { HISTORICAL_WEATHER } from "./historicalWeather";
 
 const WEDDING_DATE = "2026-08-15";
 const DAYS_BEFORE_AND_AFTER = 2;
@@ -92,8 +93,7 @@ function getWeatherCondition(code?: number) {
    return "Tempo instável";
 }
 
-function getWeatherIcon(code?: number, highlight = false) {
-   if (highlight) return <FaGlassCheers />;
+function getWeatherIcon(code?: number) {
    if (code === undefined) return <FaQuestion />;
    if (code === 0) return <FaSun />;
    if ([1, 2].includes(code)) return <FaCloudSun />;
@@ -115,14 +115,29 @@ function buildWaitingForecast(): ForecastDay[] {
    }));
 }
 
+function buildHistoricalForecast(): ForecastDay[] {
+   return HISTORICAL_WEATHER.map((day) => ({
+      date: day.date,
+      condition: getWeatherCondition(day.weatherCode),
+      temp: `${Math.round(day.min)}° / ${Math.round(day.max)}°C`,
+      weatherCode: day.weatherCode,
+      highlight: day.date === WEDDING_DATE,
+      live: false
+   }));
+}
+
 export default function Weather() {
    const configuredDates = useMemo(() => getConfiguredDates(), []);
-   const [forecast, setForecast] = useState<ForecastDay[]>(() => buildWaitingForecast());
-   const [status, setStatus] = useState<"waiting" | "loading" | "live" | "error">(
-      isForecastAvailable(configuredDates) ? "loading" : "waiting"
+   const [forecast, setForecast] = useState<ForecastDay[]>(() =>
+      PORTFOLIO_MODE ? buildHistoricalForecast() : buildWaitingForecast()
+   );
+   const [status, setStatus] = useState<"historical" | "waiting" | "loading" | "live" | "error">(
+      PORTFOLIO_MODE ? "historical" : isForecastAvailable(configuredDates) ? "loading" : "waiting"
    );
 
    useEffect(() => {
+      if (PORTFOLIO_MODE) return;
+
       if (!isForecastAvailable(configuredDates)) return;
 
       const controller = new AbortController();
@@ -175,7 +190,7 @@ export default function Weather() {
 
             setForecast(nextForecast);
             setStatus("live");
-         } catch (error) {
+         } catch {
             if (controller.signal.aborted) return;
 
             setForecast(buildWaitingForecast());
@@ -194,10 +209,18 @@ export default function Weather() {
             <div className="weather-container">
                <div className="section-header">
                   <div className="luxury-title">
-                     <span>Previsão do Tempo</span>
+                     <span>{PORTFOLIO_MODE ? "Clima nos dias do casamento" : "Previsão do Tempo"}</span>
                   </div>
 
                   <p className="weather-note">
+                     {status === "historical" && (
+                        <>
+                           Presidente Prudente · 13 a 17 de agosto de 2026.
+                           {" "}Histórico do período, com mínimas e máximas diárias.
+                           {" "}Fonte: <a href="https://open-meteo.com/en/docs/historical-weather-api"
+                              target="_blank" rel="noreferrer">Open-Meteo</a>.
+                        </>
+                     )}
                      {status === "live" &&
                         "Previsão atualizada automaticamente pela Open-Meteo."}
                      {status === "loading" && "Buscando a previsão mais recente..."}
@@ -216,8 +239,8 @@ export default function Weather() {
                      >
                         <span className="weather-date">{formatDateLabel(day.date)}</span>
 
-                        <div className="weather-icon">
-                           {getWeatherIcon(day.weatherCode, day.highlight)}
+                        <div className="weather-icon" aria-hidden="true">
+                           {getWeatherIcon(day.weatherCode)}
                         </div>
 
                         <span className="weather-temp">{day.temp}</span>
@@ -225,7 +248,7 @@ export default function Weather() {
                         <span className="weather-condition">{day.condition}</span>
 
                         <span className="weather-source">
-                           {day.live ? "ao vivo" : "em breve"}
+                           {status === "historical" ? "histórico" : day.live ? "ao vivo" : "em breve"}
                         </span>
                      </div>
                   ))}

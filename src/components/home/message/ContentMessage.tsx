@@ -4,6 +4,8 @@ import { validateMessage } from "../../../utils/validators/messageValidator";
 import { useState } from "react";
 import { supabase } from "../../../lib/supabase.ts";
 import ModalConfirmation from "../../modalConfirmation/ModalConfirmation";
+import PortfolioNotice from "../../portfolioNotice/PortfolioNotice";
+import { PORTFOLIO_MODE } from "../../../config/portfolio";
 
 import "./contentMessage.css";
 
@@ -17,6 +19,7 @@ export default function ContentMessage() {
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
+      if (PORTFOLIO_MODE) return;
 
       setSuccess(false);
 
@@ -59,7 +62,17 @@ export default function ContentMessage() {
 
             </div>
 
-            <form className="message-form" onSubmit={handleSubmit}>
+            <form
+               className="message-form"
+               onSubmit={handleSubmit}
+               aria-describedby={PORTFOLIO_MODE ? "messages-closed-notice" : undefined}
+            >
+               {PORTFOLIO_MODE && (
+                  <PortfolioNotice id="messages-closed-notice">
+                     Já não é possível enviar mensagens. Você pode escrever nos campos
+                     para conhecer o formulário, mas o envio está encerrado.
+                  </PortfolioNotice>
+               )}
 
                <div className="form-group">
                   <label className="form-label">Seu nome</label>
@@ -92,7 +105,12 @@ export default function ContentMessage() {
                   </span>
                </div>
 
-               <button className="form-button" disabled={loading}>
+               <button
+                  className={`form-button${PORTFOLIO_MODE ? " portfolio-action" : ""}`}
+                  type="submit"
+                  disabled={PORTFOLIO_MODE || loading}
+                  aria-describedby={PORTFOLIO_MODE ? "messages-closed-notice" : undefined}
+               >
                   {loading ? "Enviando..." : "Enviar Mensagem"}
                </button>
 

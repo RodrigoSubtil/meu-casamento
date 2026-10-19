@@ -1,8 +1,7 @@
 import "./contentGallery.css";
 
 import { FaArrowRight, FaImages } from "react-icons/fa";
-
-const GOOGLE_PHOTOS_ALBUM_URL = "https://photos.app.goo.gl/T8MEZv1jMBq49s2BA";
+import PortfolioNotice from "../portfolioNotice/PortfolioNotice";
 
 export default function ContentGallery() {
     return (
@@ -21,17 +20,22 @@ export default function ContentGallery() {
                                 pela presença de cada um, que tornou esse dia inesquecível.
                             </p>
                         </div>
+
+                        <PortfolioNotice id="gallery-closed-notice">
+                            Já não é possível acessar o álbum compartilhado por este site.
+                            Esta ação está encerrada.
+                        </PortfolioNotice>
                     </div>
                 </div>
             </div>
 
             <div className="gallery-album-section">
                 <div className="container gallery-album-inner">
-                    <a
+                    <button
                         className="gallery-album-card"
-                        href={GOOGLE_PHOTOS_ALBUM_URL}
-                        target="_blank"
-                        rel="noreferrer"
+                        type="button"
+                        disabled
+                        aria-describedby="gallery-closed-notice"
                     >
                         <span className="gallery-album-icon" aria-hidden="true">
                             <FaImages />
@@ -43,7 +47,7 @@ export default function ContentGallery() {
                         </span>
 
                         <FaArrowRight className="gallery-album-arrow" aria-hidden="true" />
-                    </a>
+                    </button>
                 </div>
             </div>
         </section>

@@ -59,6 +59,24 @@
    color: rgba(48,65,98,0.68);
 }
 
+.weather-note a {
+   color: inherit;
+   text-decoration-color: rgba(48, 65, 98, 0.3);
+   text-underline-offset: 3px;
+   transition: color var(--transition-base);
+}
+
+.weather-note a:hover {
+   color: var(--text-primary);
+   text-decoration-color: currentColor;
+}
+
+.weather-note a:focus-visible {
+   outline: 2px solid var(--color-gold);
+   outline-offset: 3px;
+   border-radius: 2px;
+}
+
 /* =========================
    CARD
 ========================= */

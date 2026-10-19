@@ -2,6 +2,8 @@ import "./contentGiftRegistry.css";
 
 import { useEffect, useMemo, useState } from "react";
 import { getGifts, reserveGift } from "../../services/giftService";
+import PortfolioNotice from "../portfolioNotice/PortfolioNotice";
+import { PORTFOLIO_MODE } from "../../config/portfolio";
 
 type GiftCategory = "all" | "product" | "experience";
 
@@ -39,12 +41,16 @@ export default function ContentGiftRegistry() {
    const [copied, setCopied] = useState<"pix" | "mbway" | null>(null);
 
    useEffect(() => {
+      if (PORTFOLIO_MODE) return;
+
       getGifts()
          .then((data) => setGifts(data || []))
          .catch(console.error);
    }, []);
 
    useEffect(() => {
+      if (PORTFOLIO_MODE) return;
+
       const controller = new AbortController();
 
       async function loadExchangeRate() {
@@ -106,7 +112,7 @@ export default function ContentGiftRegistry() {
    }, [modalOpen]);
 
    function openModal(gift: Gift) {
-      if (gift.is_reserved) return;
+      if (PORTFOLIO_MODE || gift.is_reserved) return;
 
       setSelectedGift(gift);
       setModalOpen(true);
@@ -199,7 +205,7 @@ export default function ContentGiftRegistry() {
    }
 
    async function confirmReservation() {
-      if (!selectedGift || !method) return;
+      if (PORTFOLIO_MODE || !selectedGift || !method) return;
 
       if (!payerName.trim()) {
          setPayerNameError("Informe o nome de quem vai enviar o dinheiro.");
@@ -267,7 +273,9 @@ export default function ContentGiftRegistry() {
                      <p>Aqui você pode nos presentear com o valor que desejar.</p>
 
                      <button
-                        className="form-button"
+                        className={`form-button${PORTFOLIO_MODE ? " portfolio-action" : ""}`}
+                        disabled={PORTFOLIO_MODE}
+                        aria-describedby={PORTFOLIO_MODE ? "gifts-closed-notice" : undefined}
                         onClick={() =>
                            openModal({
                               id: 999999,
@@ -299,6 +307,12 @@ export default function ContentGiftRegistry() {
                   ))}
                </div>
 
+               {PORTFOLIO_MODE && (
+                  <PortfolioNotice id="gifts-closed-notice">
+                     Não há mais presentes disponíveis. As contribuições estão encerradas.
+                  </PortfolioNotice>
+               )}
+
                <div className="gift-grid">
                   {filteredGifts.map((gift) => (
                      <div className="gift-card" key={gift.id}>
@@ -315,8 +329,8 @@ export default function ContentGiftRegistry() {
                            </span>
 
                            <button
-                              className="form-button"
-                              disabled={gift.is_reserved}
+                              className={`form-button${PORTFOLIO_MODE ? " portfolio-action" : ""}`}
+                              disabled={PORTFOLIO_MODE || gift.is_reserved}
                               onClick={() => openModal(gift)}
                            >
                               {gift.is_reserved ? "Reservado" : "Presentear"}

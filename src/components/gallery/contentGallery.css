@@ -20,6 +20,10 @@
    max-width: 850px;
 }
 
+.gallery-container .portfolio-notice {
+   margin-top: 2rem;
+}
+
 .gallery-album-section {
    min-height: 420px;
 
@@ -61,6 +65,8 @@
 
    color: var(--text-primary);
    text-decoration: none;
+   font-family: inherit;
+   text-align: left;
 
    transition: var(--transition-base);
 }
@@ -75,6 +81,11 @@
 .gallery-album-card:focus-visible {
    outline: 3px solid rgba(236, 191, 133, 0.45);
    outline-offset: 4px;
+}
+
+.gallery-album-card:disabled {
+   opacity: 1;
+   cursor: not-allowed;
 }
 
 .gallery-album-icon {
